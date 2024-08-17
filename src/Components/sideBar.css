@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+/* .sidebar{
+    position: absolute;
+    
+}
+.nav{
+    background-color: rgba(53, 52, 52, 0.624);
+    display: inline-block;
+    position: fixed;
+    height: 100%;
+    width: 20%;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 1000;
+} */
+
+
+
+html {
+  font-family: Arial;
+  
+}
+
+.sidebar {
+  position: fixed;
+  width: 20%;
+  height: 100vh;
+  background: #33215e;
+  font-size: 0.65em;
+}
+
+.nav {
+  position: relative;
+  margin: 0 15%;
+  text-align: right;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: bold;
+}
+
+.nav ul {
+  list-style: none;
+  
+  li {
+    position: relative;
+    margin: 3.2em 0;
+    
+    .anchortag{
+      line-height: 5em;
+      text-transform: uppercase;
+      text-decoration: none;
+      letter-spacing: 0.4em;
+      color: white;
+      display: block;
+      transition: all ease-out 300ms;
+    }
+    
+    &.active .anchortag {
+      color: white;
+      font-weight: 1000;
+    }
+    
+    &:not(.active)::after {
+      opacity: 0.2;
+    }
+    
+    &:not(.active):hover .anchortag {
+      color: rgba(#FFF, 0.75);
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 0.2em;
+      background: black;
+      left: 0;
+      bottom: 0;
+      background-image: linear-gradient(to right, #5e42a6, #b74e91)
+    }
+  }
+}
