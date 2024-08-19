@@ -1,6 +1,7 @@
 import {createBrowserRouter,RouterProvider} from "react-router-dom";
 import Home from "./home.jsx";
 import SideBar from './Components/sideBar.jsx';
+import Invoice from "./Components/Invoice.jsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -8,8 +9,8 @@ function App() {
       path: "/",
       element: <><SideBar/><Home/></>,
     },{
-      path: "/Invoices",
-      element: <><SideBar/><div>Invoices</div></>,
+      path: "/create",
+      element: <><SideBar/><Invoice/></>,
     }
   ]);
 

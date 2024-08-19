@@ -20,16 +20,21 @@
 
 html {
   font-family: Arial;
-  
 }
 
 .sidebar {
   position: fixed;
   width: 20%;
-  height: 100vh;
+  height: 99vh;
   background: #33215e;
+  box-shadow: 0 4px 15px rgba(147, 80, 236, 0.7); 
+  border-radius: 10px;
   font-size: 0.65em;
+  top: 0.5vh;
+  left: 0.5vh;
+  bottom: 1vh;
 }
+
 
 .nav {
   position: relative;

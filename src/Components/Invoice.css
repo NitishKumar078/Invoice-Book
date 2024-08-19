@@ -1,0 +1,99 @@
+.invoice-container {
+  width: 80%;
+  margin: auto;
+  font-family: Arial, sans-serif;
+  color: #333;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  left: 20vw;
+  position: absolute;
+  display: block;
+  width: 75vw;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.company-details {
+  width: 60%;
+  /* display: flex; */
+}
+
+.invoice-title h1 {
+  font-size: 2em;
+  text-align: right;
+}
+
+.billing-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+
+.invoice-details {
+  line-height: 30px;
+
+} 
+.invoiceId {
+  width: 3vw;
+} 
+
+.invoice-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.invoice-table th{
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+} 
+.invoice-table td {
+  
+  text-align: center;
+  border: 1px solid #ddd;
+}
+.invoice-table td input,.invoice-table td div input{
+  text-align: center;
+  
+}
+
+.total-section {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tax-summary,
+.total-amount {
+  width: 19%;
+}
+
+.total-amount h2 {
+  font-size: 1.5em;
+  text-align: right;
+}
+
+.terms-and-conditions,
+.bank-details {
+  font-family: monospaced sans serif;
+  margin:0px 10px 10px 10px;
+  line-height: 20px;
+}
+
+.signature {
+  text-align: right;
+  margin-top: 40px;
+}
+input[type="text"] {
+  border: none;
+  outline: none;
+}
