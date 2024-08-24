@@ -1,16 +1,16 @@
-import {createBrowserRouter,RouterProvider} from "react-router-dom";
-import Home from "./home.jsx";
-import SideBar from './Components/sideBar.jsx';
-import Invoice from "./Components/Invoice.jsx";
+import {createBrowserRouter,RouterProvider} from 'react-router-dom';
+import Home from './home.jsx';
+import SidePanal from './Components/sidePanal/sidePanal.jsx';
+import Invoice from './Components/generateInvoice/Invoice.jsx';
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <><SideBar/><Home/></>,
+      element: <><SidePanal/><Home/></>,
     },{
       path: "/create",
-      element: <><SideBar/><Invoice/></>,
+      element: <><SidePanal/><Invoice/></>,
     }
   ]);
 
