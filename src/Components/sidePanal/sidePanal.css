@@ -127,13 +127,11 @@ html {
 
 .nav ul {
   list-style: none;
-  padding: 2vh;
-  margin: 1vh;
 
   li {
     position: relative;
-    margin: 2em 0;
-    height: 3vh;
+    margin: 2em 0 0 0;
+    height: 4vh;
 
     .anchortag {
       text-transform: uppercase;
@@ -184,6 +182,6 @@ html {
 .sidePanal_menuicons {
   height: 2em;
   width: 2em;
-  padding-right: 5px;
   margin-right: 10px;
+  margin-bottom: -1vh;
 }
