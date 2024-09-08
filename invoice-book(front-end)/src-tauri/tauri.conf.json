@@ -47,10 +47,6 @@
         "timestampUrl": ""
       }
     },
-    "sidecar": {
-      "binary": "node",
-      "args": ["src/backend/server.js"]
-    },
     "security": {
       "csp": null
     },
