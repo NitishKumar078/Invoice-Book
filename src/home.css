@@ -38,17 +38,21 @@
   border-color: rgb(149, 90, 232);
   border-style: solid;
 }
-.createcart{
-    /* From https://css.glass */
-background: rgba(156, 184, 233, 0.22);
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(5.6px);
--webkit-backdrop-filter: blur(5.6px);
-border: 1px solid rgba(156, 184, 233, 0.15);
-height:50%;
-left: 21%;
-position: absolute;
-display: inline;
-width: 78.3%;
+.createcart {
+  background: rgba(156, 184, 233, 0.22);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5.6px);
+  -webkit-backdrop-filter: blur(5.6px);
+  border: 1px solid rgba(156, 184, 233, 0.15);
+  height: 50%;
+  position: absolute;
+  left: calc(21vw + 2vh); /* Space accounting for sidebar's width */
+  width: calc(78% - 1vh); /* Dynamic width adjustment */
+  transition: all 0.3s ease; /* Smooth transition on collapse */
+}
+
+.sidebar.collapsed ~ .createcart {
+  left: calc(7vw); /* Adjust for collapsed sidebar */
+  width: calc(95vw ); /* Expand content when sidebar is collapsed */
 }
 

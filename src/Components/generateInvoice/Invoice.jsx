@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./Invoice.css";
 import { tableItem } from "../template/template.js";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 export default function Invoice() {
   const [tableData, setTableData] = useState([]);
@@ -15,15 +15,19 @@ export default function Invoice() {
     setRowIndx(rowIndx + 1); // Update row index for future rows
   }, []);
 
-  const ValidatingInteger = (e,field) =>{
-    if (field === "quantity" || field === "pricePerUnit" || field ===  "ContactNo") {
+  const ValidatingInteger = (e, field) => {
+    if (
+      field === "quantity" ||
+      field === "pricePerUnit" ||
+      field === "ContactNo"
+    ) {
       e.target.value = e.target.value.replace(/[^\d]/g, ""); // Allow only digits
     }
-  }
+  };
   // Function to handle input changes
   const handleInputChange = (e, rowIndex, field) => {
     // Validating the data type for quantity and pricePerUnit
-    ValidatingInteger(e,field);
+    ValidatingInteger(e, field);
 
     // Update the specific field in the row
     const newTableData = [...tableData];
@@ -55,25 +59,24 @@ export default function Invoice() {
   useEffect(() => {
     let total = 0;
     // Calculation of the total amount
-    tableData.forEach(item => {
+    tableData.forEach((item) => {
       total += item.amount;
     });
 
     if (totalamt.current) {
       totalamt.current.value = total; // Update the value of the input field
     }
-  }, [ tableData]); // Depend on tableData to update when it changes
+  }, [tableData]); // Depend on tableData to update when it changes
 
-  document.addEventListener("scroll", function() {
+  document.addEventListener("scroll", function () {
     var buttonDiv = document.getElementById("sticky-div");
-    if ((window.innerHeight + window.scrollY) >= window.screen.height) {
-        // User has reached the bottom of the page
-        buttonDiv.classList.add("active");
+    if (window.innerHeight + window.scrollY >= window.screen.height) {
+      // User has reached the bottom of the page
+      buttonDiv.classList.add("active");
     } else {
-        buttonDiv.classList.remove("active");
+      buttonDiv.classList.remove("active");
     }
   });
-
 
   return (
     <div className="invoice-container">
@@ -105,18 +108,24 @@ export default function Invoice() {
             /> <br /> <br />
             <textarea placeholder="Address" />
             <p>
-              Contact No. : <input type="number" id="cnumber"  onChange={(e) => ValidatingInteger(e, "ContactNo")} /> <br />
-              GSTIN : <input type="text" value="328dsf1734284" readOnly/> 
+              Contact No. :{" "}
+              <input
+                type="number"
+                id="cnumber"
+                onChange={(e) => ValidatingInteger(e, "ContactNo")}
+              />{" "}
+              <br />
+              GSTIN : <input type="text" value="328dsf1734284" readOnly />
             </p>
           </div>
           <div className="invoice-details">
-           <div>
-           <label htmlFor="invoiceId">Invoice No :</label>{" "}
-           <input type="number" name="invoiceId" id="invoiceId" />
-           </div>
+            <div>
+              <label htmlFor="invoiceId">Invoice No :</label>{" "}
+              <input type="number" name="invoiceId" id="invoiceId" />
+            </div>
             <div className="data">
-            <label htmlFor="data">Date :</label>{" "}
-            <input type="date" name="data" id="data" />
+              <label htmlFor="data">Date :</label>{" "}
+              <input type="date" name="data" id="data" />
             </div>
           </div>
         </div>
@@ -175,7 +184,6 @@ export default function Invoice() {
 
         <br />
         <button onClick={handleAddRow}>Add Row</button>
-        
 
         <div className="total-section">
           <div className="tax-summary">
@@ -224,11 +232,10 @@ export default function Invoice() {
       </div>
       <div id="sticky-div" className="sticky-div">
         <button onClick={handleSave}>Save</button>
-        <NavLink to="/viewInvoice"  >
-        <button id="sticky-button"> View</button>
-      </NavLink>
-    </div>
-
+        <NavLink to="/viewInvoice">
+          <button id="sticky-button"> View</button>
+        </NavLink>
+      </div>
     </div>
   );
 }

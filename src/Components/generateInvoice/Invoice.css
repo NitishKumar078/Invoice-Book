@@ -6,10 +6,16 @@
   background-color: #fff;
   border: 1px solid #ddd;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  left: 21vw;
+  left: calc(21.5vw); /* Adjusted to align with expanded sidebar */
   right: 1vw;
   position: absolute;
   display: block;
+  transition: all 0.3s ease; /* Smooth transition for collapse/expand */
+}
+
+.sidebar.collapsed ~ .invoice-container {
+  left: calc(7vw); /* Adjust when the sidebar is collapsed */
+  right: 1vw;
 }
 
 .invoice-header {
@@ -35,17 +41,15 @@
   margin-top: 20px;
 }
 
-
 .invoice-details .data {
   margin-top: 10px;
-} 
+}
 .invoice-details {
   line-height: 30px;
-
-} 
+}
 .invoiceId {
   width: 3vw;
-} 
+}
 
 .invoice-table {
   width: 100%;
@@ -53,19 +57,19 @@
   border-collapse: collapse;
 }
 
-.invoice-table th{
+.invoice-table th {
   padding: 10px;
   text-align: center;
   border: 1px solid #ddd;
-} 
+}
 .invoice-table td {
   padding: 5px;
   text-align: center;
   border: 1px solid #ddd;
 }
-.invoice-table td input,.invoice-table td div input{
+.invoice-table td input,
+.invoice-table td div input {
   text-align: center;
-  
 }
 
 .total-section {
@@ -87,7 +91,7 @@
 .terms-and-conditions,
 .bank-details {
   font-family: monospaced sans serif;
-  margin:0px 10px 10px 10px;
+  margin: 0px 10px 10px 10px;
   line-height: 20px;
 }
 
@@ -95,20 +99,20 @@
   text-align: right;
   margin-top: 40px;
 }
-input[type="text"] {
+.billing-info,
+form [type="text"] {
   border: none;
   outline: none;
-  
 }
-input{
+input {
   height: 25px;
 }
 #cnumber::-webkit-outer-spin-button,
 #cnumber::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
-.bill-to h3{
+.bill-to h3 {
   margin: 0px;
 }
 .sticky-div {
