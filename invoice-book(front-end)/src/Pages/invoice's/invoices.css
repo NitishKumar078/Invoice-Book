@@ -1,5 +1,5 @@
 .invoices{
-    /* border: 1px solid rgba(156, 184, 233, 0.15); */
+    border: 1px solid rgba(156, 184, 233, 0.15);
     height: 50%;
     position: absolute;
     left: calc(21vw + 2vh); /* Space accounting for sidebar's width */

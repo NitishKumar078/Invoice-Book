@@ -24,11 +24,22 @@ function Invoices() {
         `http://localhost:3001/invoices/${invoiceId}`
       );
       setLoadedInvoice(response.data);
-      console.log(response.data);
+      console.log(loadedInvoice);
     } catch (err) {
       console.error(err);
     }
   };
+
+  const handledelete = async (invoiceId) =>{
+    try {
+      const response = await axios.delete(
+        `http://localhost:3001/invoices/${invoiceId}`
+      );
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <div className="invoices">
@@ -63,7 +74,7 @@ function Invoices() {
                 </button>
               </td>
               <td>
-                <button>delete</button>
+                <button onClick={() => handledelete(invoice.invoiceId)}>delete</button>
               </td>
             </tr>
           ))}
