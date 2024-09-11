@@ -27,7 +27,7 @@ class tableItem {
 
 
   class invoiceItem {
-    constructor(id, name, gstNo, contactno, address, tableInfo, gstamt, tamt) {
+    constructor(id, name, gstNo, contactno, address, tableInfo, gstamt, tamt, time) {
       this.invoiceId = id;
       this.customer = name;
       this.gstno = gstNo;
@@ -36,6 +36,7 @@ class tableItem {
       this.tableInfo = tableInfo;
       this.gstAmt = gstamt;
       this.totalAmt = tamt;
+      this.creationTime = time
     }
   }
   

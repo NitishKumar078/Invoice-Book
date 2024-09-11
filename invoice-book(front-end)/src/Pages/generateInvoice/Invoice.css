@@ -78,14 +78,20 @@
   justify-content: space-between;
 }
 
-.tax-summary,
-.total-amount {
-  width: 19%;
+.tax-summary .normalgst{
+  display: flex;
+  flex-direction: column;
+  margin: 1vh 0px;
 }
-
-.total-amount h2 {
-  font-size: 1.5em;
-  text-align: right;
+.total-amount {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  width: 18vw;
+  input{
+    width: 10vw;
+    text-align: right;
+  }
 }
 
 .terms-and-conditions,
@@ -147,4 +153,31 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+#total{
+  width: 16vw; 
+  text-align: right;
+  position: relative;
+  display: block;
+
+}
+.statesselection{
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 0px;
+  label{
+    padding-right: 5px;
+  }
+}
+#cadress{
+  width: 20vw;
+  min-height: 10vh;
+  max-height: 12vh;
+  max-width: 22vw;
+}
+#customername{
+  margin: 10px 0px;
+  border: 1px solid black;
 }

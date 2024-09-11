@@ -1,11 +1,48 @@
 import { useState, useEffect, useRef } from "react";
 import "./Invoice.css";
-import { tableItem } from "../template/template.js";
+import axios from "axios";
+import { tableItem, invoiceItem } from "../../template/template";
 import { NavLink } from "react-router-dom";
+
+const states = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jammu and Kashmir",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttarakhand",
+  "Uttar Pradesh",
+  "West Bengal",
+];
 
 export default function Invoice() {
   const [tableData, setTableData] = useState([]);
   const [rowIndx, setRowIndx] = useState(1);
+  const [state, setState] = useState("");
+  const [gsttype, setgsttype] = useState(true); // if gsttype--> true then normal gst(18%) orelse igst(18%)
+  const [gstamt,setgstamt] = useState(null);
+  const subtotalamt = useRef(null);
   const totalamt = useRef(null);
 
   useEffect(() => {
@@ -21,7 +58,7 @@ export default function Invoice() {
       field === "pricePerUnit" ||
       field === "ContactNo"
     ) {
-      e.target.value = e.target.value.replace(/[^\d]/g, ""); // Allow only digits
+      e.target.value = e.target.value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
     }
   };
   // Function to handle input changes
@@ -37,7 +74,7 @@ export default function Invoice() {
     if (field === "quantity" || field === "pricePerUnit") {
       const quantity = parseFloat(newTableData[rowIndex].quantity) || 0;
       const pricePerUnit = parseFloat(newTableData[rowIndex].pricePerUnit) || 0;
-      newTableData[rowIndex].amount = quantity * pricePerUnit;
+      newTableData[rowIndex].amount = parseFloat((quantity * pricePerUnit).toFixed(2));
     }
 
     // Update the state with new table data
@@ -52,8 +89,41 @@ export default function Invoice() {
   };
 
   // Function to handle save action
-  const handleSave = () => {
-    console.log(tableData);
+  const getinvoicedata = async() => {
+    const timestamp = Date.now();
+    const date = new Date(timestamp);
+
+    const Iid = document.getElementById("invoiceId").value;
+    const cname = document.getElementById("customername").value;
+    const gstid = document.getElementById("gstno").value;
+    const cno = document.getElementById("cnumber").value;
+    const cadress = document.getElementById("cadress").value;
+    const gstamt = document.getElementById("gstno").value;
+    const tamt = document.getElementById("total").value;
+    const creationtime = date.toLocaleDateString();
+    const Idata = new invoiceItem(
+      Iid,
+      cname,
+      gstid,
+      cno,
+      cadress,
+      tableData,
+      gstamt,
+      tamt,
+      creationtime
+    );
+    return Idata
+  };
+
+  const handleSave = async () => {
+    const invoicedata = await getinvoicedata();
+    try {
+      console.log("this is the data", invoicedata);
+      await axios.post("http://localhost:3001/invoices", invoicedata);
+      alert("Invoice created");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {
@@ -63,8 +133,10 @@ export default function Invoice() {
       total += item.amount;
     });
 
-    if (totalamt.current) {
-      totalamt.current.value = total; // Update the value of the input field
+    if (subtotalamt.current) {
+      subtotalamt.current.value = total; // Update the value of the input field
+      setgstamt(parseFloat((total * 18 / 100).toFixed(2)));
+      totalamt.current.value = gstamt + total;
     }
   }, [tableData]); // Depend on tableData to update when it changes
 
@@ -77,6 +149,15 @@ export default function Invoice() {
       buttonDiv.classList.remove("active");
     }
   });
+
+  const handlestatesele = (e) => {
+    setState(e.value);
+    const statefound = states.some(
+      (i) => i.toLowerCase() === e.value.toLowerCase()
+    );
+    setgsttype(statefound);
+    console.log("is state found ", statefound);
+  };
 
   return (
     <div className="invoice-container">
@@ -104,9 +185,26 @@ export default function Invoice() {
             <input
               type="text"
               placeholder="customer name"
+              id="customername"
               required
-            /> <br /> <br />
-            <textarea placeholder="Address" />
+            />{" "}
+            <br /> <br />
+            <textarea placeholder="Address" id="cadress" />
+            <br />
+            <div className="statesselection">
+              <label htmlFor="state">State</label>
+              <select
+                id="state"
+                value={state}
+                onChange={(e) => handlestatesele(e.target)}>
+                <option value="">Select State</option>
+                {states.map((state, index) => (
+                  <option key={index} value={state}>
+                    {state}
+                  </option>
+                ))}
+              </select>
+            </div>
             <p>
               Contact No. :{" "}
               <input
@@ -115,7 +213,8 @@ export default function Invoice() {
                 onChange={(e) => ValidatingInteger(e, "ContactNo")}
               />{" "}
               <br />
-              GSTIN : <input type="text" value="328dsf1734284" readOnly />
+              GSTIN :{" "}
+              <input type="text" id="gstno"  readOnly />
             </p>
           </div>
           <div className="invoice-details">
@@ -168,14 +267,20 @@ export default function Invoice() {
                 <td>
                   <input
                     type="text"
-                    value={item.pricePerUnit}
+                    value={item.pricePerUnit|| undefined}
                     onChange={(e) =>
                       handleInputChange(e, index, "pricePerUnit")
                     }
                   />
                 </td>
                 <td>
-                  <input type="text" value={item.amount} readOnly />
+                  <span> ₹</span>
+                  <input
+                    type="text"
+                    id="rowtotal"
+                    value={item.amount|| undefined}
+                    readOnly
+                  />
                 </td>
               </tr>
             ))}
@@ -187,16 +292,26 @@ export default function Invoice() {
 
         <div className="total-section">
           <div className="tax-summary">
-            <p>SGST @9%: ₹ 283.50</p>
-            <p>CGST @9%: ₹ 283.50</p>
+            {gsttype ? (
+              <div className="normalgst">
+                <span>SGST @9%: ₹ {gstamt/2} </span>
+                <span>CGST @9%: ₹ {gstamt/2} </span>
+              </div>
+            ) : (
+              <p>IGST @18: ₹ {gstamt}</p>
+            )}
           </div>
           <div className="total-amount">
-            <p>Sub Total: ₹ 3,150.00</p>
-            <p>Tax (18%): ₹ 567.00</p>
-            <hr />
-            <h2>
-              <input type="number" id="total" ref={totalamt} readOnly></input>
-            </h2>
+            <p>
+              Sub Total: ₹{""}
+              <input placeholder="Sub total" type="text" id="subtotal" ref={subtotalamt}  readOnly />
+            </p>
+            <p>
+              Total Tax: ₹{" "} 
+              <input   type="text" id="taxtotal" value={gstamt || "0"} readOnly />
+            </p>
+            <hr/> 
+             <input placeholder="Total amount"  type="text" id="total" ref={totalamt}  ></input>
           </div>
         </div>
       </form>
