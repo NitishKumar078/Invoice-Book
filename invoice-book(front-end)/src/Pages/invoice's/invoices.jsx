@@ -31,6 +31,7 @@ function Invoices() {
   };
 
   const handledelete = async (invoiceId) =>{
+    setInvoices(invoices.filter((e)=> e.invoiceId !== invoiceId))
     try {
       const response = await axios.delete(
         `http://localhost:3001/invoices/${invoiceId}`

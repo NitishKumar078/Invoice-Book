@@ -28,7 +28,8 @@ const db = new sqlite3.Database(
                 contactno TEXT,
                 address TEXT,
                 gstAmt REAL,
-                totalAmt REAL
+                totalAmt REAL,
+                creationTime TEXT
             )
         `);
       db.run(`
@@ -36,8 +37,9 @@ const db = new sqlite3.Database(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 invoiceId INTEGER,
                 item TEXT,
+                unit REAL,
                 price REAL,
-                details TEXT,
+                amount REAL,
                 FOREIGN KEY(invoiceId) REFERENCES invoice(invoiceId) ON DELETE CASCADE
             )
         `);
@@ -68,7 +70,7 @@ app.post("/invoices", async (req, res) => {
 
       // Insert invoice data first
       db.run(
-        "INSERT INTO invoice (customer, gstNo, contactno, address, gstAmt, totalAmt) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO invoice (customer, gstNo, contactno, address, gstAmt, totalAmt,creationTime) VALUES (?, ?, ?, ?, ?, ?, ?)",
         [customer, gstNo, contactno, address, gstAmt, totalAmt],
         function (err) {
           if (err) {
@@ -80,12 +82,12 @@ app.post("/invoices", async (req, res) => {
 
           // Now insert the items in tableInfo
           const insertItemStmt = db.prepare(
-            "INSERT INTO tableInfo (invoiceId, item, price, details) VALUES (?, ?, ?, ?)"
+            "INSERT INTO tableInfo (invoiceId, item, unit, price, amount) VALUES (?, ?, ?, ?, ?)"
           );
 
           for (const item of items) {
             insertItemStmt.run(
-              [invoiceId, item.name, item.price, item.details],
+              [invoiceId, item.name, item.unit,item.price, item.amount],
               (err) => {
                 if (err) {
                   db.run("ROLLBACK");
@@ -159,7 +161,7 @@ app.get("/invoices/:invoiceId", async (req, res) => {
 app.get('/invoice/new', async (req, res) => {
   try {
       // Query to get the most recent invoice, assuming invoiceId is the key
-      const rows = await allQuery(db, 'SELECT invoiceId, customer, gstNo, contactno, address, gstAmt, totalAmt FROM invoice ORDER BY invoiceId DESC LIMIT 1');
+      const rows = await allQuery(db, 'SELECT invoiceId, customer, gstNo, contactno, address, gstAmt, totalAmt, creationTime FROM invoice ORDER BY invoiceId DESC LIMIT 1');
       
       if (rows.length > 0) {
         res.json(rows[0]); // Send only the top row
@@ -198,7 +200,7 @@ app.put("/invoices/:invoiceId", async (req, res) => {
     for (const item of items) {
       await runQuery(
         db,
-        "INSERT INTO tableInfo (invoiceId, item, price, details) VALUES (?, ?, ?, ?)",
+        "INSERT INTO tableInfo (invoiceId, item, unit, price, amount) VALUES (?, ?, ?, ?, ?)",
         [invoiceId, item.name, item.price, item.details]
       );
     }
@@ -215,11 +217,13 @@ app.delete("/invoices/:invoiceId", async (req, res) => {
   const { invoiceId } = req.params;
 
   try {
-    // Delete invoice and its items (thanks to foreign key constraint)
-    // await runQuery(db, "DELETE FROM invoice WHERE invoiceId = ?", [invoiceId]);
+    // First, delete the items from tableInfo that are linked to this invoice
+    await runQuery(db, "DELETE FROM tableInfo WHERE invoiceId = ?", [invoiceId]);
 
-    res.json({ message: "Invoice deleted successfully" });
-    
+    // Then, delete the invoice
+    await runQuery(db, "DELETE FROM invoice WHERE invoiceId = ?", [invoiceId]);
+
+    res.json({ message: "Invoice and its items deleted successfully" });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: "Internal Server Error" });
@@ -282,7 +286,7 @@ app.delete("/invoices/:invoiceId", async (req, res) => {
 app.get('/invoices', async (req, res) => {
   try {
       // res.send("going to send all invoice")
-      const rows = await allQuery(db, 'SELECT invoiceId, customer, gstNo, contactno, address, gstAmt, totalAmt FROM invoice');
+      const rows = await allQuery(db, 'SELECT invoiceId, customer, gstNo, contactno, address, gstAmt, totalAmt, creationTime FROM invoice');
       res.json(rows);
   } catch (err) {
       console.error(err.message);
