@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "level": "^8.0.1",
+    "nodemon": "^3.1.4",
+    "sqlite3": "^5.1.7"
+  },
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "-This is project for creation of the invoice's and downbload or also able to print them .and also able to store in local stroage ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Nitish Kumar M",
+  "license": "ISC"
+}
