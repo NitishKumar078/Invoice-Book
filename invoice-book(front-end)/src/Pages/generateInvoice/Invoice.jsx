@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./Invoice.css";
 import axios from "axios";
-import { tableItem, invoiceItem } from "../../template/template";
+import { tableItem, invoiceItem } from "__root/DataModels/DataModels";
 import { NavLink } from "react-router-dom";
 
 const states = [
@@ -49,7 +49,6 @@ export default function Invoice() {
     // Initialize tableData with one empty row
     const initialItem = new tableItem(rowIndx, "", "", "", "");
     setTableData([initialItem]);
-    setRowIndx(rowIndx + 1); // Update row index for future rows
   }, []);
 
   const ValidatingInteger = (e, field) => {
@@ -83,16 +82,14 @@ export default function Invoice() {
 
   // Function to add a new row
   const handleAddRow = () => {
-    const newRow = new tableItem(rowIndx, "", "", "", "");
+    const newRow = new tableItem(rowIndx+1, "", "", "", "");
     setTableData([...tableData, newRow]);
     setRowIndx(rowIndx + 1); // Increment row index for next row
   };
 
   // Function to handle save action
   const getinvoicedata = async() => {
-    const timestamp = Date.now();
-    const date = new Date(timestamp);
-
+    const Idate = document.getElementById("Idata").value;
     const Iid = document.getElementById("invoiceId").value;
     const cname = document.getElementById("customername").value;
     const gstid = document.getElementById("gstno").value;
@@ -100,17 +97,16 @@ export default function Invoice() {
     const cadress = document.getElementById("cadress").value;
     const gstamt = document.getElementById("gstno").value;
     const tamt = document.getElementById("total").value;
-    const creationtime = date.toLocaleDateString();
     const Idata = new invoiceItem(
       Iid,
+      Idate,
       cname,
       gstid,
       cno,
       cadress,
       tableData,
       gstamt,
-      tamt,
-      creationtime
+      tamt
     );
     return Idata
   };
@@ -136,7 +132,7 @@ export default function Invoice() {
     if (subtotalamt.current) {
       subtotalamt.current.value = total; // Update the value of the input field
       setgstamt(parseFloat((total * 18 / 100).toFixed(2)));
-      totalamt.current.value = gstamt + total;
+      totalamt.current.value = parseFloat(((total * 18 / 100) + total)).toFixed(2) ;
     }
   }, [tableData]); // Depend on tableData to update when it changes
 
@@ -223,8 +219,8 @@ export default function Invoice() {
               <input type="number" name="invoiceId" id="invoiceId" />
             </div>
             <div className="data">
-              <label htmlFor="data">Date :</label>{" "}
-              <input type="date" name="data" id="data" />
+              <label htmlFor="Idata">Date :</label>{" "}
+              <input type="date" name="data" id="Idata" />
             </div>
           </div>
         </div>
