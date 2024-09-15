@@ -1,16 +1,16 @@
 import './home.css';
 import addicon from './asset/iconExample-plus-square-multiple-lined.svg';
 import { NavLink } from 'react-router-dom';
-import { dialog } from '@tauri-apps/api';
+// import { dialog } from '@tauri-apps/api';
 
 
 export default function Home() {
-  const showMessage = async () => {
-    await dialog.message("This is a message dialog", {
-      title: "Dialog Title",
-      type: "info", // info, warning, error
-    });
-  };
+  // const showMessage = async () => {
+  //   await dialog.message("This is a message dialog", {
+  //     title: "Dialog Title",
+  //     type: "info", // info, warning, error
+  //   });
+  // };
   return(
     <>
     <div className='createcart'>
@@ -23,7 +23,7 @@ export default function Home() {
         />
       </NavLink>
       <div>
-      <button onClick={showMessage}>Show Dialog</button>
+      {/* <button onClick={showMessage}>Show Dialog</button> */}
     </div>
     </div>
      
