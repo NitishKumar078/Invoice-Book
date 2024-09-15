@@ -22,14 +22,15 @@ const db = new sqlite3.Database(
       // Create tables if they don't exist
       db.run(`
             CREATE TABLE IF NOT EXISTS invoice (
-                invoiceId INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                invoiceId INTEGER,
+                date TEXT,
                 customer TEXT,
                 gstNo TEXT,
                 contactno TEXT,
                 address TEXT,
                 gstAmt REAL,
-                totalAmt REAL,
-                creationTime TEXT
+                totalAmt REAL
             )
         `);
       db.run(`
@@ -37,6 +38,7 @@ const db = new sqlite3.Database(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 invoiceId INTEGER,
                 item TEXT,
+                quantity TEXT,
                 unit REAL,
                 price REAL,
                 amount REAL,
@@ -54,46 +56,41 @@ const allQuery = (db, query, params = []) =>
   promisify(db.all.bind(db))(query, params);
 
 app.post("/invoices", async (req, res) => {
-  const { customer, gstNo, contactno, address, gstAmt, totalAmt, items } =
-    req.body;
+  const { invoiceId, date, customer, gstNo, contactno, address, gstAmt,tableInfo, totalAmt  } = req.body;
 
-  if (!customer || !items || !Array.isArray(items) || items.length === 0) {
-    return res.status(400).json({ error: "Missing required fields or items" });
+  if (!invoiceId || !customer || !tableInfo || !Array.isArray(tableInfo) || tableInfo.length === 0) {
+    return res.status(400).json({ error: "Missing required fields or tableInfo" });
   }
 
   const db = new sqlite3.Database(path.resolve(__dirname, "data.db"));
 
   try {
-    // Begin a transaction to ensure all inserts succeed together
     db.serialize(() => {
       db.run("BEGIN TRANSACTION");
 
       // Insert invoice data first
       db.run(
-        "INSERT INTO invoice (customer, gstNo, contactno, address, gstAmt, totalAmt,creationTime) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [customer, gstNo, contactno, address, gstAmt, totalAmt],
+        "INSERT INTO invoice (  invoiceId, date, customer, gstNo, contactno, address, gstAmt, totalAmt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        [ invoiceId, date, customer, gstNo, contactno, address, gstAmt, totalAmt ],
         function (err) {
           if (err) {
             db.run("ROLLBACK");
             return res.status(500).json({ error: "Error inserting invoice" });
           }
 
-          const invoiceId = this.lastID; // Get the last inserted invoice ID
 
           // Now insert the items in tableInfo
           const insertItemStmt = db.prepare(
-            "INSERT INTO tableInfo (invoiceId, item, unit, price, amount) VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO tableInfo (invoiceId, item, quantity, unit, price, amount) VALUES (?, ?, ?, ?, ?, ?)"
           );
 
-          for (const item of items) {
+          for (const item of tableInfo) {
             insertItemStmt.run(
-              [invoiceId, item.name, item.unit,item.price, item.amount],
+              [invoiceId, item.item, item.quantity, item.unit, item.price, item.amount],
               (err) => {
                 if (err) {
                   db.run("ROLLBACK");
-                  return res
-                    .status(500)
-                    .json({ error: "Error inserting item" });
+                  return res.status(500).json({ error: "Error inserting table item" });
                 }
               }
             );
@@ -102,17 +99,13 @@ app.post("/invoices", async (req, res) => {
           insertItemStmt.finalize((err) => {
             if (err) {
               db.run("ROLLBACK");
-              return res
-                .status(500)
-                .json({ error: "Error finalizing item insert" });
+              return res.status(500).json({ error: "Error finalizing table item insert" });
             }
 
             // Commit transaction after successful insertions
             db.run("COMMIT", (err) => {
               if (err) {
-                return res
-                  .status(500)
-                  .json({ error: "Transaction commit failed" });
+                return res.status(500).json({ error: "Transaction commit failed" });
               }
 
               res.json({ invoiceId });
@@ -161,7 +154,7 @@ app.get("/invoices/:invoiceId", async (req, res) => {
 app.get('/invoice/new', async (req, res) => {
   try {
       // Query to get the most recent invoice, assuming invoiceId is the key
-      const rows = await allQuery(db, 'SELECT invoiceId, customer, gstNo, contactno, address, gstAmt, totalAmt, creationTime FROM invoice ORDER BY invoiceId DESC LIMIT 1');
+      const rows = await allQuery(db, 'SELECT invoiceId, customer, gstNo, contactno, address, gstAmt, totalAmt FROM invoice ORDER BY invoiceId DESC LIMIT 1');
       
       if (rows.length > 0) {
         res.json(rows[0]); // Send only the top row
@@ -286,7 +279,7 @@ app.delete("/invoices/:invoiceId", async (req, res) => {
 app.get('/invoices', async (req, res) => {
   try {
       // res.send("going to send all invoice")
-      const rows = await allQuery(db, 'SELECT invoiceId, customer, gstNo, contactno, address, gstAmt, totalAmt, creationTime FROM invoice');
+      const rows = await allQuery(db, 'SELECT invoiceId, date, customer, gstNo, contactno, address, gstAmt, totalAmt FROM invoice');
       res.json(rows);
   } catch (err) {
       console.error(err.message);
