@@ -35,7 +35,7 @@ function Invoices() {
     try {
       const response = await axios.delete(
         `http://localhost:3001/invoices/${invoiceId}`
-      );
+      ); 
       console.log(response.data);
     } catch (err) {
       console.error(err);
@@ -49,6 +49,7 @@ function Invoices() {
         <thead>
           <tr>
             <th>Invoice ID</th>
+            <th>data</th>
             <th>Customer</th>
             <th>GST No</th>
             <th>Contact No</th>
@@ -63,6 +64,7 @@ function Invoices() {
           {invoices.map((invoice) => (
             <tr key={invoice.invoiceId}>
               <td>{invoice.invoiceId}</td>
+              <td>{invoice.date}</td>
               <td>{invoice.customer}</td>
               <td>{invoice.gstNo}</td>
               <td>{invoice.contactno}</td>
