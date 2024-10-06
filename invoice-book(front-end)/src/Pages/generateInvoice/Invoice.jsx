@@ -36,6 +36,12 @@ const states = [
   "West Bengal",
 ];
 
+/**
+ * A functional component to generate and manage invoices.
+ * It handles user input, calculates totals, and saves the invoice data.
+ *
+ * @return {JSX.Element} The JSX element representing the invoice form.
+ */
 export default function Invoice() {
   const [tableData, setTableData] = useState([]);
   const [rowIndx, setRowIndx] = useState(1);
@@ -311,7 +317,7 @@ export default function Invoice() {
           </div>
         </div>
       </form>
-      <div className="terms-and-conditions">
+      {/* <div className="terms-and-conditions">
         <h4>
           <u>Terms and Conditions: </u>
         </h4>
@@ -340,13 +346,15 @@ export default function Invoice() {
       <div className="signature">
         <p>For: JSR TRADERS</p>
         <p>Authorized Signatory</p>
-      </div>
+      </div> */}
       <div id="sticky-div" className="sticky-div">
         <button onClick={handleSave}>Save</button>
         <NavLink to="/viewInvoice">
           <button id="sticky-button"> View</button>
         </NavLink>
       </div>
+
+      
     </div>
   );
 }

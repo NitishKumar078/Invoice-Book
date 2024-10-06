@@ -1,5 +1,4 @@
 .invoices{
-    border: 1px solid rgba(156, 184, 233, 0.15);
     height: 50%;
     position: absolute;
     left: calc(21vw + 2vh); /* Space accounting for sidebar's width */
@@ -8,6 +7,6 @@
 }
 
 .sidebar.collapsed ~ .invoices {
-    left: calc(7vw); /* Adjust for collapsed sidebar */
+    left: calc(8vw); /* Adjust for collapsed sidebar */
     width: calc(95vw ); /* Expand content when sidebar is collapsed */
   }

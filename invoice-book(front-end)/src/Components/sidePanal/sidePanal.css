@@ -25,31 +25,23 @@ html {
   border: 1px solid #5d449a;
 }
 .sidebar.collapsed {
-  width: 5%;
+  width: 7vw;
 }
 
 .sidebar.expanded {
-  width: 20%;
+  width: 20vw;
 }
 
 .sidebar.expanded .toggle {
   position: fixed;
-  z-index: 999;
-  left: 19.5vw;
+  left: 19vw;
   transition: all right ease-in 400ms;
 }
-/* .sidebar.expanded .toggle{
-  position: fixed;
-  left: 19.5vw;
-}
-.sidebar.collapsed .toggle{
-  position: fixed;
-  left: 5vw;
-} */
+
 .sidebar.collapsed .toggle {
   position: fixed;
   z-index: 999;
-  left: 4.5vw;
+  left: 5.5vw;
   transition: all right ease-in 400ms;
 }
 
