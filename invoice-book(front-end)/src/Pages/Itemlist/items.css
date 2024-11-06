@@ -22,46 +22,49 @@
 .sidebar.collapsed ~ .itemList table {
   width: calc(88vw); /* Adjust when the sidebar is collapsed */
 }
-.itemList{
+.itemList {
   overflow-y: auto;
   table {
     border-collapse: collapse;
     width: calc(75vw);
     margin-top: 20px;
   }
-  
-  th, td {
+
+  th,
+  td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
   }
-  
+
   th {
     background-color: #f0f0f0;
   }
-  
+
   tr:nth-child(even) {
     background-color: #f9f9f9;
   }
-  
+
   tr:hover {
     background-color: #ddd;
   }
-  
-  th:first-child, td:first-child {
+
+  th:first-child,
+  td:first-child {
     padding-left: 20px;
   }
-  
-  th:last-child, td:last-child {
+
+  th:last-child,
+  td:last-child {
     padding-right: 20px;
   }
-  
+
   table caption {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
   }
-  #add-item-button{
+  #add-item-button {
     position: "fixed";
     bottom: 30;
     right: 20;

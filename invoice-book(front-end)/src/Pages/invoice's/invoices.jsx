@@ -21,7 +21,7 @@ function Invoices() {
   const fetchInvoice = async (invoiceId) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/invoices/${invoiceId}`
+        `http://localhost:3001/invoices/${invoiceId}`,
       );
       setLoadedInvoice(response.data);
       console.log(loadedInvoice);
@@ -30,17 +30,17 @@ function Invoices() {
     }
   };
 
-  const handledelete = async (invoiceId) =>{
-    setInvoices(invoices.filter((e)=> e.invoiceId !== invoiceId))
+  const handledelete = async (invoiceId) => {
+    setInvoices(invoices.filter((e) => e.invoiceId !== invoiceId));
     try {
       const response = await axios.delete(
-        `http://localhost:3001/invoices/${invoiceId}`
-      ); 
+        `http://localhost:3001/invoices/${invoiceId}`,
+      );
       console.log(response.data);
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   return (
     <div className="invoices">
@@ -77,7 +77,9 @@ function Invoices() {
                 </button>
               </td>
               <td>
-                <button onClick={() => handledelete(invoice.invoiceId)}>delete</button>
+                <button onClick={() => handledelete(invoice.invoiceId)}>
+                  delete
+                </button>
               </td>
             </tr>
           ))}

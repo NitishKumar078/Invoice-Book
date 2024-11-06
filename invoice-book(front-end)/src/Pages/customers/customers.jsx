@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./customers.css";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 // import  axios from "axios";
 
 /**
@@ -107,8 +107,7 @@ export default function Customers() {
 
   return (
     <div className="customersList">
-
-      <NavLink to="/Customers/newCustomer" id="add-customer-button" >
+      <NavLink to="/Customers/newCustomer" id="add-customer-button">
         <button>Add Item</button>
       </NavLink>
       <table>

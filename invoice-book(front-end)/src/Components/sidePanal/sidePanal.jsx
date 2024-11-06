@@ -26,7 +26,8 @@ export default function SideBar() {
           <FaUserCircle id="userlogo" alt="logo" className="user-avatar" />
           <NavLink
             to="/setting"
-            className={(e) => (e.isActive ? "settingnl-active" : "settingnl")}>
+            className={(e) => (e.isActive ? "settingnl-active" : "settingnl")}
+          >
             <span className={isExpanded ? " " : "hidden"}> Username</span>
           </NavLink>
         </div>
@@ -53,7 +54,8 @@ export default function SideBar() {
               to="/"
               className={(e) =>
                 e.isActive ? "active anchortag" : "notactive_achortag"
-              }>
+              }
+            >
               <IoHomeSharp className="sidePanal_menuicons" />
               <span className={isExpanded ? " " : "hidden"}>Home</span>
             </NavLink>
@@ -63,7 +65,8 @@ export default function SideBar() {
               to="/Create"
               className={(e) =>
                 e.isActive ? "active anchortag" : "notactive_achortag"
-              }>
+              }
+            >
               <RiStickyNoteAddLine className="sidePanal_menuicons" />
               <span className={isExpanded ? " " : "hidden"}>Create</span>
             </NavLink>
@@ -73,7 +76,8 @@ export default function SideBar() {
               to="/Invoices"
               className={(e) =>
                 e.isActive ? "active anchortag" : "notactive_achortag"
-              }>
+              }
+            >
               <FaListUl className="sidePanal_menuicons" />
               <span className={isExpanded ? " " : "hidden"}>Invoices</span>
             </NavLink>
@@ -83,7 +87,8 @@ export default function SideBar() {
               to="/Items"
               className={(e) =>
                 e.isActive ? "active anchortag" : "notactive_achortag"
-              }>
+              }
+            >
               <TbCheckupList className="sidePanal_menuicons" />
               <span className={isExpanded ? " " : "hidden"}>Items</span>
             </NavLink>
@@ -93,7 +98,8 @@ export default function SideBar() {
               to="/Customers"
               className={(e) =>
                 e.isActive ? "active anchortag" : "notactive_achortag"
-              }>
+              }
+            >
               <CgUserList className="sidePanal_menuicons" />
               <span className={isExpanded ? " " : "hidden"}>Customers</span>
             </NavLink>

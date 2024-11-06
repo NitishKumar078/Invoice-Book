@@ -78,7 +78,7 @@
   justify-content: space-between;
 }
 
-.tax-summary .normalgst{
+.tax-summary .normalgst {
   display: flex;
   flex-direction: column;
   margin: 1vh 0px;
@@ -89,7 +89,7 @@
   overflow: hidden;
   padding-bottom: 10vh;
   width: 18vw;
-  input{
+  input {
     width: 10vw;
     text-align: right;
   }
@@ -157,29 +157,28 @@ button:hover {
   background-color: #0056b3;
 }
 
-#total{
-  width: 16vw; 
+#total {
+  width: 16vw;
   text-align: right;
   position: relative;
   display: block;
-
 }
-.statesselection{
+.statesselection {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
   margin: 10px 0px;
-  label{
+  label {
     padding-right: 5px;
   }
 }
-#cadress{
+#cadress {
   width: 20vw;
   min-height: 10vh;
   max-height: 12vh;
   max-width: 22vw;
 }
-#customername{
+#customername {
   margin: 10px 0px;
   border: 1px solid black;
 }

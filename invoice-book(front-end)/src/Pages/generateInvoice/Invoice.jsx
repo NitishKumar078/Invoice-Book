@@ -47,7 +47,7 @@ export default function Invoice() {
   const [rowIndx, setRowIndx] = useState(1);
   const [state, setState] = useState("");
   const [gsttype, setgsttype] = useState(true); // if gsttype--> true then normal gst(18%) orelse igst(18%)
-  const [gstamt,setgstamt] = useState(null);
+  const [gstamt, setgstamt] = useState(null);
   const subtotalamt = useRef(null);
   const totalamt = useRef(null);
 
@@ -63,7 +63,9 @@ export default function Invoice() {
       field === "pricePerUnit" ||
       field === "ContactNo"
     ) {
-      e.target.value = e.target.value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
+      e.target.value = e.target.value
+        .replace(/[^0-9.]/g, "")
+        .replace(/(\..*)\./g, "$1");
     }
   };
   // Function to handle input changes
@@ -79,7 +81,9 @@ export default function Invoice() {
     if (field === "quantity" || field === "pricePerUnit") {
       const quantity = parseFloat(newTableData[rowIndex].quantity) || 0;
       const pricePerUnit = parseFloat(newTableData[rowIndex].pricePerUnit) || 0;
-      newTableData[rowIndex].amount = parseFloat((quantity * pricePerUnit).toFixed(2));
+      newTableData[rowIndex].amount = parseFloat(
+        (quantity * pricePerUnit).toFixed(2),
+      );
     }
 
     // Update the state with new table data
@@ -88,13 +92,13 @@ export default function Invoice() {
 
   // Function to add a new row
   const handleAddRow = () => {
-    const newRow = new tableItem(rowIndx+1, "", "", "", "");
+    const newRow = new tableItem(rowIndx + 1, "", "", "", "");
     setTableData([...tableData, newRow]);
     setRowIndx(rowIndx + 1); // Increment row index for next row
   };
 
   // Function to handle save action
-  const getinvoicedata = async() => {
+  const getinvoicedata = async () => {
     const Idate = document.getElementById("Idata").value;
     const Iid = document.getElementById("invoiceId").value;
     const cname = document.getElementById("customername").value;
@@ -112,9 +116,9 @@ export default function Invoice() {
       cadress,
       tableData,
       gstamt,
-      tamt
+      tamt,
     );
-    return Idata
+    return Idata;
   };
 
   const handleSave = async () => {
@@ -137,8 +141,10 @@ export default function Invoice() {
 
     if (subtotalamt.current) {
       subtotalamt.current.value = total; // Update the value of the input field
-      setgstamt(parseFloat((total * 18 / 100).toFixed(2)));
-      totalamt.current.value = parseFloat(((total * 18 / 100) + total)).toFixed(2) ;
+      setgstamt(parseFloat(((total * 18) / 100).toFixed(2)));
+      totalamt.current.value = parseFloat((total * 18) / 100 + total).toFixed(
+        2,
+      );
     }
   }, [tableData]); // Depend on tableData to update when it changes
 
@@ -155,7 +161,7 @@ export default function Invoice() {
   const handlestatesele = (e) => {
     setState(e.value);
     const statefound = states.some(
-      (i) => i.toLowerCase() === e.value.toLowerCase()
+      (i) => i.toLowerCase() === e.value.toLowerCase(),
     );
     setgsttype(statefound);
     console.log("is state found ", statefound);
@@ -198,7 +204,8 @@ export default function Invoice() {
               <select
                 id="state"
                 value={state}
-                onChange={(e) => handlestatesele(e.target)}>
+                onChange={(e) => handlestatesele(e.target)}
+              >
                 <option value="">Select State</option>
                 {states.map((state, index) => (
                   <option key={index} value={state}>
@@ -215,8 +222,7 @@ export default function Invoice() {
                 onChange={(e) => ValidatingInteger(e, "ContactNo")}
               />{" "}
               <br />
-              GSTIN :{" "}
-              <input type="text" id="gstno"  readOnly />
+              GSTIN : <input type="text" id="gstno" readOnly />
             </p>
           </div>
           <div className="invoice-details">
@@ -269,7 +275,7 @@ export default function Invoice() {
                 <td>
                   <input
                     type="text"
-                    value={item.pricePerUnit|| undefined}
+                    value={item.pricePerUnit || undefined}
                     onChange={(e) =>
                       handleInputChange(e, index, "pricePerUnit")
                     }
@@ -280,7 +286,7 @@ export default function Invoice() {
                   <input
                     type="text"
                     id="rowtotal"
-                    value={item.amount|| undefined}
+                    value={item.amount || undefined}
                     readOnly
                   />
                 </td>
@@ -296,8 +302,8 @@ export default function Invoice() {
           <div className="tax-summary">
             {gsttype ? (
               <div className="normalgst">
-                <span>SGST @9%: ₹ {gstamt/2} </span>
-                <span>CGST @9%: ₹ {gstamt/2} </span>
+                <span>SGST @9%: ₹ {gstamt / 2} </span>
+                <span>CGST @9%: ₹ {gstamt / 2} </span>
               </div>
             ) : (
               <p>IGST @18: ₹ {gstamt}</p>
@@ -306,14 +312,25 @@ export default function Invoice() {
           <div className="total-amount">
             <p>
               Sub Total: ₹{""}
-              <input placeholder="Sub total" type="text" id="subtotal" ref={subtotalamt}  readOnly />
+              <input
+                placeholder="Sub total"
+                type="text"
+                id="subtotal"
+                ref={subtotalamt}
+                readOnly
+              />
             </p>
             <p>
-              Total Tax: ₹{" "} 
-              <input   type="text" id="taxtotal" value={gstamt || "0"} readOnly />
+              Total Tax: ₹{" "}
+              <input type="text" id="taxtotal" value={gstamt || "0"} readOnly />
             </p>
-            <hr/> 
-             <input placeholder="Total amount"  type="text" id="total" ref={totalamt}  ></input>
+            <hr />
+            <input
+              placeholder="Total amount"
+              type="text"
+              id="total"
+              ref={totalamt}
+            ></input>
           </div>
         </div>
       </form>
@@ -353,8 +370,6 @@ export default function Invoice() {
           <button id="sticky-button"> View</button>
         </NavLink>
       </div>
-
-      
     </div>
   );
 }

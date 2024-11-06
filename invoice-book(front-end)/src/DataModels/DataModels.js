@@ -11,34 +11,46 @@
 
 ################################################################################################## */
 
-
-
 class tableItem {
-    constructor(id = 1, itemName = "", quantity = "", unit = "", pricePerUnit = "", amount = "") {
-        this.id = id;
-        this.itemName = itemName;
-        this.quantity = quantity;
-        this.unit = unit;
-        this.price = pricePerUnit;
-        this.amount = amount;
-      }
+  constructor(
+    id = 1,
+    itemName = "",
+    quantity = "",
+    unit = "",
+    pricePerUnit = "",
+    amount = "",
+  ) {
+    this.id = id;
+    this.itemName = itemName;
+    this.quantity = quantity;
+    this.unit = unit;
+    this.price = pricePerUnit;
+    this.amount = amount;
   }
+}
 
-
-  class invoiceItem {
-    constructor(id, date, name, gstNo, contactno, address, tableInfo, gstamt, tamt) {
-      this.invoiceId = id;
-      this.date = date;
-      this.customer = name;
-      this.gstno = gstNo;
-      this.contactno = contactno;
-      this.address = address;
-      this.tableInfo = tableInfo;
-      this.gstAmt = gstamt;
-      this.totalAmt = tamt;
-    }
+class invoiceItem {
+  constructor(
+    id,
+    date,
+    name,
+    gstNo,
+    contactno,
+    address,
+    tableInfo,
+    gstamt,
+    tamt,
+  ) {
+    this.invoiceId = id;
+    this.date = date;
+    this.customer = name;
+    this.gstno = gstNo;
+    this.contactno = contactno;
+    this.address = address;
+    this.tableInfo = tableInfo;
+    this.gstAmt = gstamt;
+    this.totalAmt = tamt;
   }
-  
-  export { tableItem, invoiceItem };
+}
 
-  
+export { tableItem, invoiceItem };

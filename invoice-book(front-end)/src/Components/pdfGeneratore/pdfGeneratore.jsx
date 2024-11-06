@@ -1,3 +1,5 @@
+import ReactDOM from "react-dom/client";
+import React from "react";
 import {
   Page,
   Text,
@@ -7,11 +9,11 @@ import {
   Font,
   PDFViewer,
 } from "@react-pdf/renderer";
-
+import NotoSans from "__root/assets/Fonts/NotoSans-CondensedBold.ttf"; // Adjust the path as necessary
 // Register the font
 Font.register({
-  family: "Roboto_Mono",
-  src: "https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap",
+  family: "NotoSans",
+  src: NotoSans,
 });
 
 // Define the styles
@@ -21,6 +23,7 @@ const styles = StyleSheet.create({
     padding: 10,
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
     fontSize: 13,
+    fontFamily: "NotoSans", // Use the registered font
   },
   header: {
     flexDirection: "row",
@@ -243,7 +246,7 @@ const Quixote = () => (
 );
 
 // Component to view PDF
-const pdfGeneratore = () => (
+const PdfGeneratore = () => (
   <PDFViewer
     style={{
       width: "77vw",
@@ -251,9 +254,14 @@ const pdfGeneratore = () => (
       position: "absolute",
       height: "97vh",
       showToolbar: "false",
-    }}>
+    }}
+  >
     <Quixote />
   </PDFViewer>
 );
 
-export default pdfGeneratore;
+const rootElement = document.getElementById("root");
+const root = ReactDOM.createRoot(rootElement);
+root.render(<PdfGeneratore />);
+
+export default PdfGeneratore;

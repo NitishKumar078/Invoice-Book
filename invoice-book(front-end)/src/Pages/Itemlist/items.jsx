@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./items.css";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 // import  axios from "axios";
 
 /**
@@ -42,10 +42,10 @@ export default function Items() {
 
   return (
     <div className="itemList">
-      <NavLink to="/Items/newItem" id="add-item-button" >
+      <NavLink to="/Items/newItem" id="add-item-button">
         <button>Add Item</button>
       </NavLink>
-       
+
       <table>
         <caption>Items</caption>
         <thead>

@@ -141,7 +141,8 @@ export default function Settings() {
             id="state"
             value={state}
             onChange={(e) => setState(e.target.value)}
-            className={error.state ? "input-error" : ""}>
+            className={error.state ? "input-error" : ""}
+          >
             <option value="">Select State</option>
             {states.map((state, index) => (
               <option key={index} value={state}>

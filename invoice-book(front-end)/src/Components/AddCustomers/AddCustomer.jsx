@@ -101,29 +101,47 @@ const AddCustomer = () => {
         </div>
         <div className="form-group">
           <label htmlFor="company">Company</label>
-          <input type="text" id="company" value={company} onChange={(e) => setCompany(e.target.value)} />
+          <input
+            type="text"
+            id="company"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+          />
         </div>
         <div className="form-group">
           <label htmlFor="gstno">GST Number.</label>
-          <input type="text" id="gstno" value={gstno} onChange={(e) => setgstno(e.target.value)} required/>
+          <input
+            type="text"
+            id="gstno"
+            value={gstno}
+            onChange={(e) => setgstno(e.target.value)}
+            required
+          />
         </div>
         <div className="form-group">
           <label htmlFor="address">Address</label>
-          <input type="text" id="address" value={address} onChange={(e) => setAddress(e.target.value)} required/>
+          <input
+            type="text"
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+          />
         </div>
         <div className="form-group">
           <label htmlFor="state">State</label>
           <select
             id="state"
             value={state}
-            onChange={(e) => setState(e.target.value)} required>
-            <option value="" >Select State</option>
+            onChange={(e) => setState(e.target.value)}
+            required
+          >
+            <option value="">Select State</option>
             {states.map((state, index) => (
               <option key={index} value={state}>
                 {state}
               </option>
             ))}
-            
           </select>
         </div>
 

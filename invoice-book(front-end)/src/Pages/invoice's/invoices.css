@@ -1,12 +1,12 @@
-.invoices{
-    height: 50%;
-    position: absolute;
-    left: calc(21vw + 2vh); /* Space accounting for sidebar's width */
-    width: calc(78% - 1vh); /* Dynamic width adjustment */
-    transition: all 0.3s ease; /* Smooth transition on collapse */
+.invoices {
+  height: 50%;
+  position: absolute;
+  left: calc(21vw + 2vh); /* Space accounting for sidebar's width */
+  width: calc(78% - 1vh); /* Dynamic width adjustment */
+  transition: all 0.3s ease; /* Smooth transition on collapse */
 }
 
 .sidebar.collapsed ~ .invoices {
-    left: calc(8vw); /* Adjust for collapsed sidebar */
-    width: calc(95vw ); /* Expand content when sidebar is collapsed */
-  }
+  left: calc(8vw); /* Adjust for collapsed sidebar */
+  width: calc(95vw); /* Expand content when sidebar is collapsed */
+}
