@@ -8,38 +8,38 @@ function Invoices() {
 
   useEffect(() => {
     // Fetch all invoices
-    axios
-      .get("http://localhost:3001/invoices")
-      .then((response) => {
-        setInvoices(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching invoices:", error);
-      });
+    // axios
+    //   .get("http://localhost:3001/invoices")
+    //   .then((response) => {
+    //     setInvoices(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching invoices:", error);
+    //   });
   }, []);
 
   const fetchInvoice = async (invoiceId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3001/invoices/${invoiceId}`,
-      );
-      setLoadedInvoice(response.data);
-      console.log(loadedInvoice);
-    } catch (err) {
-      console.error(err);
-    }
+    // try {
+    //   const response = await axios.get(
+    //     `http://localhost:3001/invoices/${invoiceId}`,
+    //   );
+    //   setLoadedInvoice(response.data);
+    //   console.log(loadedInvoice);
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   const handledelete = async (invoiceId) => {
     setInvoices(invoices.filter((e) => e.invoiceId !== invoiceId));
-    try {
-      const response = await axios.delete(
-        `http://localhost:3001/invoices/${invoiceId}`,
-      );
-      console.log(response.data);
-    } catch (err) {
-      console.error(err);
-    }
+    // try {
+    //   const response = await axios.delete(
+    //     `http://localhost:3001/invoices/${invoiceId}`,
+    //   );
+    //   console.log(response.data);
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   return (

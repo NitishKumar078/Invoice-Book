@@ -82,7 +82,7 @@ export default function Invoice() {
       const quantity = parseFloat(newTableData[rowIndex].quantity) || 0;
       const pricePerUnit = parseFloat(newTableData[rowIndex].pricePerUnit) || 0;
       newTableData[rowIndex].amount = parseFloat(
-        (quantity * pricePerUnit).toFixed(2),
+        (quantity * pricePerUnit).toFixed(2)
       );
     }
 
@@ -116,20 +116,20 @@ export default function Invoice() {
       cadress,
       tableData,
       gstamt,
-      tamt,
+      tamt
     );
     return Idata;
   };
 
   const handleSave = async () => {
     const invoicedata = await getinvoicedata();
-    try {
-      console.log("this is the data", invoicedata);
-      await axios.post("http://localhost:3001/invoices", invoicedata);
-      alert("Invoice created");
-    } catch (err) {
-      console.error(err);
-    }
+    // try {
+    //   console.log("this is the data", invoicedata);
+    //   await axios.post("http://localhost:3001/invoices", invoicedata);
+    //   alert("Invoice created");
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   useEffect(() => {
@@ -143,7 +143,7 @@ export default function Invoice() {
       subtotalamt.current.value = total; // Update the value of the input field
       setgstamt(parseFloat(((total * 18) / 100).toFixed(2)));
       totalamt.current.value = parseFloat((total * 18) / 100 + total).toFixed(
-        2,
+        2
       );
     }
   }, [tableData]); // Depend on tableData to update when it changes
@@ -161,7 +161,7 @@ export default function Invoice() {
   const handlestatesele = (e) => {
     setState(e.value);
     const statefound = states.some(
-      (i) => i.toLowerCase() === e.value.toLowerCase(),
+      (i) => i.toLowerCase() === e.value.toLowerCase()
     );
     setgsttype(statefound);
     console.log("is state found ", statefound);
