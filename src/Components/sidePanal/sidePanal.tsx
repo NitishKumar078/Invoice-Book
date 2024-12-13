@@ -20,26 +20,29 @@ export default function SideBar() {
 
   return (
     <aside
-      className={`transition-all duration-300 fixed top-0 left-0 h-screen bg-[#33215e] text-white ${
-        isExpanded ? "w-64" : "w-20"
-      } overflow-hidden relative`}
+      className={`transition-all duration-300 fixed top-0 left-0 h-screen  bg-[#33215e] text-white ${
+        isExpanded ? "w-64 " : "w-20 collapsed"
+      } overflow-hidden`}
     >
-      <div className="flex flex-col items-center justify-center p-4 border-b border-[rgb(124 93 199 / 58%)]">
+      <div className="flex flex-col items-center justify-center p-4 border-b border-[rgb(124 93 199 / 58%)] bg-[#54228d]">
         {/* User Option */}
         <div className="flex items-center justify-between w-full mb-4">
           <FaUserCircle className="text-4xl" />
           <NavLink
             to="/setting"
-            className="flex items-center ml-4 text-sm hover:underline"
+            className="flex items-center  text-sm hover:underline"
           >
             <span className={isExpanded ? "" : "hidden"}>Username</span>
           </NavLink>
         </div>
-        <div onClick={toggleSidebar} className="cursor-pointer">
+        <div
+          onClick={toggleSidebar}
+          className="cursor-pointer text-2xl relative"
+        >
           {isExpanded ? (
-            <FaCircleChevronLeft className="text-2xl" />
+            <FaCircleChevronLeft className="left-20 relative" />
           ) : (
-            <FaCircleChevronRight className="text-2xl" />
+            <FaCircleChevronRight className="left-5 relative" />
           )}
         </div>
       </div>
@@ -51,8 +54,8 @@ export default function SideBar() {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `flex items-center p-2 text-sm font-semibold rounded-lg transition-colors duration-300 hover:bg-gray-700 ${
-                  isActive ? "bg-gray-700" : ""
+                `flex items-center p-2 text-sm font-semibold rounded-lg transition-colors duration-300 hover:bg-[#653B95] ${
+                  isActive ? "bg-[#653B95]" : ""
                 }`
               }
             >
@@ -64,8 +67,8 @@ export default function SideBar() {
             <NavLink
               to="/Create"
               className={({ isActive }) =>
-                `flex items-center p-2 text-sm font-semibold rounded-lg transition-colors duration-300 hover:bg-gray-700 ${
-                  isActive ? "bg-gray-700" : ""
+                `flex items-center p-2 text-sm font-semibold rounded-lg transition-colors duration-300 hover:bg-[#653B95] ${
+                  isActive ? "bg-[#653B95]" : ""
                 }`
               }
             >
@@ -79,8 +82,8 @@ export default function SideBar() {
             <NavLink
               to="/Invoices"
               className={({ isActive }) =>
-                `flex items-center p-2 text-sm font-semibold rounded-lg transition-colors duration-300 hover:bg-gray-700 ${
-                  isActive ? "bg-gray-700" : ""
+                `flex items-center p-2 text-sm font-semibold rounded-lg transition-colors duration-300 hover:bg-[#653B95] ${
+                  isActive ? "bg-[#653B95]" : ""
                 }`
               }
             >
@@ -94,8 +97,8 @@ export default function SideBar() {
             <NavLink
               to="/Items"
               className={({ isActive }) =>
-                `flex items-center p-2 text-sm font-semibold rounded-lg transition-colors duration-300 hover:bg-gray-700 ${
-                  isActive ? "bg-gray-700" : ""
+                `flex items-center p-2 text-sm font-semibold rounded-lg transition-colors duration-300 hover:bg-[#653B95] ${
+                  isActive ? "bg-[#653B95]" : ""
                 }`
               }
             >
@@ -109,8 +112,8 @@ export default function SideBar() {
             <NavLink
               to="/Customers"
               className={({ isActive }) =>
-                `flex items-center p-2 text-sm font-semibold rounded-lg transition-colors duration-300 hover:bg-gray-700 ${
-                  isActive ? "bg-gray-700" : ""
+                `flex items-center p-2 text-sm font-semibold rounded-lg transition-colors duration-300 hover:bg-[#653B95] ${
+                  isActive ? "bg-[#653B95]" : ""
                 }`
               }
             >

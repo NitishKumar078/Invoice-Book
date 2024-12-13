@@ -1,14 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./Home";
-import SidePanal from "./Components/sidePanal/sidePanal.tsx";
+import SidePanal from "./Components/sidePanal/sidePanal";
 import Invoice from "./Pages/generateInvoice/Invoice";
-// import Items from "./Pages/Itemlist/items.jsx";
-// import AddCustomer from "./Components/AddCustomers/AddCustomer";
+import Items from "./Pages/Itemlist/items";
+import AddCustomer from "./Components/AddCustomers/AddCustomer";
 import Customers from "./Pages/customers/customers";
-// import AddItem from "./Components/AddItems/AddItem.jsx";
-// import PDFViewerComponent from "./Components/pdfGeneratore/pdfGeneratore";
-// import Setting from "./Pages/settings/Settings";
-// import Invoices from "./Pages/invoice's/invoices";
+import AddItem from "./Components/AddItems/AddItem";
+import PDFViewerComponent from "./Components/pdfGeneratore/pdfGeneratore";
+import Setting from "./Pages/settings/Settings";
+import Invoices from "./Pages/invoice's/invoices";
 import "./index.css"; // Adjust the path if necessary
 
 function App() {
@@ -26,8 +26,8 @@ function App() {
       path: "/setting",
       element: (
         <>
-          {/* <SidePanal /> */}
-          {/* <Setting /> */}
+          <SidePanal />
+          <Setting />
         </>
       ),
     },
@@ -44,8 +44,8 @@ function App() {
       path: "/viewInvoice",
       element: (
         <>
-          {/* <SidePanal />
-          <PDFViewerComponent /> */}
+          <SidePanal />
+          <PDFViewerComponent />
         </>
       ),
     },
@@ -53,8 +53,8 @@ function App() {
       path: "/invoices",
       element: (
         <>
-          {/* <SidePanal />  */}
-          {/* <Invoices /> */}
+          <SidePanal />
+          <Invoices />
         </>
       ),
     },
@@ -62,14 +62,19 @@ function App() {
       path: "/Items",
       element: (
         <>
-          {/* <SidePanal />  */}
-          {/* <Items /> */}
+          <SidePanal />
+          <Items />
         </>
       ),
     },
     {
       path: "/Items/newItem",
-      element: <>{/* <SidePanal /> <AddItem /> */}</>,
+      element: (
+        <>
+          {" "}
+          <SidePanal /> <AddItem />{" "}
+        </>
+      ),
     },
     {
       path: "/Customers",
@@ -81,12 +86,17 @@ function App() {
     },
     {
       path: "/Customers/newCustomer",
-      element: <>{/* <SidePanal /> <AddCustomer /> */}</>,
+      element: (
+        <>
+          {" "}
+          <SidePanal /> <AddCustomer />{" "}
+        </>
+      ),
     },
   ]);
 
   return (
-    <div className="flex flex-row absolute">
+    <div className="flex flex-row ">
       <RouterProvider router={router} />
     </div>
   );

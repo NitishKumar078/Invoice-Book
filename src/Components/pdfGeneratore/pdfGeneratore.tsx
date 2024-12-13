@@ -9,7 +9,7 @@ import {
   Font,
   PDFViewer,
 } from "@react-pdf/renderer";
-import NotoSans from "__root/assets/Fonts/NotoSans-CondensedBold.ttf"; // Adjust the path as necessary
+import NotoSans from "@/assets/Fonts/NotoSans-CondensedBold.ttf"; // Adjust the path as necessary
 
 // Register the font
 Font.register({
