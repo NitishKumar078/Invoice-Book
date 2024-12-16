@@ -52,7 +52,7 @@ const AddCustomer = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+    <div className="createcart w-[calc(78vw)] absolute left-[calc(19vw)] mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold text-center mb-6">
         Customer Information
       </h2>

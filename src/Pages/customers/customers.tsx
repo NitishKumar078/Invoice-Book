@@ -112,9 +112,9 @@ export default function Customers() {
   }, []);
 
   return (
-    <div className="relative w-[calc(78%-1vh)] top-0 bottom-0 left-[21.5vw] right-1vw overflow-y-auto p-5 bg-white shadow-lg transition-all duration-300 ease-in-out customersList">
+    <div className="createcart relative w-[calc(80vw)]  left-[calc(19vw)] top-0 bottom-0 right-1vw overflow-y-auto p-5 bg-white shadow-lg transition-all duration-300 ease-in-out customersList">
       <NavLink to="/Customers/newCustomer">
-        <button className="fixed bottom-8 right-8 py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200">
+        <button className=" z-10 py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200">
           Add Item
         </button>
       </NavLink>

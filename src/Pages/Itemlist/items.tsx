@@ -49,8 +49,11 @@ export default function Items() {
   }, []);
 
   return (
-    <div className="p-4">
-      <NavLink to="/Items/newItem" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mb-4 inline-block">
+    <div className="p-4 w-[calc(80vw)]  left-[calc(19vw)] createcart absolute">
+      <NavLink
+        to="/Items/newItem"
+        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mb-4 inline-block"
+      >
         Add Item
       </NavLink>
 

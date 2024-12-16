@@ -20,7 +20,7 @@ export default function SideBar() {
 
   return (
     <aside
-      className={`transition-all duration-300 fixed top-0 left-0 h-screen  bg-[#33215e] text-white ${
+      className={`sidebar transition-all duration-300 fixed top-0 left-0 h-screen  bg-[#33215e] text-white ${
         isExpanded ? "w-64 " : "w-20 collapsed"
       } overflow-hidden`}
     >

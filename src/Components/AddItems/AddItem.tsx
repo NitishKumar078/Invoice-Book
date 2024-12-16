@@ -21,7 +21,7 @@ const AddItem = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+    <div className="createcart w-[calc(78vw)] absolute left-[calc(19vw)] mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
       <h1 className="text-3xl font-bold mb-4 text-center">Create Items</h1>
       <h2 className="text-2xl font-bold text-center mb-6">Item Details</h2>
       <form onSubmit={handleSubmit}>

@@ -15,38 +15,24 @@ export default function Items() {
   const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
-    setItems([
-      {
-        itemId: 1,
-        name: "Item 1",
-        price: 10,
-        unit: "each",
-        quantity: 2,
-        description: "Description 1",
-      },
-      {
-        itemId: 2,
-        name: "Item 2",
-        price: 20,
-        unit: "pack",
-        quantity: 3,
-        description: "Description 2",
-      },
-      {
-        itemId: 3,
-        name: "Item 3",
-        price: 30,
-        unit: "liter",
-        quantity: 4,
-        description: "Description 3",
-      },
-    ]);
+    setItems(
+      Array.from({ length: 20 }, (_, i) => ({
+        itemId: i + 1,
+        name: `Item ${i + 1}`,
+        price: (i + 1) * 10,
+        unit: ["each", "pack", "liter"][i % 3],
+        quantity: i + 1,
+        description: `Description ${i + 1}`,
+      }))
+    );
   }, []);
 
   return (
-    <div className="itemList w-full h-[90vh] fixed left-[calc(21.5vw)] right-[1vw] bg-white p-5 border border-gray-300 shadow-lg overflow-y-auto transition-all duration-300 ease-in-out">
-      <NavLink to="/Items/newItem" id="add-item-button" className="fixed bottom-8 right-5">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Add Item</button>
+    <div className="createcart itemList absolute right-[10px] w-[calc(78vw)]  p-2 left-[calc(20vw)] bg-white  border border-gray-300 shadow-lg transition-all duration-300 ease-in-out">
+      <NavLink to="/Items/newItem" id="add-item-button">
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+          Add Item
+        </button>
       </NavLink>
 
       <table className="w-full border-collapse mt-5">

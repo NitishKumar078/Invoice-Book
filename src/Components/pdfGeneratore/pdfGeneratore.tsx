@@ -247,9 +247,10 @@ const Quixote = () => (
 // Component to view PDF
 const PdfGeneratore = () => (
   <PDFViewer
+    className="createcart"
     style={{
-      width: "77vw",
-      left: "21.5vw",
+      width: "calc(78vw)",
+      left: "calc(19vw)",
       position: "absolute",
       height: "97vh",
       border: "none",
