@@ -339,14 +339,14 @@ const Invoice: React.FC<InvoiceProps> = () => {
                     className="w-full p-1 border rounded"
                   />
                 </td>
-                <td className="p-2 border">
+                <td className="p-2 border flex flex-row items-center ">
                   <span>₹</span>
                   <input
                     type="text"
                     id="rowtotal"
                     value={item.amount || ""}
                     readOnly
-                    className="w-full p-1 border rounded"
+                    className="w-full p-1 ml-3 border rounded"
                   />
                 </td>
               </tr>
