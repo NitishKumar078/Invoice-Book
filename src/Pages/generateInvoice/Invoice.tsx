@@ -188,7 +188,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
   };
 
   return (
-    <div className="createcart mx-auto p-5 w-[calc(79vw)]  left-[calc(19vw)]  bg-white shadow-lg  right-[1vw] absolute block transition-all duration-300 invoice-container">
+    <div className="createcart mx-auto p-5  left-[calc(16rem)]  bg-white shadow-lg  right-[5px] absolute block transition-all duration-300 invoice-container">
       <div className="flex justify-between border-b pb-2 invoice-header">
         <div className="w-[60%] company-details">
           <h2 className="text-2xl font-bold">JSR TRADERS</h2>

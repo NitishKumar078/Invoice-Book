@@ -28,7 +28,7 @@ export default function Items() {
   }, []);
 
   return (
-    <div className="createcart itemList absolute right-[10px] w-[calc(78vw)]  p-2 left-[calc(20vw)] bg-white  border border-gray-300 shadow-lg transition-all duration-300 ease-in-out">
+    <div className="createcart itemList absolute left-[calc(17rem)] right-[5px]  p-2  bg-white  border border-gray-300 shadow-lg transition-all duration-300 ease-in-out">
       <NavLink to="/Items/newItem" id="add-item-button">
         <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
           Add Item

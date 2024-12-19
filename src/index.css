@@ -4,7 +4,6 @@
 
 /* Inside your CSS file */
 .sidebar.collapsed ~ .createcart {
-  left: calc(6vw);
-  width: calc(90vw);
+  left: calc(6em);
   transition: left 0.3s ease, width 0.3s ease; /* Add smooth transition */
 }
