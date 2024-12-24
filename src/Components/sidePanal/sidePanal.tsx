@@ -26,8 +26,8 @@ export default function SideBar() {
     >
       <div className="flex flex-col items-center justify-center p-4 border-b border-[rgb(124 93 199 / 58%)] bg-[#54228d]">
         {/* User Option */}
-        <div className="flex items-center justify-between w-full mb-4">
-          <FaUserCircle className="text-4xl" />
+        <div className="flex items-center  w-full mb-4">
+          <FaUserCircle className="text-4xl mr-2" />
           <NavLink
             to="/setting"
             className="flex items-center  text-sm hover:underline"

@@ -106,6 +106,24 @@ const Invoice: React.FC<InvoiceProps> = () => {
     const newRow = new tableItem(rowIndx + 1, "", "", "", "");
     setTableData([...tableData, newRow]);
     setRowIndx(rowIndx + 1); // Increment row index for next row
+
+    if(rowIndx === 1){
+      const delerowEle = document.getElementById(`deleteRow`)
+      if(delerowEle)
+      delerowEle.style.display = "block"
+    }
+  };
+
+  const handleDeleteRow = () => {
+    const newTableData = [...tableData];
+    newTableData.pop();
+    setTableData(newTableData);
+    setRowIndx(rowIndx - 1);
+    if(rowIndx === 2){
+      const delerowEle = document.getElementById(`deleteRow`)
+      if(delerowEle)
+      delerowEle.style.display = "none"
+    }
   };
 
   // Function to handle save action
@@ -144,13 +162,6 @@ const Invoice: React.FC<InvoiceProps> = () => {
   const handleSave = async () => {
     const invoicedata = await getinvoicedata();
     console.log("invoicedata", invoicedata);
-    // try {
-    //   console.log("this is the data", invoicedata);
-    //   await axios.post("http://localhost:3001/invoices", invoicedata);
-    //   alert("Invoice created");
-    // } catch (err) {
-    //   console.error(err);
-    // }
   };
 
   useEffect(() => {
@@ -167,16 +178,6 @@ const Invoice: React.FC<InvoiceProps> = () => {
     }
   }, [tableData]); // Depend on tableData to update when it changes
 
-  document.addEventListener("scroll", function () {
-    var buttonDiv = document.getElementById("sticky-div");
-    if (!buttonDiv) return;
-    if (window.innerHeight + window.scrollY >= window.screen.height) {
-      // User has reached the bottom of the page
-      buttonDiv.classList.add("active");
-    } else {
-      buttonDiv.classList.remove("active");
-    }
-  });
 
   const handlestatesele = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setState(e.target.value);
@@ -355,13 +356,18 @@ const Invoice: React.FC<InvoiceProps> = () => {
         </table>
 
         <br />
+        <div className="flex justify-end flex-row">
+        <button type="button" id="deleteRow" onClick={handleDeleteRow} className="hidden text-white bg-gradient-to-r  from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Delete Row</button>
+
         <button
           type="button"
           onClick={handleAddRow}
-          className="py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+          className="py-2 px-4 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm text-center me-2 mb-2"
         >
           Add Row
         </button>
+
+        </div>
 
         <div className="flex justify-between mt-5 total-section">
           <div className="tax-summary">
@@ -369,7 +375,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
               <div className="normalgst">
                 <span>
                   SGST @9%: ₹ {gstamt ? (gstamt / 2).toFixed(2) : "0"}{" "}
-                </span>
+                </span><br/>
                 <span>
                   CGST @9%: ₹ {gstamt ? (gstamt / 2).toFixed(2) : "0"}{" "}
                 </span>
@@ -409,18 +415,22 @@ const Invoice: React.FC<InvoiceProps> = () => {
               readOnly
               className="w-[16vw] text-right p-2 border rounded"
             />
+            
           </div>
+          
         </div>
-      </form>
-      <div
-        id="sticky-div"
-        className="sticky bottom-0 flex justify-center items-center bg-[rgba(156,184,233,0.22)] shadow-md backdrop-blur-md p-3 w-full sticky-div"
-      >
-        <button onClick={handleSave}>Save</button>
+        <button onClick={handleSave} className="text-white mr-5 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Save</button>
         <NavLink to="/viewInvoice">
-          <button id="sticky-button"> View</button>
-        </NavLink>
-      </div>
+        <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+          View
+          </span>
+          </button>        
+          </NavLink>
+
+       
+
+      </form>
     </div>
   );
 };
