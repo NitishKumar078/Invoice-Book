@@ -1,16 +1,18 @@
-#[cfg_attr(mobile, tauri::mobile_entry_point)]
+// This file contains the core logic of the application, including database connection setup and application state initialization.
+
+pub mod db;
+pub mod handlers;
+pub mod models;
+
+use rusqlite::{params, Connection, Result};
+
+pub fn establish_connection() -> Result<Connection> {
+    let conn = Connection::open("app.db")?;
+    Ok(conn)
+}
+
 pub fn run() {
-  tauri::Builder::default()
-    .setup(|app| {
-      if cfg!(debug_assertions) {
-        app.handle().plugin(
-          tauri_plugin_log::Builder::default()
-            .level(log::LevelFilter::Info)
-            .build(),
-        )?;
-      }
-      Ok(())
-    })
-    .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+    // Initialize the database connection and application state here
+    let _conn = establish_connection().expect("Failed to connect to the database");
+    // Additional initialization logic can go here
 }
