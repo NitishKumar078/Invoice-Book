@@ -1,54 +1,54 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const AddCustomer = () => {
   const states = [
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chhattisgarh",
-    "Goa",
-    "Gujarat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jammu and Kashmir",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Odisha",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttarakhand",
-    "Uttar Pradesh",
-    "West Bengal",
+    'Andhra Pradesh',
+    'Arunachal Pradesh',
+    'Assam',
+    'Bihar',
+    'Chhattisgarh',
+    'Goa',
+    'Gujarat',
+    'Haryana',
+    'Himachal Pradesh',
+    'Jammu and Kashmir',
+    'Jharkhand',
+    'Karnataka',
+    'Kerala',
+    'Madhya Pradesh',
+    'Maharashtra',
+    'Manipur',
+    'Meghalaya',
+    'Mizoram',
+    'Nagaland',
+    'Odisha',
+    'Punjab',
+    'Rajasthan',
+    'Sikkim',
+    'Tamil Nadu',
+    'Telangana',
+    'Tripura',
+    'Uttarakhand',
+    'Uttar Pradesh',
+    'West Bengal',
   ];
 
-  const [state, setState] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [gstno, setGstno] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [nick_name, setNickName] = useState<string>("");
-  const [company, setCompany] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
-  const [phone2, setPhone2] = useState<string>("");
+  const [state, setState] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [gstno, setGstno] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [nick_name, setNickName] = useState<string>('');
+  const [company, setCompany] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [phone2, setPhone2] = useState<string>('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!name || !nick_name || !gstno || !state || !phone) {
-      alert("Please fill all required fields");
+      alert('Please fill all required fields');
       return;
     }
-    console.log("submitted");
+    console.log('submitted');
   };
 
   return (
@@ -78,7 +78,7 @@ const AddCustomer = () => {
             htmlFor="name"
             className="block text-sm font-medium text-gray-700"
           >
-            Name
+            Company Name
           </label>
           <input
             type="text"

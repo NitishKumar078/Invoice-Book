@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 
 interface Customer {
   customerId: number;
@@ -19,94 +19,86 @@ export default function Customers() {
   const [customers, setCustomers] = useState<Customer[]>([]);
 
   useEffect(() => {
-    // axios.get("http://localhost:3001/customers")
-    //     .then(response => {
-    //         setCustomers(response.data);
-    //     })
-    //     .catch(error => {
-    //         console.error("Error fetching customers:", error);
-    //     });
-
     setCustomers([
       {
         customerId: 1,
-        nick_name: "JD",
-        name: "John Doe",
-        gstNo: "1234567890",
-        contactNo: "1234567890",
-        address: "123 Main St, Anytown, USA",
+        nick_name: 'JD',
+        name: 'John Doe',
+        gstNo: '1234567890',
+        contactNo: '1234567890',
+        address: '123 Main St, Anytown, USA',
       },
       {
         customerId: 2,
-        nick_name: "JS",
-        name: "Jane Smith",
-        gstNo: "0987654321",
-        contactNo: "9876543210",
-        address: "456 Oak St, Anytown, USA",
+        nick_name: 'JS',
+        name: 'Jane Smith',
+        gstNo: '0987654321',
+        contactNo: '9876543210',
+        address: '456 Oak St, Anytown, USA',
       },
       {
         customerId: 3,
-        nick_name: "JF",
-        name: "John Francis",
-        gstNo: "1234567890",
-        contactNo: "1234567890",
-        address: "789 Elm St, Anytown, USA",
+        nick_name: 'JF',
+        name: 'John Francis',
+        gstNo: '1234567890',
+        contactNo: '1234567890',
+        address: '789 Elm St, Anytown, USA',
       },
       {
         customerId: 4,
-        nick_name: "JG",
-        name: "John Griffin",
-        gstNo: "0987654321",
-        contactNo: "9876543210",
-        address: "999 Maple St, Anytown, USA",
+        nick_name: 'JG',
+        name: 'John Griffin',
+        gstNo: '0987654321',
+        contactNo: '9876543210',
+        address: '999 Maple St, Anytown, USA',
       },
       {
         customerId: 5,
-        nick_name: "JH",
-        name: "John Harris",
-        gstNo: "1234567890",
-        contactNo: "1234567890",
-        address: "1111 Pine St, Anytown, USA",
+        nick_name: 'JH',
+        name: 'John Harris',
+        gstNo: '1234567890',
+        contactNo: '1234567890',
+        address: '1111 Pine St, Anytown, USA',
       },
       {
         customerId: 6,
-        nick_name: "JI",
-        name: "John Irving",
-        gstNo: "0987654321",
-        contactNo: "9876543210",
-        address: "2222 Spruce St, Anytown, USA",
+        nick_name: 'JI',
+        name: 'John Irving',
+        gstNo: '0987654321',
+        contactNo: '9876543210',
+        address: '2222 Spruce St, Anytown, USA',
       },
       {
         customerId: 7,
-        nick_name: "JJ",
-        name: "John Jackson",
-        gstNo: "1234567890",
-        contactNo: "1234567890",
-        address: "3333 Oak St, Anytown, USA",
+        nick_name: 'JJ',
+        name: 'John Jackson',
+        gstNo: '1234567890',
+        contactNo: '1234567890',
+        address: '3333 Oak St, Anytown, USA',
       },
       {
         customerId: 8,
-        nick_name: "JK",
-        name: "John Knight",
-        gstNo: "0987654321",
-        contactNo: "9876543210",
-        address: "4444 Maple St, Anytown, USA",
+        nick_name: 'JK',
+        name: 'John Knight',
+        gstNo: '0987654321',
+        contactNo: '9876543210',
+        address: '4444 Maple St, Anytown, USA',
       },
       {
         customerId: 9,
-        nick_name: "JL",
-        name: "John Lopez",
-        gstNo: "1234567890",
-        contactNo: "1234567890",
-        address: "5555 Pine St, Anytown, USA",
+        nick_name: 'JL',
+        name: 'John Lopez',
+        gstNo: '1234567890',
+        contactNo: '1234567890',
+        address: '5555 Pine St, Anytown, USA',
       },
       {
         customerId: 10,
-        nick_name: "JM",
-        name: "John Martin",
-        gstNo: "0987654321",
-        contactNo: "9876543210",
-        address: "6666 Spruce St, Anytown, USA",
+        nick_name: 'JM',
+        name: 'John Martin',
+        gstNo: '0987654321',
+        contactNo: '9876543210',
+        address: '6666 Spruce St, Anytown, USA',
       },
     ]);
   }, []);
@@ -124,7 +116,7 @@ export default function Customers() {
           <tr>
             <th className="border border-gray-300 p-2">Customer ID</th>
             <th className="border border-gray-300 p-2">Nick Name</th>
-            <th className="border border-gray-300 p-2">Name</th>
+            <th className="border border-gray-300 p-2">Company Name</th>
             <th className="border border-gray-300 p-2">GST No</th>
             <th className="border border-gray-300 p-2">Contact No</th>
             <th className="border border-gray-300 p-2">Address</th>

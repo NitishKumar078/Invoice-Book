@@ -1,57 +1,60 @@
-import React, { useState, useEffect, useRef } from "react";
-import { tableItem, invoiceItem } from "../../DataModels/DataModels";
-import { NavLink } from "react-router-dom";
-
-interface State {
-  value: string;
-}
-
-const states: State[] = [
-  { value: "Andhra Pradesh" },
-  { value: "Arunachal Pradesh" },
-  { value: "Assam" },
-  { value: "Bihar" },
-  { value: "Chhattisgarh" },
-  { value: "Goa" },
-  { value: "Gujarat" },
-  { value: "Haryana" },
-  { value: "Himachal Pradesh" },
-  { value: "Jammu and Kashmir" },
-  { value: "Jharkhand" },
-  { value: "Karnataka" },
-  { value: "Kerala" },
-  { value: "Madhya Pradesh" },
-  { value: "Maharashtra" },
-  { value: "Manipur" },
-  { value: "Meghalaya" },
-  { value: "Mizoram" },
-  { value: "Nagaland" },
-  { value: "Odisha" },
-  { value: "Punjab" },
-  { value: "Rajasthan" },
-  { value: "Sikkim" },
-  { value: "Tamil Nadu" },
-  { value: "Telangana" },
-  { value: "Tripura" },
-  { value: "Uttarakhand" },
-  { value: "Uttar Pradesh" },
-  { value: "West Bengal" },
-];
+import React, { useState, useEffect, useRef } from 'react';
+import { tableItem, invoiceItem } from '../../DataModels/DataModels';
+import { NavLink, useNavigate } from 'react-router-dom';
+import DialogBox from '@/Components/Dialogbox/DialogBox';
+import Select from 'react-select';
+import { Customer, User } from '@/DataModels/DataModels';
+import { Customers, dummyItems } from './Data_provider';
+import { useSelector } from 'react-redux';
 
 interface InvoiceProps {}
 
 const Invoice: React.FC<InvoiceProps> = () => {
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [warning, setWarning] = useState('');
+  const [description, setDescription] = useState('');
   const [tableData, setTableData] = useState<tableItem[]>([]);
   const [rowIndx, setRowIndx] = useState<number>(1);
-  const [state, setState] = useState<string>("");
   const [gsttype, setgsttype] = useState<boolean>(true); // if gsttype--> true then normal gst(18%) orelse igst(18%)
   const [gstamt, setgstamt] = useState<number | null>(null);
   const subtotalamt = useRef<HTMLInputElement>(null);
   const totalamt = useRef<HTMLInputElement>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null
+  );
+  const user = useSelector((state: { user: User }) => state.user);
+
+  const handleCustomerChange = (selectedOption: any) => {
+    const customer = Customers.find((c) => c.name === selectedOption.value);
+    if (customer) {
+      setSelectedCustomer(customer);
+      // FIXME: This should be based on the state of the user not handcoded
+      const gstType = customer.state === 'KARNATAKA' ? true : false;
+      setgsttype(gstType);
+    }
+  };
+  const customerOptions = Customers.map((customer) => ({
+    value: customer.name,
+    label: customer.name,
+  }));
+
+  const itemOptions = dummyItems.map((item) => ({
+    value: item.name,
+    label: item.name,
+  }));
 
   useEffect(() => {
     // Initialize tableData with one empty row
-    const initialItem = new tableItem(rowIndx, "", "", "", "");
+    const initialItem: tableItem = {
+      id: rowIndx,
+      itemName: '',
+      hsnCode: '',
+      quantity: '',
+      unit: '',
+      pricePerUnit: '',
+      amount: '',
+    };
     setTableData([initialItem]);
   }, []);
 
@@ -60,13 +63,15 @@ const Invoice: React.FC<InvoiceProps> = () => {
     field: string
   ) => {
     if (
-      field === "quantity" ||
-      field === "pricePerUnit" ||
-      field === "ContactNo"
+      field === 'quantity' ||
+      field === 'pricePerUnit' ||
+      field === 'ContactNo' ||
+      field === 'ewaybillno' ||
+      field === 'hsnCode'
     ) {
       e.target.value = e.target.value
-        .replace(/[^0-9.]/g, "")
-        .replace(/(\..*)\./g, "$1");
+        .replace(/[^0-9.]/g, '')
+        .replace(/(\..*)\./g, '$1');
     }
   };
 
@@ -82,35 +87,60 @@ const Invoice: React.FC<InvoiceProps> = () => {
     // Update the specific field in the row
     const newTableData = [...tableData];
     if (
-      field === "quantity" ||
-      field === "pricePerUnit" ||
-      field === "amount"
+      field === 'quantity' ||
+      field === 'pricePerUnit' ||
+      field === 'hsnCode'
     ) {
       newTableData[rowIndex][field] = e.target.value;
-    } else {
-      console.log("somthing is wrong");
-    }
-    // Update the amount field if quantity and pricePerUnit are present
-    if (field === "quantity" || field === "pricePerUnit") {
+
+      // Update the amount field if quantity and pricePerUnit are present
       const quantity = parseFloat(newTableData[rowIndex].quantity) || 0;
       const pricePerUnit = parseFloat(newTableData[rowIndex].pricePerUnit) || 0;
       newTableData[rowIndex].amount = (quantity * pricePerUnit).toFixed(2);
+    } else if (field === 'itemName' || field === 'unit') {
+      newTableData[rowIndex][field] = e.target.value;
     }
 
     // Update the state with new table data
     setTableData(newTableData);
   };
 
+  const handleSelectChange = (selectedOption: any, rowIndex: number) => {
+    const newTableData = [...tableData];
+    const selectedItem = dummyItems.find(
+      (item) => item.name === selectedOption.value
+    );
+    if (selectedItem) {
+      newTableData[rowIndex] = {
+        id: rowIndex + 1,
+        itemName: selectedItem.name,
+        hsnCode: selectedItem.hsncode.toString(),
+        pricePerUnit: selectedItem.price.toString(),
+        unit: selectedItem.unit,
+        quantity: selectedItem.quantity.toString(),
+        amount: (selectedItem.price * selectedItem.quantity).toFixed(2),
+      };
+    }
+    setTableData(newTableData);
+  };
+
   // Function to add a new row
   const handleAddRow = () => {
-    const newRow = new tableItem(rowIndx + 1, "", "", "", "");
+    const newRow: tableItem = {
+      id: rowIndx + 1,
+      itemName: '',
+      hsnCode: '',
+      quantity: '',
+      unit: '',
+      pricePerUnit: '',
+      amount: '',
+    };
     setTableData([...tableData, newRow]);
     setRowIndx(rowIndx + 1); // Increment row index for next row
 
-    if(rowIndx === 1){
-      const delerowEle = document.getElementById(`deleteRow`)
-      if(delerowEle)
-      delerowEle.style.display = "block"
+    if (rowIndx === 1) {
+      const delerowEle = document.getElementById(`deleteRow`);
+      if (delerowEle) delerowEle.style.display = 'block';
     }
   };
 
@@ -119,49 +149,105 @@ const Invoice: React.FC<InvoiceProps> = () => {
     newTableData.pop();
     setTableData(newTableData);
     setRowIndx(rowIndx - 1);
-    if(rowIndx === 2){
-      const delerowEle = document.getElementById(`deleteRow`)
-      if(delerowEle)
-      delerowEle.style.display = "none"
+    if (rowIndx === 2) {
+      const delerowEle = document.getElementById(`deleteRow`);
+      if (delerowEle) delerowEle.style.display = 'none';
     }
   };
 
   // Function to handle save action
-  const getinvoicedata = async () => {
-    const Idate = (document.getElementById("Idata") as HTMLInputElement).value;
-    const Iid = (document.getElementById("invoiceId") as HTMLInputElement)
+  const getinvoicedata = () => {
+    const Idate = (document.getElementById('Idata') as HTMLInputElement).value;
+    const Iid = (document.getElementById('invoiceId') as HTMLInputElement)
       .value;
-    const cname = (document.getElementById("customername") as HTMLInputElement)
-      .value;
-    const gstid = (document.getElementById("gstno") as HTMLInputElement).value;
-    const cno = (document.getElementById("cnumber") as HTMLInputElement).value;
-    const cadress = (document.getElementById("cadress") as HTMLInputElement)
-      .value;
-    const gstamt =
-      parseFloat(
-        (document.getElementById("gstno") as HTMLInputElement).value
-      ) || 0;
-    const tamt =
-      parseFloat(
-        (document.getElementById("total") as HTMLInputElement).value
-      ) || 0;
-    const Idata = new invoiceItem(
-      Iid,
-      Idate,
-      cname,
-      gstid,
-      cno,
-      cadress,
-      tableData,
-      gstamt,
-      tamt
-    );
-    return Idata;
+    if (!selectedCustomer) {
+      setIsOpen(true);
+      return null;
+    } else {
+      const cname = selectedCustomer?.name || '';
+      const gstid = selectedCustomer?.gstinNo || '';
+      const cno = selectedCustomer?.contactNo || '';
+      const cadress = selectedCustomer?.address || '';
+      const contact = selectedCustomer?.contactNo || null;
+      const E_waybillno = (
+        document.getElementById('E-waybillno') as HTMLInputElement
+      ).value;
+      const vehicleno = (
+        document.getElementById('vehicleno') as HTMLInputElement
+      ).value;
+      const totalgstamt = gstamt || 0;
+      const tamt =
+        parseFloat(
+          (document.getElementById('total') as HTMLInputElement).value
+        ) || 0;
+      const subtotalamt: string = (
+        document.getElementById('subtotal') as HTMLInputElement
+      ).value;
+      const Idata: invoiceItem = {
+        Iid,
+        contact,
+        vehicleno,
+        E_waybillno,
+        Idate,
+        cname,
+        gstid,
+        cno,
+        cadress,
+        tableData,
+        gsttype,
+        totalgstamt,
+        subtotalamt,
+        tamt,
+      };
+      return Idata;
+    }
   };
 
-  const handleSave = async () => {
-    const invoicedata = await getinvoicedata();
-    console.log("invoicedata", invoicedata);
+  const handleView = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const ValidatedData = await DataValidation(e);
+    console.log('passing data to view', ValidatedData);
+    if (ValidatedData !== null) {
+      navigate('/viewInvoice', { state: { ValidatedData } });
+    }
+  };
+
+  async function DataValidation(e: React.FormEvent) {
+    e.preventDefault();
+    const invoicedata = getinvoicedata();
+    if (invoicedata === null) {
+      setIsOpen(true);
+      setWarning('Warning');
+      setDescription('Please Select the customer');
+      return null;
+    } else if (tableData.length >= 1) {
+      // Validate required fields in table rows
+      for (let i = 0; i < tableData.length; i++) {
+        const row = tableData[i];
+
+        if (
+          !row.itemName ||
+          !row.quantity ||
+          !row.pricePerUnit ||
+          !row.unit ||
+          !row.hsnCode
+        ) {
+          setIsOpen(true);
+          setWarning('Warning');
+          setDescription('Please fill all required fields in the table');
+          return null;
+        }
+      }
+      return invoicedata;
+    }
+  }
+
+  const handleSave = async (e: React.FormEvent) => {
+    const ValidatedData = await DataValidation(e);
+    if (ValidatedData !== null) {
+      navigate('/');
+      console.log('this data should be saved', ValidatedData);
+    }
   };
 
   useEffect(() => {
@@ -178,31 +264,17 @@ const Invoice: React.FC<InvoiceProps> = () => {
     }
   }, [tableData]); // Depend on tableData to update when it changes
 
-
-  const handlestatesele = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setState(e.target.value);
-    const statefound = states.some(
-      (i) => i.value.toLowerCase() === e.target.value.toLowerCase()
-    );
-    setgsttype(statefound);
-    console.log("is state found ", statefound);
-  };
-
   return (
-    <div className="createcart mx-auto p-5  left-[calc(16rem)]  bg-white shadow-lg  right-[5px] absolute block transition-all duration-300 invoice-container">
+    <div className="createcart mx-auto p-5  left-[calc(16rem)] bg-white shadow-lg  right-[5px] absolute block transition-all duration-300 invoice-container">
       <div className="flex justify-between border-b pb-2 invoice-header">
         <div className="w-[60%] company-details">
-          <h2 className="text-2xl font-bold">JSR TRADERS</h2>
+          <h2 className="text-2xl font-bold">{user.company}</h2>
           <p>
-            172, Panthrapalya, Nayandahalli, Mysore road, Bangalore- 560039
+            {user.address}
             <br />
-            Phone no.: 9379060796
+            GSTIN: {user.gstno}
             <br />
-            Email: jsr_traders@yahoo.con
-            <br />
-            GSTIN: 29AKNPR1200J1Z1
-            <br />
-            State: 29-Karnataka
+            State: {user.state}
           </p>
         </div>
         <div className="text-right invoice-title">
@@ -212,60 +284,85 @@ const Invoice: React.FC<InvoiceProps> = () => {
 
       <form>
         <div className="flex justify-between mt-5 billing-info">
-          <div className="bill-to">
+          <div className="bill-to ">
             <h3 className="text-lg font-semibold">Bill To</h3>
-            <input
-              type="text"
-              placeholder="customer name"
+            <Select
               id="customername"
-              className="mt-2 p-2 border rounded w-full"
+              className="p-2 w-56 h-10 "
+              options={customerOptions}
+              onChange={handleCustomerChange}
+              placeholder="Select customer"
               required
             />
             <br />
-            <br />
-            <textarea
-              placeholder="Address"
-              id="cadress"
-              className="w-full mt-2 p-2 border rounded"
-            />
-            <br />
-            <div className="flex flex-row items-center mt-3 statesselection">
-              <label htmlFor="state" className="pr-2">
-                State
-              </label>
-              <select
-                id="state"
-                value={state}
-                onChange={handlestatesele}
-                className="p-2 border rounded"
-              >
-                <option value="">Select State</option>
-                {states.map((state, index) => (
-                  <option key={index} value={state.value}>
-                    {state.value}
-                  </option>
-                ))}
-              </select>
+            <div className="flex flex-col gap-2 pt-2">
+              <div>
+                <strong>Address:</strong>{' '}
+                {selectedCustomer ? selectedCustomer.address || '' : ''}
+              </div>
+              <div>
+                <strong>State:</strong> {selectedCustomer?.state || ''}
+              </div>
+              {selectedCustomer?.contactNo && (
+                <div>
+                  <strong>Contact No:</strong> {selectedCustomer?.contactNo}
+                </div>
+              )}
+              <div>
+                <strong>GSTIN No:</strong> {selectedCustomer?.gstinNo || ''}
+              </div>
             </div>
-            <p className="mt-3">
-              Contact No.:
-              <input
-                type="number"
-                id="cnumber"
-                onChange={(e) => ValidatingInteger(e, "ContactNo")}
-                className="ml-2 p-2 border rounded"
-              />
-              <br />
-              GSTIN:
-              <input
-                type="text"
-                id="gstno"
-                readOnly
-                className="ml-2 p-2 border rounded"
-              />
-            </p>
           </div>
           <div className="invoice-details">
+            <div>
+              <label htmlFor="E-waybillno" className="block">
+                E-Way Bill no.
+              </label>
+              {totalamt.current && parseInt(totalamt.current.value) >= 50000 ? (
+                <input
+                  name="E-waybillno"
+                  id="E-waybillno"
+                  className="p-2 border rounded w-full"
+                  onInput={(e) => {
+                    ValidatingInteger(
+                      e as React.ChangeEvent<HTMLInputElement>,
+                      'ewaybillno'
+                    );
+                  }}
+                  required
+                />
+              ) : (
+                <input
+                  name="E-waybillno"
+                  id="E-waybillno"
+                  className="p-2 border rounded w-full"
+                  onInput={(e) => {
+                    ValidatingInteger(
+                      e as React.ChangeEvent<HTMLInputElement>,
+                      'ewaybillno'
+                    );
+                  }}
+                />
+              )}
+            </div>
+
+            <div>
+              <label htmlFor="vehicleno" className="block">
+                Vehicle No:
+              </label>
+              <input
+                name="vehicleno"
+                id="vehicleno"
+                className="p-2 border rounded w-full"
+                pattern="[A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{4}"
+                title="Please enter a valid vehicle number (e.g., KA01AB1234)"
+                placeholder="KA01AB1234"
+                onInput={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  target.value = target.value.toUpperCase();
+                }}
+              />
+            </div>
             <div>
               <label htmlFor="invoiceId" className="block">
                 Invoice No:
@@ -286,6 +383,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
                 name="data"
                 id="Idata"
                 className="p-2 border rounded w-full"
+                defaultValue={new Date().toISOString().split('T')[0]}
               />
             </div>
           </div>
@@ -293,49 +391,68 @@ const Invoice: React.FC<InvoiceProps> = () => {
 
         <table className="w-full mt-5 border-collapse invoice-table">
           <thead>
-            <tr className="bg-gray-200">
+            <tr className="bg-gradient-to-r from-purple-400 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800">
               <th className="p-2 border">#</th>
               <th className="p-2 border">Item name</th>
+              <th className="p-2 border">HSN Code</th>
               <th className="p-2 border">Unit</th>
               <th className="p-2 border">Quantity</th>
-              <th className="p-2 border">Price/ Quantity</th>
+              <th className="p-2 border">Price</th>
               <th className="p-2 border">Amount</th>
             </tr>
           </thead>
           <tbody>
             {tableData.map((item, index) => (
-              <tr key={item.id} className="even:bg-gray-100 hover:bg-gray-200">
+              <tr
+                key={`row-${index}`}
+                className="even:bg-gray-100 hover:bg-purple-200 transition-all duration-300"
+              >
                 <td className="p-2 border">{item.id}</td>
                 <td className="p-2 border">
+                  <Select
+                    key={`itemName-${index}`}
+                    value={{ value: item.itemName, label: item.itemName }}
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, index)
+                    }
+                    options={itemOptions}
+                    className="w-36 p-1 border rounded "
+                  />
+                </td>
+                <td className="p-2 border">
                   <input
+                    key={`hsnCode-${index}`}
                     type="text"
-                    value={item.itemName}
-                    onChange={(e) => handleInputChange(e, index, "itemName")}
+                    value={item.hsnCode}
+                    onChange={(e) => handleInputChange(e, index, 'hsnCode')}
                     className="w-full p-1 border rounded"
                   />
                 </td>
                 <td className="p-2 border">
                   <input
+                    key={`unit-${index}`}
                     type="text"
                     value={item.unit}
-                    onChange={(e) => handleInputChange(e, index, "unit")}
+                    onChange={(e) => handleInputChange(e, index, 'unit')}
                     className="w-full p-1 border rounded"
                   />
                 </td>
                 <td className="p-2 border">
                   <input
+                    key={`quantity-${index}`}
                     type="text"
                     value={item.quantity}
-                    onChange={(e) => handleInputChange(e, index, "quantity")}
+                    onChange={(e) => handleInputChange(e, index, 'quantity')}
                     className="w-full p-1 border rounded"
                   />
                 </td>
                 <td className="p-2 border">
                   <input
+                    key={`pricePerUnit-${index}`}
                     type="text"
-                    value={item.pricePerUnit || ""}
+                    value={item.pricePerUnit || ''}
                     onChange={(e) =>
-                      handleInputChange(e, index, "pricePerUnit")
+                      handleInputChange(e, index, 'pricePerUnit')
                     }
                     className="w-full p-1 border rounded"
                   />
@@ -345,7 +462,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
                   <input
                     type="text"
                     id="rowtotal"
-                    value={item.amount || ""}
+                    value={item.amount || ''}
                     readOnly
                     className="w-full p-1 ml-3 border rounded"
                   />
@@ -357,16 +474,22 @@ const Invoice: React.FC<InvoiceProps> = () => {
 
         <br />
         <div className="flex justify-end flex-row">
-        <button type="button" id="deleteRow" onClick={handleDeleteRow} className="hidden text-white bg-gradient-to-r  from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Delete Row</button>
+          <button
+            type="button"
+            id="deleteRow"
+            onClick={handleDeleteRow}
+            className="hidden text-white bg-gradient-to-r  from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >
+            Delete Row
+          </button>
 
-        <button
-          type="button"
-          onClick={handleAddRow}
-          className="py-2 px-4 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm text-center me-2 mb-2"
-        >
-          Add Row
-        </button>
-
+          <button
+            type="button"
+            onClick={handleAddRow}
+            className="py-2 px-4 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm text-center me-2 mb-2"
+          >
+            Add Row
+          </button>
         </div>
 
         <div className="flex justify-between mt-5 total-section">
@@ -374,18 +497,19 @@ const Invoice: React.FC<InvoiceProps> = () => {
             {gsttype ? (
               <div className="normalgst">
                 <span>
-                  SGST @9%: ₹ {gstamt ? (gstamt / 2).toFixed(2) : "0"}{" "}
-                </span><br/>
+                  SGST @9%: ₹ {gstamt ? (gstamt / 2).toFixed(2) : '0'}{' '}
+                </span>
+                <br />
                 <span>
-                  CGST @9%: ₹ {gstamt ? (gstamt / 2).toFixed(2) : "0"}{" "}
+                  CGST @9%: ₹ {gstamt ? (gstamt / 2).toFixed(2) : '0'}{' '}
                 </span>
               </div>
             ) : (
               <p>IGST @18%: ₹ {gstamt}</p>
             )}
           </div>
-          <div className="total-amount inline-block relative overflow-hidden pb-10 w-[18vw]">
-            <p>
+          <div className="total-amount relative">
+            <div className="flex justify-self-end items-center gap-2 m-1">
               Sub Total: ₹
               <input
                 placeholder="Sub total"
@@ -395,42 +519,60 @@ const Invoice: React.FC<InvoiceProps> = () => {
                 readOnly
                 className="w-[10vw] text-right p-2 border rounded"
               />
-            </p>
-            <p>
+            </div>
+            <div className="flex justify-self-end items-center gap-2 m-1">
               Total Tax: ₹
               <input
                 type="text"
                 id="taxtotal"
-                value={gstamt || "0"}
+                value={gstamt || '0'}
                 readOnly
-                className="w-[10vw] text-right p-2 border rounded"
+                className="w-[10.5vw] text-right p-2 border rounded"
               />
-            </p>
+            </div>
             <hr />
-            <input
-              placeholder="Total amount"
-              type="text"
-              id="total"
-              ref={totalamt}
-              readOnly
-              className="w-[16vw] text-right p-2 border rounded"
-            />
-            
+            <div className="flex relative items-center gap-2 m-1">
+              <label htmlFor="total" className="block">
+                Total Amount: ₹
+              </label>
+              <input
+                placeholder="Total amount"
+                type="text"
+                id="total"
+                ref={totalamt}
+                readOnly
+                className="w-[12vw] text-right p-2 border rounded"
+              />
+            </div>
           </div>
-          
         </div>
-        <button onClick={handleSave} className="text-white mr-5 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Save</button>
-        <NavLink to="/viewInvoice">
-        <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-          View
-          </span>
-          </button>        
-          </NavLink>
-
-       
-
+        <button
+          onClick={(e) => {
+            handleSave(e);
+          }}
+          className="text-white mr-5 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        >
+          Save
+        </button>
+        <NavLink
+          to="/viewInvoice"
+          onClick={(e) => {
+            handleView(e);
+          }}
+        >
+          <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+              View
+            </span>
+          </button>
+        </NavLink>
       </form>
+      <DialogBox
+        dialogOpen={isOpen}
+        setDialogOpen={setIsOpen}
+        warningTitle={warning}
+        dialogDescription={description}
+      />
     </div>
   );
 };

@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from 'react';
 
 // Define types for the item
 interface Item {
@@ -20,7 +19,7 @@ export default function Items() {
         itemId: i + 1,
         name: `Item ${i + 1}`,
         price: (i + 1) * 10,
-        unit: ["each", "pack", "liter"][i % 3],
+        unit: ['each', 'pack', 'liter'][i % 3],
         quantity: i + 1,
         description: `Description ${i + 1}`,
       }))
@@ -29,20 +28,18 @@ export default function Items() {
 
   return (
     <div className="createcart itemList absolute left-[calc(17rem)] right-[5px]  p-2  bg-white  border border-gray-300 shadow-lg transition-all duration-300 ease-in-out">
-      <NavLink to="/Items/newItem" id="add-item-button">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
-          Add Item
-        </button>
-      </NavLink>
+      <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+        Export button
+      </button>
 
       <table className="w-full border-collapse mt-5">
-        <caption className="text-2xl font-bold mb-4">Items</caption>
+        <caption className="text-2xl font-bold mb-4">Invoice</caption>
         <thead>
           <tr>
-            <th className="border-b p-2 text-left bg-gray-100">Item ID</th>
-            <th className="border-b p-2 text-left bg-gray-100">Name</th>
-            <th className="border-b p-2 text-left bg-gray-100">Unit</th>
-            <th className="border-b p-2 text-left bg-gray-100">Price</th>
+            <th className="border-b p-2 text-left bg-gray-100">Invoice ID</th>
+            <th className="border-b p-2 text-left bg-gray-100">Company</th>
+            <th className="border-b p-2 text-left bg-gray-100">Tax amount</th>
+            <th className="border-b p-2 text-left bg-gray-100">Total amount</th>
           </tr>
         </thead>
         <tbody>

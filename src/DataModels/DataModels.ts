@@ -11,63 +11,65 @@
 
 ################################################################################################## */
 
-class tableItem {
+export interface tableItem {
   id: number;
   itemName: string;
+  hsnCode: string;
   quantity: string;
   unit: string;
   pricePerUnit: string;
   amount: string;
-
-  constructor(
-    id: number = 1,
-    itemName: string = "",
-    quantity: string = "",
-    unit: string = "",
-    pricePerUnit: string = "",
-    amount: string = ""
-  ) {
-    this.id = id;
-    this.itemName = itemName;
-    this.quantity = quantity;
-    this.unit = unit;
-    this.pricePerUnit = pricePerUnit;
-    this.amount = amount;
-  }
 }
 
-class invoiceItem {
-  id: string;
-  date: string;
-  name: string;
-  gstNo: string;
-  contactno: string;
-  address: string;
-  tableInfo: tableItem[];
-  gstamt: number;
+export interface invoiceItem {
+  Iid: string;
+  contact: string | null;
+  vehicleno: string;
+  E_waybillno: string;
+  Idate: string;
+  cname: string;
+  gstid: string;
+  cno: string;
+  cadress: string;
+  tableData: tableItem[];
+  gsttype: boolean;
+  totalgstamt: number;
+  subtotalamt: string;
   tamt: number;
-
-  constructor(
-    id: string,
-    date: string,
-    name: string,
-    gstNo: string,
-    contactno: string,
-    address: string,
-    tableInfo: tableItem[],
-    gstamt: number,
-    tamt: number
-  ) {
-    this.id = id;
-    this.date = date;
-    this.name = name;
-    this.gstNo = gstNo;
-    this.contactno = contactno;
-    this.address = address;
-    this.tableInfo = tableInfo;
-    this.gstamt = gstamt;
-    this.tamt = tamt;
-  }
 }
 
-export { tableItem, invoiceItem };
+export type Customer = {
+  name: string;
+  address: string;
+  state: string;
+  contactNo: string;
+  gstinNo: string;
+};
+
+export type Item = {
+  itemId: number;
+  name: string;
+  hsncode: number;
+  price: number;
+  unit: string;
+  quantity: number;
+  description: string;
+};
+
+export type Invoice = {
+  amount: string;
+  hsnCode: string;
+  id: number;
+  itemName: string;
+  pricePerUnit: string;
+  quantity: string;
+  unit: string;
+};
+
+export interface User {
+  user: string;
+  company: string;
+  gstno: string;
+  address: string;
+  state: string;
+}

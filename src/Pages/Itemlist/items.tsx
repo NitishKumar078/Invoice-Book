@@ -1,15 +1,8 @@
-import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Item } from '@/DataModels/DataModels';
 
 // Define the structure of an item
-interface Item {
-  itemId: number;
-  name: string;
-  price: number;
-  unit: string;
-  quantity: number;
-  description: string;
-}
 
 /**
  * Renders a table of items fetched from the server.
@@ -23,27 +16,30 @@ export default function Items() {
     setItems([
       {
         itemId: 1,
-        name: "Item 1",
+        name: 'Item 1',
+        hsncode: 1234,
         price: 10,
-        unit: "each",
+        unit: 'each',
         quantity: 2,
-        description: "Description 1",
+        description: 'Description 1',
       },
       {
         itemId: 2,
-        name: "Item 2",
+        name: 'Item 2',
+        hsncode: 5678,
         price: 20,
-        unit: "pack",
+        unit: 'pack',
         quantity: 3,
-        description: "Description 2",
+        description: 'Description 2',
       },
       {
         itemId: 3,
-        name: "Item 3",
+        name: 'Item 3',
+        hsncode: 91011,
         price: 30,
-        unit: "liter",
+        unit: 'liter',
         quantity: 4,
-        description: "Description 3",
+        description: 'Description 3',
       },
     ]);
   }, []);
@@ -63,6 +59,7 @@ export default function Items() {
           <tr>
             <th className="border-b py-2 px-4 text-left">Item ID</th>
             <th className="border-b py-2 px-4 text-left">Name</th>
+            <th className="border-b py-2 px-4 text-left">HSN No.</th>
             <th className="border-b py-2 px-4 text-left">Unit</th>
             <th className="border-b py-2 px-4 text-left">Price</th>
           </tr>
@@ -72,6 +69,7 @@ export default function Items() {
             <tr key={item.itemId}>
               <td className="border-b py-2 px-4">{item.itemId}</td>
               <td className="border-b py-2 px-4">{item.name}</td>
+              <td className="border-b py-2 px-4">{item.hsncode}</td>
               <td className="border-b py-2 px-4">{item.unit}</td>
               <td className="border-b py-2 px-4">{item.price}</td>
             </tr>

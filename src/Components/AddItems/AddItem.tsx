@@ -1,21 +1,25 @@
-import { useState } from "react";
+import { useState } from 'react';
+import Select from 'react-select';
 
 const AddItem = () => {
-  const units = ["Piece", "Kg", "Ton", "Ltr", "Other"];
+  const units = ['Piece', 'Kg', 'Ton', 'Ltr', 'inch', 'cm', 'Other'];
   const [unit, setUnit] = useState<string>(units[0]);
-
+  const customerOptions = units.map((unit) => ({
+    value: unit,
+    label: unit,
+  }));
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submitted");
+    console.log('submitted');
   };
 
-  const handleselectunit = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value === "Other") {
+  const handleselectunit = (e: any) => {
+    if (e.target.value === 'Other') {
       e.target.nextSibling &&
-        ((e.target.nextSibling as HTMLInputElement).style.display = "block");
+        ((e.target.nextSibling as HTMLInputElement).style.display = 'block');
     } else {
       e.target.nextSibling &&
-        ((e.target.nextSibling as HTMLInputElement).style.display = "none");
+        ((e.target.nextSibling as HTMLInputElement).style.display = 'none');
       setUnit(e.target.value);
     }
   };
@@ -46,25 +50,19 @@ const AddItem = () => {
           >
             Unit
           </label>
-          <select
-            id="unit"
+          <Select
+            id="customername"
+            className="mt-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            options={customerOptions}
             onChange={handleselectunit}
-            value={unit}
+            placeholder="Select customer"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            <option value="">Select unit</option>
-            {units.map((unit, index) => (
-              <option key={index} value={unit}>
-                {unit}
-              </option>
-            ))}
-          </select>
+          />
           <input
             type="text"
             id="unit-other"
             placeholder="Other"
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
@@ -73,18 +71,15 @@ const AddItem = () => {
             htmlFor="quantity"
             className="block text-sm font-medium text-gray-700"
           >
-            Quantity
+            HSN Code
           </label>
           <div className="flex items-center">
             <input
-              type="number"
+              type="text"
               id="quantity"
-              defaultValue="1"
-              min="1"
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
-            <span className="ml-2">{unit}</span>
           </div>
         </div>
         <div className="mb-4">
