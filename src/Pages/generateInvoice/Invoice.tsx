@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { tableItem, invoiceItem } from '../../DataModels/DataModels';
 import { NavLink, useNavigate } from 'react-router-dom';
 import DialogBox from '@/Components/Dialogbox/DialogBox';
-import Select from 'react-select';
 import { Customer, User } from '@/DataModels/DataModels';
 import { Customers, dummyItems } from './Data_provider';
 import { useSelector } from 'react-redux';
+import SelectCustomer from '@/Components/ui/SelectCustomer';
+import SelectItem from '@/Components/ui/SelectItem';
 
 interface InvoiceProps {}
 
@@ -25,34 +26,15 @@ const Invoice: React.FC<InvoiceProps> = () => {
   );
   const user = useSelector((state: { user: User }) => state.user);
 
-  const handleCustomerChange = (selectedOption: any) => {
-    const customer = Customers.find((c) => c.name === selectedOption.value);
-    if (customer) {
-      setSelectedCustomer(customer);
-      // FIXME: This should be based on the state of the user not handcoded
-      const gstType = customer.state === 'KARNATAKA' ? true : false;
-      setgsttype(gstType);
-    }
-  };
-  const customerOptions = Customers.map((customer) => ({
-    value: customer.name,
-    label: customer.name,
-  }));
-
-  const itemOptions = dummyItems.map((item) => ({
-    value: item.name,
-    label: item.name,
-  }));
-
   useEffect(() => {
     // Initialize tableData with one empty row
     const initialItem: tableItem = {
       id: rowIndx,
-      itemName: '',
+      item: '',
       hsnCode: '',
       quantity: '',
       unit: '',
-      pricePerUnit: '',
+      price: '',
       amount: '',
     };
     setTableData([initialItem]);
@@ -64,7 +46,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
   ) => {
     if (
       field === 'quantity' ||
-      field === 'pricePerUnit' ||
+      field === 'price' ||
       field === 'ContactNo' ||
       field === 'ewaybillno' ||
       field === 'hsnCode'
@@ -81,23 +63,19 @@ const Invoice: React.FC<InvoiceProps> = () => {
     rowIndex: number,
     field: string
   ) => {
-    // Validating the data type for quantity and pricePerUnit
+    // Validating the data type for quantity and price
     ValidatingInteger(e, field);
 
     // Update the specific field in the row
     const newTableData = [...tableData];
-    if (
-      field === 'quantity' ||
-      field === 'pricePerUnit' ||
-      field === 'hsnCode'
-    ) {
+    if (field === 'quantity' || field === 'price' || field === 'hsnCode') {
       newTableData[rowIndex][field] = e.target.value;
 
-      // Update the amount field if quantity and pricePerUnit are present
+      // Update the amount field if quantity and price are present
       const quantity = parseFloat(newTableData[rowIndex].quantity) || 0;
-      const pricePerUnit = parseFloat(newTableData[rowIndex].pricePerUnit) || 0;
-      newTableData[rowIndex].amount = (quantity * pricePerUnit).toFixed(2);
-    } else if (field === 'itemName' || field === 'unit') {
+      const price = parseFloat(newTableData[rowIndex].price) || 0;
+      newTableData[rowIndex].amount = (quantity * price).toFixed(2);
+    } else if (field === 'item' || field === 'unit') {
       newTableData[rowIndex][field] = e.target.value;
     }
 
@@ -105,34 +83,15 @@ const Invoice: React.FC<InvoiceProps> = () => {
     setTableData(newTableData);
   };
 
-  const handleSelectChange = (selectedOption: any, rowIndex: number) => {
-    const newTableData = [...tableData];
-    const selectedItem = dummyItems.find(
-      (item) => item.name === selectedOption.value
-    );
-    if (selectedItem) {
-      newTableData[rowIndex] = {
-        id: rowIndex + 1,
-        itemName: selectedItem.name,
-        hsnCode: selectedItem.hsncode.toString(),
-        pricePerUnit: selectedItem.price.toString(),
-        unit: selectedItem.unit,
-        quantity: selectedItem.quantity.toString(),
-        amount: (selectedItem.price * selectedItem.quantity).toFixed(2),
-      };
-    }
-    setTableData(newTableData);
-  };
-
   // Function to add a new row
   const handleAddRow = () => {
     const newRow: tableItem = {
       id: rowIndx + 1,
-      itemName: '',
+      item: '',
       hsnCode: '',
       quantity: '',
       unit: '',
-      pricePerUnit: '',
+      price: '',
       amount: '',
     };
     setTableData([...tableData, newRow]);
@@ -226,9 +185,9 @@ const Invoice: React.FC<InvoiceProps> = () => {
         const row = tableData[i];
 
         if (
-          !row.itemName ||
+          !row.item ||
           !row.quantity ||
-          !row.pricePerUnit ||
+          !row.price ||
           !row.unit ||
           !row.hsnCode
         ) {
@@ -286,13 +245,10 @@ const Invoice: React.FC<InvoiceProps> = () => {
         <div className="flex justify-between mt-5 billing-info">
           <div className="bill-to ">
             <h3 className="text-lg font-semibold">Bill To</h3>
-            <Select
-              id="customername"
-              className="p-2 w-56 h-10 "
-              options={customerOptions}
-              onChange={handleCustomerChange}
-              placeholder="Select customer"
-              required
+            <SelectCustomer
+              setSelectedCustomer={setSelectedCustomer}
+              setgsttype={setgsttype}
+              ListCustomers={Customers}
             />
             <br />
             <div className="flex flex-col gap-2 pt-2">
@@ -409,14 +365,11 @@ const Invoice: React.FC<InvoiceProps> = () => {
               >
                 <td className="p-2 border">{item.id}</td>
                 <td className="p-2 border">
-                  <Select
-                    key={`itemName-${index}`}
-                    value={{ value: item.itemName, label: item.itemName }}
-                    onChange={(selectedOption) =>
-                      handleSelectChange(selectedOption, index)
-                    }
-                    options={itemOptions}
-                    className="w-36 p-1 border rounded "
+                  <SelectItem
+                    setTableData={setTableData}
+                    ListItems={dummyItems}
+                    index={index}
+                    tableData={tableData}
                   />
                 </td>
                 <td className="p-2 border">
@@ -448,12 +401,10 @@ const Invoice: React.FC<InvoiceProps> = () => {
                 </td>
                 <td className="p-2 border">
                   <input
-                    key={`pricePerUnit-${index}`}
+                    key={`price-${index}`}
                     type="text"
-                    value={item.pricePerUnit || ''}
-                    onChange={(e) =>
-                      handleInputChange(e, index, 'pricePerUnit')
-                    }
+                    value={item.price || ''}
+                    onChange={(e) => handleInputChange(e, index, 'price')}
                     className="w-full p-1 border rounded"
                   />
                 </td>

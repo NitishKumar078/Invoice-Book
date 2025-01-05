@@ -13,11 +13,11 @@
 
 export interface tableItem {
   id: number;
-  itemName: string;
+  item: string;
   hsnCode: string;
   quantity: string;
   unit: string;
-  pricePerUnit: string;
+  price: string;
   amount: string;
 }
 
@@ -39,31 +39,13 @@ export interface invoiceItem {
 }
 
 export type Customer = {
-  name: string;
-  address: string;
-  state: string;
-  contactNo: string;
-  gstinNo: string;
-};
-
-export type Item = {
-  itemId: number;
-  name: string;
-  hsncode: number;
-  price: number;
-  unit: string;
-  quantity: number;
-  description: string;
-};
-
-export type Invoice = {
-  amount: string;
-  hsnCode: string;
-  id: number;
-  itemName: string;
-  pricePerUnit: string;
-  quantity: string;
-  unit: string;
+  name?: string;
+  address?: string;
+  state?: string;
+  contactNo?: string;
+  gstinNo?: string;
+  label?: string;
+  link?: string;
 };
 
 export interface User {
