@@ -49,8 +49,10 @@ export type Customer = {
 };
 
 export interface User {
-  user: string;
+  name: string;
   company: string;
+  phone: string;
+  email: string;
   gstno: string;
   address: string;
   state: string;
