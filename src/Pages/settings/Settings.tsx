@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { openDB } from 'idb';
 import { useDispatch } from 'react-redux';
 import { User } from '../../DataModels/DataModels';
 import { updateUser } from '../../Store/user/userSlice';

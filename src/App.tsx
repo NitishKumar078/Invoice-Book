@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { loadUserData } from '@/Store/user/userSlice';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './Home';
 import SidePanal from './Components/sidePanal/sidePanal';

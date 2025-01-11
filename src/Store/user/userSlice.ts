@@ -45,7 +45,7 @@ const userSlice = createSlice({
       state.email = email;
     },
     // Set a default blank state
-    setUserDefaultState: (state) => {
+    setUserDefaultState: () => {
       return initialState;
     },
   },
