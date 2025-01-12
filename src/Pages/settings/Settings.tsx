@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { User } from '../../DataModels/DataModels';
-import { updateUser } from '../../Store/user/userSlice';
+import { updateUser } from '../../Store/Reducers/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 // Define the possible states for the select dropdown

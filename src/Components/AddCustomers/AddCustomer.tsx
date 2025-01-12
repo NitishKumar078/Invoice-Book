@@ -1,4 +1,10 @@
+import { useDispatch } from 'react-redux';
+import { addCustomer } from '@/Store/Reducers/customersSlice';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ShortUniqueId from 'short-unique-id';
+const { sequentialUUID } = new ShortUniqueId();
+import { Customer } from '@/DataModels/DataModels';
 
 const AddCustomer = () => {
   const states = [
@@ -36,19 +42,37 @@ const AddCustomer = () => {
   const [state, setState] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [gstno, setGstno] = useState<string>('');
-  const [name, setName] = useState<string>('');
   const [nick_name, setNickName] = useState<string>('');
   const [company, setCompany] = useState<string>('');
   const [address, setAddress] = useState<string>('');
-  const [phone2, setPhone2] = useState<string>('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name || !nick_name || !gstno || !state || !phone) {
+    if (!company || !address || !nick_name || !gstno || !state || !phone) {
       alert('Please fill all required fields');
       return;
     }
-    console.log('submitted');
+
+    try {
+      const customer: Customer = {
+        customer_id: sequentialUUID(),
+        name: nick_name,
+        gstinNo: gstno,
+        state,
+        phone,
+        company,
+        address,
+      };
+      dispatch(addCustomer(customer));
+
+      console.log('Customer added successfully');
+      navigate('/customers'); // Navigate back to customers list
+    } catch (error) {
+      console.error('Failed to add customer:', error);
+      alert('Failed to add customer. Please try again.');
+    }
   };
 
   return (
@@ -75,17 +99,16 @@ const AddCustomer = () => {
         </div>
         <div className="mb-4">
           <label
-            htmlFor="name"
+            htmlFor="company"
             className="block text-sm font-medium text-gray-700"
           >
             Company Name
           </label>
           <input
             type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
+            id="company"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
@@ -115,36 +138,6 @@ const AddCustomer = () => {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="phone2"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Phone 2
-          </label>
-          <input
-            type="text"
-            id="phone2"
-            value={phone2}
-            onChange={(e) => setPhone2(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="company"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Company
-          </label>
-          <input
-            type="text"
-            id="company"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>

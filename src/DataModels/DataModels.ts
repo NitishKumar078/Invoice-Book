@@ -39,13 +39,14 @@ export interface invoiceItem {
 }
 
 export type Customer = {
+  customer_id: string;
   name?: string;
   address?: string;
-  state?: string;
+  state: string;
   contactNo?: string;
   gstinNo?: string;
-  label?: string;
-  link?: string;
+  phone: string;
+  company?: string;
 };
 
 export interface User {

@@ -44,27 +44,8 @@ const userSlice = createSlice({
       state.phone = phone;
       state.email = email;
     },
-    // Set a default blank state
-    setUserDefaultState: () => {
-      return initialState;
-    },
   },
 });
 
-export const { updateUser, setUserDefaultState } = userSlice.actions;
+export const { updateUser } = userSlice.actions;
 export default userSlice.reducer;
-
-// Thunk to load user data from localStorage
-export const loadUserData = () => async (dispatch: any) => {
-  try {
-    const userInfo = fetchUserInfoFromLocalStorage();
-    if (userInfo) {
-      dispatch(updateUser(userInfo)); // Dispatch the action to update user info in the Redux state
-    } else {
-      dispatch(setUserDefaultState()); // If no data, reset to default state
-    }
-  } catch (error) {
-    console.error('Failed to load user info from localStorage', error);
-    dispatch(setUserDefaultState()); // Handle error and set default state
-  }
-};
