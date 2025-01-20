@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { customerDB } from '@/utils/indexedDB';
 import { Customer } from '@/DataModels/DataModels';
-const customerStore: string = process.env.CUSTOMERSTORE || 'null';
+const customerStore = import.meta.env.VITE_CUSTOMERSTORE;
 
 interface CustomerState {
   customers: Customer[];

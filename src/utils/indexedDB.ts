@@ -1,9 +1,9 @@
 import { Customer } from '@/DataModels/DataModels';
 // import { Invoice } from '@/DataModels/DataModels';
 
-const DATABASE: string = process.env.DB_NAME || 'null';
-const CUSTOMERSTORE: string = process.env.CUSTOMERSTORE || 'null';
-const INVOICESTORE: string = process.env.INVOICESTORE || 'null';
+const DATABASE = import.meta.env.VITE_DB_NAME;
+const CUSTOMERSTORE = import.meta.env.VITE_CUSTOMERSTORE;
+const INVOICESTORE = import.meta.env.VITE_INVOICESTORE;
 const DB_VERSION = 1;
 
 export const initDB = (): Promise<IDBDatabase> => {
