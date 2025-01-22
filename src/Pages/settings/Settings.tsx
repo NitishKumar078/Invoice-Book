@@ -103,111 +103,138 @@ export default function Settings() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4">
-      <h2 className="text-lg font-bold mb-4">User Information</h2>
+    <div className="w-full max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
+      <h2 className="text-3xl font-bold mb-5 text-center text-blue-600">
+        User Information
+      </h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium">
+        <div className="mb-5">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700"
+          >
             Name
           </label>
           <input
-            type="text"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className={`w-full p-2 border ${
+            className={`w-full p-3 border ${
               error.name ? 'border-red-500' : 'border-gray-300'
-            } rounded-md`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
-          {error.name && <p className="text-red-500 text-xs">{error.name}</p>}
+          {error.name && (
+            <p className="text-red-500 text-xs mt-1">{error.name}</p>
+          )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium">
+        <div className="mb-5">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
             Email
           </label>
           <input
-            type="email"
             id="email"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={`w-full p-2 border ${
+            className={`w-full p-3 border ${
               error.email ? 'border-red-500' : 'border-gray-300'
-            } rounded-md`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
-          {error.email && <p className="text-red-500 text-xs">{error.email}</p>}
+          {error.email && (
+            <p className="text-red-500 text-xs mt-1">{error.email}</p>
+          )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="phone" className="block text-sm font-medium">
+        <div className="mb-5">
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-gray-700"
+          >
             Phone
           </label>
           <input
-            type="text"
             id="phone"
+            type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className={`w-full p-2 border ${
+            className={`w-full p-3 border ${
               error.phone ? 'border-red-500' : 'border-gray-300'
-            } rounded-md`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
-          {error.phone && <p className="text-red-500 text-xs">{error.phone}</p>}
+          {error.phone && (
+            <p className="text-red-500 text-xs mt-1">{error.phone}</p>
+          )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="company" className="block text-sm font-medium">
+        <div className="mb-5">
+          <label
+            htmlFor="company"
+            className="block text-sm font-medium text-gray-700"
+          >
             Company
           </label>
           <input
-            type="text"
             id="company"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
-            className={`w-full p-2 border ${
+            className={`w-full p-3 border ${
               error.company ? 'border-red-500' : 'border-gray-300'
-            } rounded-md`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
           {error.company && (
-            <p className="text-red-500 text-xs">{error.company}</p>
+            <p className="text-red-500 text-xs mt-1">{error.company}</p>
           )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="gstno" className="block text-sm font-medium">
+        <div className="mb-5">
+          <label
+            htmlFor="gstno"
+            className="block text-sm font-medium text-gray-700"
+          >
             GST Number
           </label>
           <input
-            type="text"
             id="gstno"
             value={gstno}
-            onChange={(e) => setGstno(e.target.value.toUpperCase())}
-            className={`w-full p-2 border ${
+            onChange={(e) => setGstno(e.target.value)}
+            className={`w-full p-3 border ${
               error.gstno ? 'border-red-500' : 'border-gray-300'
-            } rounded-md`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
-          {error.gstno && <p className="text-red-500 text-xs">{error.gstno}</p>}
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="address" className="block text-sm font-medium">
-            Address
-          </label>
-          <input
-            type="text"
-            id="address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className={`w-full p-2 border ${
-              error.address ? 'border-red-500' : 'border-gray-300'
-            } rounded-md`}
-          />
-          {error.address && (
-            <p className="text-red-500 text-xs">{error.address}</p>
+          {error.gstno && (
+            <p className="text-red-500 text-xs mt-1">{error.gstno}</p>
           )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="state" className="block text-sm font-medium">
+        <div className="mb-5">
+          <label
+            htmlFor="address"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Address
+          </label>
+          <input
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            className={`w-full p-3 border ${
+              error.address ? 'border-red-500' : 'border-gray-300'
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          />
+          {error.address && (
+            <p className="text-red-500 text-xs mt-1">{error.address}</p>
+          )}
+        </div>
+
+        <div className="mb-5">
+          <label
+            htmlFor="state"
+            className="block text-sm font-medium text-gray-700"
+          >
             State
           </label>
           <select
@@ -228,8 +255,11 @@ export default function Settings() {
           {error.state && <p className="text-red-500 text-xs">{error.state}</p>}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="logo" className="block text-sm font-medium">
+        <div className="mb-5">
+          <label
+            htmlFor="logo"
+            className="block text-sm font-medium text-gray-700"
+          >
             Logo (Optional)
           </label>
           {logo && (
@@ -242,16 +272,17 @@ export default function Settings() {
             </div>
           )}
           <input
-            type="file"
             id="logo"
+            type="file"
+            accept="image/*"
             onChange={(e) => setLogo(e.target.files ? e.target.files[0] : null)}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+          className="w-full py-3 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
         >
           Save
         </button>
