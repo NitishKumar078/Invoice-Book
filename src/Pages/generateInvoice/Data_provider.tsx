@@ -1,27 +1,4 @@
-import { Customer } from '@/DataModels/DataModels';
 import { tableItem } from '@/DataModels/DataModels';
-
-export const Customers: Customer[] = [
-  {
-    name: 'Add Customer',
-    label: 'Add Customer',
-  },
-  {
-    name: 'John Doe',
-    address: '123 Main St, Springfield',
-    state: 'IL',
-    contactNo: '123-456-7890',
-    gstinNo: '1234567890ABCDE',
-  },
-  {
-    name: 'Jane Smith',
-    address: '456 Elm St, Shelbyville',
-    state: 'Karnataka',
-    contactNo: '987-654-3210',
-    gstinNo: '0987654321ZYXWV',
-  },
-  // Add more customers as needed
-];
 
 export const dummyItems: tableItem[] = [
   {

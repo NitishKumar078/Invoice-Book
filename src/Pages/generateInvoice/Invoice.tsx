@@ -3,7 +3,7 @@ import { tableItem, invoiceItem } from '../../DataModels/DataModels';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import DialogBox from '@/Components/Dialogbox/DialogBox';
 import { Customer, User } from '@/DataModels/DataModels';
-import { Customers, dummyItems } from './Data_provider';
+import { dummyItems } from './Data_provider';
 import { useSelector } from 'react-redux';
 import SelectCustomer from '@/Components/ui/SelectCustomer';
 import SelectItem from '@/Components/ui/SelectItem';
@@ -26,7 +26,23 @@ const Invoice: React.FC<InvoiceProps> = () => {
     null
   );
   const user = useSelector((state: { user: User }) => state.user);
+  const [Customers, setCustomers] = useState<Customer[]>([]);
+  let customer = useSelector(
+    (state: { customersDB: any; customer: Customer[] }) =>
+      state?.customersDB.customers
+  );
 
+  useEffect(() => {
+    const AddCustomer: Customer = {
+      name: 'Add Customer',
+      label: 'Add Customer',
+      customer_id: '',
+      state: '',
+      phone: '',
+    };
+    customer = [AddCustomer, ...customer];
+    setCustomers(customer);
+  }, []);
   useEffect(() => {
     // Initialize tableData with one empty row
     const initialItem: tableItem = {
@@ -39,6 +55,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
       amount: '',
     };
     setTableData([initialItem]);
+    setCustomers(customer);
   }, []);
 
   const ValidatingInteger = (

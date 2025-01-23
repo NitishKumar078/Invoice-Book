@@ -41,6 +41,7 @@ export interface invoiceItem {
 export type Customer = {
   customer_id: string;
   name?: string;
+  label?: string;
   address?: string;
   state: string;
   contactNo?: string;
