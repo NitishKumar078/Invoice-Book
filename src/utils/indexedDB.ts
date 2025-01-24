@@ -1,9 +1,7 @@
-import { Customer } from '@/DataModels/DataModels';
-// import { Invoice } from '@/DataModels/DataModels';
-
 const DATABASE = import.meta.env.VITE_DB_NAME;
 const CUSTOMERSTORE = import.meta.env.VITE_CUSTOMERSTORE;
 const INVOICESTORE = import.meta.env.VITE_INVOICESTORE;
+const ITEMSTORE = import.meta.env.VITE_ITEMSTORE;
 const DB_VERSION = 1;
 
 export const initDB = (): Promise<IDBDatabase> => {
@@ -21,12 +19,15 @@ export const initDB = (): Promise<IDBDatabase> => {
       if (!db.objectStoreNames.contains(INVOICESTORE)) {
         db.createObjectStore(INVOICESTORE, { keyPath: 'name' });
       }
+      if (!db.objectStoreNames.contains(ITEMSTORE)) {
+        db.createObjectStore(ITEMSTORE, { keyPath: 'hsnCode' });
+      }
     };
   });
 };
 
-export const customerDB = {
-  async getAll(STORE: string): Promise<Customer[]> {
+export const getDataBase = {
+  async getAll(STORE: string): Promise<any[]> {
     const db = await initDB();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(STORE, 'readonly');
@@ -38,19 +39,19 @@ export const customerDB = {
     });
   },
 
-  async add(STORE: string, customer: Customer): Promise<void> {
+  async add(STORE: string, data: any): Promise<void> {
     const db = await initDB();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(STORE, 'readwrite');
       const store = transaction.objectStore(STORE);
-      const request = store.add(customer);
+      const request = store.add(data);
 
       request.onsuccess = () => resolve();
       request.onerror = () => reject(request.error);
     });
   },
 
-  async update(STORE: string, customer: Customer): Promise<void> {
+  async update(STORE: string, customer: any): Promise<void> {
     const db = await initDB();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(STORE, 'readwrite');

@@ -46,7 +46,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
   useEffect(() => {
     // Initialize tableData with one empty row
     const initialItem: tableItem = {
-      id: rowIndx,
+      id: String(rowIndx),
       item: '',
       hsnCode: '',
       quantity: '',
@@ -90,8 +90,8 @@ const Invoice: React.FC<InvoiceProps> = () => {
       newTableData[rowIndex][field] = e.target.value;
 
       // Update the amount field if quantity and price are present
-      const quantity = parseFloat(newTableData[rowIndex].quantity) || 0;
-      const price = parseFloat(newTableData[rowIndex].price) || 0;
+      const quantity = parseFloat(newTableData[rowIndex].quantity || '0');
+      const price = parseFloat(newTableData[rowIndex].price || '0');
       newTableData[rowIndex].amount = (quantity * price).toFixed(2);
     } else if (field === 'item' || field === 'unit') {
       newTableData[rowIndex][field] = e.target.value;
@@ -104,7 +104,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
   // Function to add a new row
   const handleAddRow = () => {
     const newRow: tableItem = {
-      id: rowIndx + 1,
+      id: String(rowIndx + 1),
       item: '',
       hsnCode: '',
       quantity: '',
@@ -231,7 +231,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
     let total = 0;
     // Calculation of the total amount
     tableData.forEach((item) => {
-      total += parseFloat(item.amount) || 0;
+      total += parseFloat(item.amount || '0');
     });
 
     if (subtotalamt.current && totalamt.current) {

@@ -2,7 +2,7 @@ import { tableItem } from '@/DataModels/DataModels';
 
 export const dummyItems: tableItem[] = [
   {
-    id: 0,
+    id: '0',
     item: 'Add Item',
     quantity: '0',
     price: '0',
@@ -11,7 +11,7 @@ export const dummyItems: tableItem[] = [
     amount: '0',
   },
   {
-    id: 1,
+    id: '1',
     item: 'Item 1',
     quantity: '2',
     price: '50',
@@ -20,7 +20,7 @@ export const dummyItems: tableItem[] = [
     amount: '54',
   },
   {
-    id: 2,
+    id: '2',
     item: 'Item 2',
     quantity: '1',
     price: '150',
@@ -29,7 +29,7 @@ export const dummyItems: tableItem[] = [
     amount: '54',
   },
   {
-    id: 3,
+    id: '3',
     item: 'Item 3',
     quantity: '3',
     price: '30',
@@ -37,32 +37,6 @@ export const dummyItems: tableItem[] = [
     unit: 'pcs',
     amount: '54',
   },
-  {
-    id: 3,
-    item: 'Item 6',
-    quantity: '3',
-    price: '30',
-    hsnCode: '4',
-    unit: 'pcs',
-    amount: '54',
-  },
-  {
-    id: 4,
-    item: 'Itgfdgdfgdfgem3 4',
-    quantity: '3',
-    price: '30',
-    hsnCode: '4',
-    unit: 'pcs',
-    amount: '54',
-  },
-  {
-    id: 5,
-    item: 'Item 5',
-    quantity: '3',
-    price: '30',
-    hsnCode: '4',
-    unit: 'pcs',
-    amount: '54',
-  },
+
   // Add more items as needed
 ];

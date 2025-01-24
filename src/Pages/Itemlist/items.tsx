@@ -1,47 +1,15 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Item } from '@/DataModels/DataModels';
+import { tableItem } from '@/DataModels/DataModels';
+import { useSelector } from 'react-redux';
 
-// Define the structure of an item
-
-/**
- * Renders a table of items fetched from the server.
- *
- * @return {JSX.Element} A table of item data.
- */
-export default function Items() {
-  const [items, setItems] = useState<Item[]>([]);
-
+export default function tableItems() {
+  const [items, setitems] = useState<tableItem[]>([]);
+  let customer = useSelector(
+    (state: { ItemsDB: any; Items: tableItem[] }) => state?.ItemsDB.Items
+  );
   useEffect(() => {
-    setItems([
-      {
-        itemId: 1,
-        name: 'Item 1',
-        hsncode: 1234,
-        price: 10,
-        unit: 'each',
-        quantity: 2,
-        description: 'Description 1',
-      },
-      {
-        itemId: 2,
-        name: 'Item 2',
-        hsncode: 5678,
-        price: 20,
-        unit: 'pack',
-        quantity: 3,
-        description: 'Description 2',
-      },
-      {
-        itemId: 3,
-        name: 'Item 3',
-        hsncode: 91011,
-        price: 30,
-        unit: 'liter',
-        quantity: 4,
-        description: 'Description 3',
-      },
-    ]);
+    setitems(customer);
   }, []);
 
   return (
@@ -50,28 +18,26 @@ export default function Items() {
         to="/Items/newItem"
         className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mb-4 inline-block"
       >
-        Add Item
+        Add tableItem
       </NavLink>
 
       <table className="min-w-full table-auto border-collapse border border-gray-300">
-        <caption className="text-2xl font-semibold mb-4">Items</caption>
+        <caption className="text-2xl font-semibold mb-4">tableItems</caption>
         <thead>
           <tr>
-            <th className="border-b py-2 px-4 text-left">Item ID</th>
+            <th className="border-b py-2 px-4 text-left">tableItem ID</th>
             <th className="border-b py-2 px-4 text-left">Name</th>
             <th className="border-b py-2 px-4 text-left">HSN No.</th>
             <th className="border-b py-2 px-4 text-left">Unit</th>
-            <th className="border-b py-2 px-4 text-left">Price</th>
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
-            <tr key={item.itemId}>
-              <td className="border-b py-2 px-4">{item.itemId}</td>
-              <td className="border-b py-2 px-4">{item.name}</td>
-              <td className="border-b py-2 px-4">{item.hsncode}</td>
-              <td className="border-b py-2 px-4">{item.unit}</td>
-              <td className="border-b py-2 px-4">{item.price}</td>
+          {items.map((tableItem: tableItem, index: number) => (
+            <tr key={index}>
+              <td className="border-b py-2 px-4">{index}</td>
+              <td className="border-b py-2 px-4">{tableItem.item}</td>
+              <td className="border-b py-2 px-4">{tableItem.hsnCode}</td>
+              <td className="border-b py-2 px-4">{tableItem.unit}</td>
             </tr>
           ))}
         </tbody>

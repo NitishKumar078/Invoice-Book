@@ -12,13 +12,13 @@
 ################################################################################################## */
 
 export interface tableItem {
-  id: number;
+  id: string;
   item: string;
   hsnCode: string;
-  quantity: string;
+  quantity?: string;
   unit: string;
-  price: string;
-  amount: string;
+  price?: string;
+  amount?: string;
 }
 
 export interface invoiceItem {
@@ -58,4 +58,9 @@ export interface User {
   gstno: string;
   address: string;
   state: string;
+}
+
+export interface SingleValue {
+  value: string;
+  label: string;
 }

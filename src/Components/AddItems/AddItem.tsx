@@ -1,8 +1,19 @@
 import { useState } from 'react';
 import Select from 'react-select';
+import { SingleValue, tableItem } from '@/DataModels/DataModels';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addItem } from '@/Store/Reducers/ItemsSlice';
+import ShortUniqueId from 'short-unique-id';
+const { sequentialUUID } = new ShortUniqueId();
 
+// update the code to set the fomate data and store it in the database
 const AddItem = () => {
   const units = ['Piece', 'Kg', 'Ton', 'Ltr', 'inch', 'cm', 'Other'];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [itemname, setitemname] = useState<string>('');
+  const [hsnCode, sethsnCode] = useState<string>('');
   const [unit, setUnit] = useState<string>(units[0]);
   const customerOptions = units.map((unit) => ({
     value: unit,
@@ -10,17 +21,20 @@ const AddItem = () => {
   }));
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const Item: tableItem = {
+      id: sequentialUUID(),
+      item: itemname,
+      hsnCode: hsnCode,
+      unit: unit,
+    };
+    dispatch(addItem(Item));
     console.log('submitted');
+    navigate('/Items');
   };
 
-  const handleselectunit = (e: any) => {
-    if (e.target.value === 'Other') {
-      e.target.nextSibling &&
-        ((e.target.nextSibling as HTMLInputElement).style.display = 'block');
-    } else {
-      e.target.nextSibling &&
-        ((e.target.nextSibling as HTMLInputElement).style.display = 'none');
-      setUnit(e.target.value);
+  const handleselectunit = (selectedOption: any) => {
+    if (selectedOption) {
+      setUnit(selectedOption.value);
     }
   };
 
@@ -34,11 +48,12 @@ const AddItem = () => {
             htmlFor="name"
             className="block text-sm font-medium text-gray-700"
           >
-            Name
+            Item Name
           </label>
           <input
             type="text"
             id="name"
+            onChange={(e) => setitemname(e.target.value)}
             required
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
@@ -58,13 +73,6 @@ const AddItem = () => {
             placeholder="Select customer"
             required
           />
-          <input
-            type="text"
-            id="unit-other"
-            placeholder="Other"
-            style={{ display: 'none' }}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
         </div>
         <div className="mb-4">
           <label
@@ -77,24 +85,11 @@ const AddItem = () => {
             <input
               type="text"
               id="quantity"
+              onChange={(e) => sethsnCode(e.target.value)}
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="price"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Price
-          </label>
-          <input
-            type="text"
-            id="price"
-            required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
         </div>
         <button
           type="submit"
