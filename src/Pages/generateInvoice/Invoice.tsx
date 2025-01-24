@@ -3,7 +3,6 @@ import { tableItem, invoiceItem } from '../../DataModels/DataModels';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import DialogBox from '@/Components/Dialogbox/DialogBox';
 import { Customer, User } from '@/DataModels/DataModels';
-import { dummyItems } from './Data_provider';
 import { useSelector } from 'react-redux';
 import SelectCustomer from '@/Components/ui/SelectCustomer';
 import SelectItem from '@/Components/ui/SelectItem';
@@ -31,7 +30,10 @@ const Invoice: React.FC<InvoiceProps> = () => {
     (state: { customersDB: any; customer: Customer[] }) =>
       state?.customersDB.customers
   );
-
+  const [items, setitems] = useState<tableItem[]>([]);
+  let itemList = useSelector(
+    (state: { ItemsDB: any; Items: tableItem[] }) => state?.ItemsDB.Items
+  );
   useEffect(() => {
     const AddCustomer: Customer = {
       name: 'Add Customer',
@@ -40,8 +42,16 @@ const Invoice: React.FC<InvoiceProps> = () => {
       state: '',
       phone: '',
     };
+    const AddItem: tableItem = {
+      item: 'Add Item',
+      id: '',
+      hsnCode: '',
+      unit: '',
+    };
     customer = [AddCustomer, ...customer];
+    itemList = [AddItem, ...itemList];
     setCustomers(customer);
+    setitems(itemList);
   }, []);
   useEffect(() => {
     // Initialize tableData with one empty row
@@ -388,7 +398,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
                     <td className="p-2 border">
                       <SelectItem
                         setTableData={setTableData}
-                        ListItems={dummyItems}
+                        ListItems={items}
                         index={index}
                         tableData={tableData}
                       />
