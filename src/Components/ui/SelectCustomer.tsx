@@ -1,5 +1,5 @@
 import Select from 'react-select';
-import { Customer, User } from '@/DataModels/DataModels';
+import { Customer, User, option } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,9 +48,9 @@ const SelectCustomer = ({
   const navigate = useNavigate();
   const user = useSelector((state: { user: User }) => state.user);
 
-  const customerOptions = ListCustomers.map((customer) => ({
-    value: customer.name,
-    label: customer.name,
+  const customerOptions: option[] = ListCustomers.map((customer) => ({
+    value: customer.name || '',
+    label: customer.name || '',
   }));
   const handleCustomerChange = (selectedOption: any) => {
     if (selectedOption.value === 'Add Customer') {

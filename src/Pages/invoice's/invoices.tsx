@@ -1,29 +1,16 @@
+import { invoiceItem } from '@/DataModels/DataModels';
 import { useState, useEffect } from 'react';
-
-// Define types for the item
-interface Item {
-  itemId: number;
-  name: string;
-  price: number;
-  unit: string;
-  quantity: number;
-  description: string;
-}
+import { useSelector } from 'react-redux';
 
 export default function Items() {
-  const [items, setItems] = useState<Item[]>([]);
+  const [InvoiceList, setInvoiceList] = useState<invoiceItem[]>([]);
+  let invoicelist = useSelector(
+    (state: { invoiceDB: any; customer: invoiceItem[] }) =>
+      state?.invoiceDB.invoices
+  );
 
   useEffect(() => {
-    setItems(
-      Array.from({ length: 20 }, (_, i) => ({
-        itemId: i + 1,
-        name: `Item ${i + 1}`,
-        price: (i + 1) * 10,
-        unit: ['each', 'pack', 'liter'][i % 3],
-        quantity: i + 1,
-        description: `Description ${i + 1}`,
-      }))
-    );
+    setInvoiceList(invoicelist);
   }, []);
 
   return (
@@ -40,15 +27,24 @@ export default function Items() {
             <th className="border-b p-2 text-left bg-gray-100">Company</th>
             <th className="border-b p-2 text-left bg-gray-100">Tax amount</th>
             <th className="border-b p-2 text-left bg-gray-100">Total amount</th>
+            <th className="border-b p-2 text-left bg-gray-100">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
-            <tr key={item.itemId} className="hover:bg-gray-200">
-              <td className="border-b p-2">{item.itemId}</td>
-              <td className="border-b p-2">{item.name}</td>
-              <td className="border-b p-2">{item.unit}</td>
-              <td className="border-b p-2">{item.price}</td>
+          {InvoiceList.map((invoice) => (
+            <tr key={invoice.Iid} className="hover:bg-gray-200">
+              <td className="border-b p-2">{invoice.Iid}</td>
+              <td className="border-b p-2">{invoice.cname}</td>
+              <td className="border-b p-2">{invoice.totalgstamt}</td>
+              <td className="border-b p-2">{invoice.tamt}</td>
+              <td className="border-b p-2">
+                <button className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200 mr-2">
+                  Edit
+                </button>
+                <button className="py-1 px-3 bg-red-500 text-white rounded-md hover:bg-red-700 transition duration-200">
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

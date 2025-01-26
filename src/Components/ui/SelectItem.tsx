@@ -64,14 +64,15 @@ const SelectItem = ({
     );
     if (selectedItem) {
       newTableData[rowIndex] = {
-        id: rowIndex + 1,
+        id: String(rowIndex + 1),
         item: selectedItem.item,
-        hsnCode: selectedItem.hsnCode.toString(),
-        price: selectedItem.price.toString(),
+        hsnCode: selectedItem.hsnCode,
+        price: selectedItem.price,
         unit: selectedItem.unit,
-        quantity: selectedItem.quantity.toString(),
+        quantity: selectedItem.quantity,
         amount: (
-          parseFloat(selectedItem.price) * parseFloat(selectedItem.quantity)
+          parseFloat(selectedItem.price || '0') *
+          parseFloat(selectedItem.quantity || '0')
         ).toFixed(2),
       };
     }

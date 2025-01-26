@@ -17,7 +17,7 @@ export const initDB = (): Promise<IDBDatabase> => {
         db.createObjectStore(CUSTOMERSTORE, { keyPath: 'name' });
       }
       if (!db.objectStoreNames.contains(INVOICESTORE)) {
-        db.createObjectStore(INVOICESTORE, { keyPath: 'name' });
+        db.createObjectStore(INVOICESTORE, { keyPath: 'Iid' });
       }
       if (!db.objectStoreNames.contains(ITEMSTORE)) {
         db.createObjectStore(ITEMSTORE, { keyPath: 'hsnCode' });

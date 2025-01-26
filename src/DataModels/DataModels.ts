@@ -31,7 +31,7 @@ export interface invoiceItem {
   gstid: string;
   cno: string;
   cadress: string;
-  tableData: tableItem[];
+  tableData?: tableItem[];
   gsttype: boolean;
   totalgstamt: number;
   subtotalamt: string;
@@ -60,7 +60,7 @@ export interface User {
   state: string;
 }
 
-export interface SingleValue {
+export interface option {
   value: string;
   label: string;
 }

@@ -7,11 +7,14 @@ import { useSelector } from 'react-redux';
 import SelectCustomer from '@/Components/ui/SelectCustomer';
 import SelectItem from '@/Components/ui/SelectItem';
 import { CircleAlert } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { addInvoice } from '@/Store/Reducers/InvoiceSlice';
 
 interface InvoiceProps {}
 
 const Invoice: React.FC<InvoiceProps> = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [warning, setWarning] = useState('');
   const [description, setDescription] = useState('');
@@ -35,6 +38,18 @@ const Invoice: React.FC<InvoiceProps> = () => {
     (state: { ItemsDB: any; Items: tableItem[] }) => state?.ItemsDB.Items
   );
   useEffect(() => {
+    // Initialize tableData with one empty row
+    const initialItem: tableItem = {
+      id: String(rowIndx),
+      item: '',
+      hsnCode: '',
+      quantity: '',
+      unit: '',
+      price: '',
+      amount: '',
+    };
+    setTableData([initialItem]);
+    setCustomers(customer);
     const AddCustomer: Customer = {
       name: 'Add Customer',
       label: 'Add Customer',
@@ -52,20 +67,6 @@ const Invoice: React.FC<InvoiceProps> = () => {
     itemList = [AddItem, ...itemList];
     setCustomers(customer);
     setitems(itemList);
-  }, []);
-  useEffect(() => {
-    // Initialize tableData with one empty row
-    const initialItem: tableItem = {
-      id: String(rowIndx),
-      item: '',
-      hsnCode: '',
-      quantity: '',
-      unit: '',
-      price: '',
-      amount: '',
-    };
-    setTableData([initialItem]);
-    setCustomers(customer);
   }, []);
 
   const ValidatingInteger = (
@@ -231,8 +232,9 @@ const Invoice: React.FC<InvoiceProps> = () => {
 
   const handleSave = async (e: React.FormEvent) => {
     const ValidatedData = await DataValidation(e);
-    if (ValidatedData !== null) {
-      navigate('/');
+    if (ValidatedData && ValidatedData !== null) {
+      dispatch(addInvoice(ValidatedData));
+      // navigate('/Create');
       console.log('this data should be saved', ValidatedData);
     }
   };

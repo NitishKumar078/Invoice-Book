@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux';
 
 export default function tableItems() {
   const [items, setitems] = useState<tableItem[]>([]);
-  let customer = useSelector(
+  let itemList = useSelector(
     (state: { ItemsDB: any; Items: tableItem[] }) => state?.ItemsDB.Items
   );
   useEffect(() => {
-    setitems(customer);
+    setitems(itemList);
   }, []);
 
   return (
