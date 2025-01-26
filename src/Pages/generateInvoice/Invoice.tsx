@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { tableItem, invoiceItem } from '../../DataModels/DataModels';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import DialogBox from '@/Components/Dialogbox/DialogBox';
 import { Customer, User } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
 import SelectCustomer from '@/Components/ui/SelectCustomer';
 import SelectItem from '@/Components/ui/SelectItem';
-import { CircleAlert } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { addInvoice } from '@/Store/Reducers/InvoiceSlice';
 
@@ -86,6 +85,10 @@ const Invoice: React.FC<InvoiceProps> = () => {
     }
   };
 
+  const handleDialogClose = () => {
+    setIsOpen(false);
+    navigate('/setting');
+  };
   // Function to handle input changes
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -194,7 +197,6 @@ const Invoice: React.FC<InvoiceProps> = () => {
   const handleView = async (e: React.FormEvent) => {
     e.preventDefault();
     const ValidatedData = await DataValidation(e);
-    console.log('passing data to view', ValidatedData);
     if (ValidatedData !== null) {
       navigate('/viewInvoice', { state: { ValidatedData } });
     }
@@ -561,22 +563,15 @@ const Invoice: React.FC<InvoiceProps> = () => {
           />
         </div>
       ) : (
-        <div className="z-50 fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg p-8 rounded-lg shadow-lg text-center">
-            <h2 className="text-xl font-semibold mb-4">
-              warning <CircleAlert className="inline" />
-            </h2>
-            <p className="mb-6">
-              Before generating the invoice, please provide your information.
-            </p>
-            <Link
-              to="/setting"
-              className="py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
-            >
-              OK
-            </Link>
-          </div>
-        </div>
+        <DialogBox
+          dialogOpen={true}
+          setDialogOpen={setIsOpen}
+          warningTitle={'Warning'}
+          dialogDescription={
+            'Before generating the invoice, please provide your information.'
+          }
+          url="/setting"
+        />
       )}
     </>
   );

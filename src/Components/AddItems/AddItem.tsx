@@ -1,40 +1,59 @@
 import { useState } from 'react';
 import Select from 'react-select';
-import { SingleValue, tableItem } from '@/DataModels/DataModels';
-import { useNavigate } from 'react-router-dom';
+import { tableItem, option } from '@/DataModels/DataModels';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addItem } from '@/Store/Reducers/ItemsSlice';
+import { addItem, updateItem } from '@/Store/Reducers/ItemsSlice';
 import ShortUniqueId from 'short-unique-id';
 const { sequentialUUID } = new ShortUniqueId();
 
 // update the code to set the fomate data and store it in the database
 const AddItem = () => {
+  const location = useLocation();
   const units = ['Piece', 'Kg', 'Ton', 'Ltr', 'inch', 'cm', 'Other'];
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [itemname, setitemname] = useState<string>('');
-  const [hsnCode, sethsnCode] = useState<string>('');
-  const [unit, setUnit] = useState<string>(units[0]);
-  const customerOptions = units.map((unit) => ({
+  const mode = location.state?.mode || 'create';
+  const itemOptions: option[] = units.map((unit) => ({
     value: unit,
     label: unit,
   }));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const itemid = location.state?.tableItem.id || sequentialUUID();
+  const [itemname, setitemname] = useState<string>(
+    location.state?.tableItem.item || ''
+  );
+
+  const [hsnCode, sethsnCode] = useState<string>(
+    location.state?.tableItem.hsnCode || ''
+  );
+
+  const [selectedunit, setUnit] = useState<option | null>(
+    itemOptions.find(
+      (item) =>
+        item.value.toLowerCase() ===
+        location.state?.tableItem.unit.toLowerCase()
+    ) || null
+  );
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const Item: tableItem = {
-      id: sequentialUUID(),
+      id: itemid,
       item: itemname,
       hsnCode: hsnCode,
-      unit: unit,
+      unit: selectedunit?.value || '',
     };
-    dispatch(addItem(Item));
+    if (mode == 'create') {
+      dispatch(addItem(Item));
+    } else {
+      dispatch(updateItem(Item));
+    }
     console.log('submitted');
     navigate('/Items');
   };
 
   const handleselectunit = (selectedOption: any) => {
     if (selectedOption) {
-      setUnit(selectedOption.value);
+      setUnit(selectedOption);
     }
   };
 
@@ -53,6 +72,7 @@ const AddItem = () => {
           <input
             type="text"
             id="name"
+            value={itemname}
             onChange={(e) => setitemname(e.target.value)}
             required
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -68,8 +88,9 @@ const AddItem = () => {
           <Select
             id="customername"
             className="mt-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            options={customerOptions}
+            options={itemOptions}
             onChange={handleselectunit}
+            value={selectedunit}
             placeholder="Select customer"
             required
           />
@@ -85,6 +106,7 @@ const AddItem = () => {
             <input
               type="text"
               id="quantity"
+              value={hsnCode}
               onChange={(e) => sethsnCode(e.target.value)}
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

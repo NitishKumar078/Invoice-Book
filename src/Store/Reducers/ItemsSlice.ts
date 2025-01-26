@@ -31,7 +31,7 @@ const ItemsSlice = createSlice({
   name: ItemStore,
   initialState,
   reducers: {
-    setItem: (state, action: PayloadAction<tableItem[]>) => {
+    setItems: (state, action: PayloadAction<tableItem[]>) => {
       state.Items = action.payload;
     },
     addItem: (state, action: PayloadAction<tableItem>) => {
@@ -41,9 +41,7 @@ const ItemsSlice = createSlice({
       });
     },
     updateItem: (state, action: PayloadAction<tableItem>) => {
-      const index = state.Items.findIndex(
-        (c) => c.item === action.payload.item
-      );
+      const index = state.Items.findIndex((c) => c.id === action.payload.id);
       if (index !== -1) {
         state.Items[index] = action.payload;
         getDataBase.update(ItemStore, action.payload).catch((error) => {
@@ -60,6 +58,6 @@ const ItemsSlice = createSlice({
   },
 });
 
-export const { setItem, addItem, updateItem, deleteItem } = ItemsSlice.actions;
+export const { setItems, addItem, updateItem, deleteItem } = ItemsSlice.actions;
 
 export default ItemsSlice.reducer;

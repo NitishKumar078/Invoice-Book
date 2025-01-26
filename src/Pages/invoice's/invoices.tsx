@@ -1,8 +1,10 @@
 import { invoiceItem } from '@/DataModels/DataModels';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export default function Items() {
+  const navigate = useNavigate();
   const [InvoiceList, setInvoiceList] = useState<invoiceItem[]>([]);
   let invoicelist = useSelector(
     (state: { invoiceDB: any; customer: invoiceItem[] }) =>
@@ -12,6 +14,10 @@ export default function Items() {
   useEffect(() => {
     setInvoiceList(invoicelist);
   }, []);
+
+  const handleInvoiceEdit = () => {
+    navigate('/crete', { state: { id: 42, name: 'Nitish' } });
+  };
 
   return (
     <div className="createcart itemList absolute left-[calc(17rem)] right-[5px]  p-2  bg-white  border border-gray-300 shadow-lg transition-all duration-300 ease-in-out">
@@ -38,7 +44,10 @@ export default function Items() {
               <td className="border-b p-2">{invoice.totalgstamt}</td>
               <td className="border-b p-2">{invoice.tamt}</td>
               <td className="border-b p-2">
-                <button className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200 mr-2">
+                <button
+                  className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200 mr-2"
+                  onClick={handleInvoiceEdit}
+                >
                   Edit
                 </button>
                 <button className="py-1 px-3 bg-red-500 text-white rounded-md hover:bg-red-700 transition duration-200">

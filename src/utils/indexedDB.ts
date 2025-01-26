@@ -20,7 +20,7 @@ export const initDB = (): Promise<IDBDatabase> => {
         db.createObjectStore(INVOICESTORE, { keyPath: 'Iid' });
       }
       if (!db.objectStoreNames.contains(ITEMSTORE)) {
-        db.createObjectStore(ITEMSTORE, { keyPath: 'hsnCode' });
+        db.createObjectStore(ITEMSTORE, { keyPath: 'id' });
       }
     };
   });
@@ -51,24 +51,24 @@ export const getDataBase = {
     });
   },
 
-  async update(STORE: string, customer: any): Promise<void> {
+  async update(STORE: string, data: any): Promise<void> {
     const db = await initDB();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(STORE, 'readwrite');
       const store = transaction.objectStore(STORE);
-      const request = store.put(customer);
+      const request = store.put(data);
 
       request.onsuccess = () => resolve();
       request.onerror = () => reject(request.error);
     });
   },
 
-  async delete(STORE: string, name: string): Promise<void> {
+  async delete(STORE: string, key: any): Promise<void> {
     const db = await initDB();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(STORE, 'readwrite');
       const store = transaction.objectStore(STORE);
-      const request = store.delete(name);
+      const request = store.delete(key);
 
       request.onsuccess = () => resolve();
       request.onerror = () => reject(request.error);
