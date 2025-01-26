@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-
 import { Customer } from '@/DataModels/DataModels';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { deleteCustomer } from '@/Store/Reducers/customersSlice';
 
-/**
- * Renders a table of customers fetched from the server.
- *
- * @return {JSX.Element} A table of customer data.
- */
 export default function Customers() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const customer = useSelector(
     (state: { customersDB: any; customer: Customer[] }) =>
@@ -19,6 +18,18 @@ export default function Customers() {
   useEffect(() => {
     setCustomers(customer);
   }, []);
+
+  const handleCustomerEdit = (Customerdata: Customer) => {
+    navigate('/customers/newCustomer', {
+      state: { Customerdata, mode: 'Edit' },
+    });
+  };
+
+  const handleCustomerDeletion = async (key: string) => {
+    //delete from redux and the index Db
+    dispatch(deleteCustomer(key));
+    window.location.reload();
+  };
 
   return (
     <div className="createcart relative w-[calc(80vw)]  left-[calc(16rem)] top-0 bottom-0 right-1vw overflow-y-auto p-5 bg-white shadow-lg transition-all duration-300 ease-in-out customersList">
@@ -36,6 +47,7 @@ export default function Customers() {
             <th className="border border-gray-300 p-2">GST No</th>
             <th className="border border-gray-300 p-2">Contact No</th>
             <th className="border border-gray-300 p-2">Address</th>
+            <th className="border-b py-2 px-4 text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -45,10 +57,28 @@ export default function Customers() {
               className="even:bg-gray-100 hover:bg-gray-200"
             >
               <td className="border border-gray-300 p-2">{customer.name}</td>
-              <td className="border border-gray-300 p-2">{customer.name}</td>
+              <td className="border border-gray-300 p-2">{customer.company}</td>
               <td className="border border-gray-300 p-2">{customer.gstinNo}</td>
               <td className="border border-gray-300 p-2">{customer.phone}</td>
               <td className="border border-gray-300 p-2">{customer.address}</td>
+              <td className="border-b p-2">
+                <button
+                  className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200 mr-2"
+                  onClick={() => {
+                    handleCustomerEdit(customer);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="py-1 px-3 bg-red-500 text-white rounded-md hover:bg-red-700 transition duration-200"
+                  onClick={() => {
+                    handleCustomerDeletion(customer.customer_id);
+                  }}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

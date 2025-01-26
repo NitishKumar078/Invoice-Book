@@ -14,7 +14,7 @@ export const initDB = (): Promise<IDBDatabase> => {
     request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
       const db = (event.target as IDBOpenDBRequest).result;
       if (!db.objectStoreNames.contains(CUSTOMERSTORE)) {
-        db.createObjectStore(CUSTOMERSTORE, { keyPath: 'name' });
+        db.createObjectStore(CUSTOMERSTORE, { keyPath: 'customer_id' });
       }
       if (!db.objectStoreNames.contains(INVOICESTORE)) {
         db.createObjectStore(INVOICESTORE, { keyPath: 'Iid' });

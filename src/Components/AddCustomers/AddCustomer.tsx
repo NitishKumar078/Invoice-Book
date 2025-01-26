@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
-import { addCustomer } from '@/Store/Reducers/customersSlice';
+import { addCustomer, updateCustomer } from '@/Store/Reducers/customersSlice';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ShortUniqueId from 'short-unique-id';
 const { sequentialUUID } = new ShortUniqueId();
 import { Customer } from '@/DataModels/DataModels';
@@ -38,13 +38,28 @@ const AddCustomer = () => {
     'Uttar Pradesh',
     'West Bengal',
   ];
-
-  const [state, setState] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [gstno, setGstno] = useState<string>('');
-  const [nick_name, setNickName] = useState<string>('');
-  const [company, setCompany] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
+  const location = useLocation();
+  const mode = location.state?.mode || 'create';
+  const [state, setState] = useState<string>(
+    location.state?.Customerdata.state || ''
+  );
+  const [phone, setPhone] = useState<string>(
+    location.state?.Customerdata.phone || ''
+  );
+  const [gstno, setGstno] = useState<string>(
+    location.state?.Customerdata.gstinNo || ''
+  );
+  const [nick_name, setNickName] = useState<string>(
+    location.state?.Customerdata.name || ''
+  );
+  const [company, setCompany] = useState<string>(
+    location.state?.Customerdata.company || ''
+  );
+  const [address, setAddress] = useState<string>(
+    location.state?.Customerdata.address || ''
+  );
+  const customerid =
+    location.state?.Customerdata.customer_id || sequentialUUID();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -57,7 +72,7 @@ const AddCustomer = () => {
 
     try {
       const customer: Customer = {
-        customer_id: sequentialUUID(),
+        customer_id: customerid,
         name: nick_name,
         gstinNo: gstno,
         state,
@@ -65,10 +80,13 @@ const AddCustomer = () => {
         company,
         address,
       };
-      dispatch(addCustomer(customer));
-
-      console.log('Customer added successfully');
+      if (mode == 'create') {
+        dispatch(addCustomer(customer));
+      } else {
+        dispatch(updateCustomer(customer));
+      }
       navigate('/customers'); // Navigate back to customers list
+      console.log('Customer added successfully');
     } catch (error) {
       console.error('Failed to add customer:', error);
       alert('Failed to add customer. Please try again.');
@@ -109,19 +127,6 @@ const AddCustomer = () => {
             id="company"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
