@@ -1,15 +1,15 @@
-/* ################################################################################################
-
-# THIS FILE CONSIST DATA FORMATION FOR DATA_STORING FOR ALL NEW INVOICE'S
-  ------------------------------------------------------------------------
-
-1. tableItem
-  - This contains all the information for each row of ablout item while creation.
-
-2. invoiceItem
-  - This raps the all necessary information of the invoice including the tableInfo(tableItem)  
-
-################################################################################################## */
+/* ************************************************************************************************
+ *
+ * THIS FILE CONSIST DATA FORMATION FOR DATA_STORING FOR ALL NEW INVOICE'S
+ *  ------------------------------------------------------------------------
+ *
+ * 1. tableItem
+ *    - This contains all the information for each row of ablout item while creation.
+ *
+ * 2. invoiceItem
+ *    - This raps the all necessary information of the invoice including the tableInfo(tableItem)
+ *
+ ************************************************************************************************** */
 
 export interface tableItem {
   id: string;

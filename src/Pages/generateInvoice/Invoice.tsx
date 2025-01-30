@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { tableItem, invoiceItem } from '../../DataModels/DataModels';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import DialogBox from '@/Components/Dialogbox/DialogBox';
 import { Customer, User } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
@@ -14,40 +14,70 @@ interface InvoiceProps {}
 const Invoice: React.FC<InvoiceProps> = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [warning, setWarning] = useState('');
   const [description, setDescription] = useState('');
-  const [tableData, setTableData] = useState<tableItem[]>([]);
-  const [rowIndx, setRowIndx] = useState<number>(1);
-  const [gsttype, setgsttype] = useState<boolean>(true); // if gsttype--> true then normal gst(18%) orelse igst(18%)
-  const [gstamt, setgstamt] = useState<number | null>(null);
-  const subtotalamt = useRef<HTMLInputElement>(null);
-  const totalamt = useRef<HTMLInputElement>(null);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
-    null
+  const [tableData, setTableData] = useState<tableItem[]>(
+    location.state?.invoicedata.tableData || []
   );
-  const user = useSelector((state: { user: User }) => state.user);
-  const [Customers, setCustomers] = useState<Customer[]>([]);
+  const [invoiceId, setinvoiceId] = useState<string>(
+    location.state?.invoicedata.Iid || ''
+  );
+  const [rowIndx, setRowIndx] = useState<number>(1);
+  const [gsttype, setgsttype] = useState<boolean>(
+    location.state?.invoicedata.gsttype || true
+  ); // if gsttype--> true then normal gst(18%) orelse igst(18%)
+  const [gstamt, setgstamt] = useState<number | null>(
+    location.state?.invoicedata.totalgstamt || null
+  );
+  const subtotalamt = useRef<HTMLInputElement>(
+    location.state?.invoicedata.subtotalamt || null
+  );
+  const totalamt = useRef<HTMLInputElement>(null);
   let customer = useSelector(
     (state: { customersDB: any; customer: Customer[] }) =>
       state?.customersDB.customers
   );
-  const [items, setitems] = useState<tableItem[]>([]);
+  /** get the customer and set from here  */
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    customer.find(
+      (c: Customer) =>
+        c.name &&
+        c.name.toLowerCase() === location.state?.invoicedata.cname.toLowerCase()
+    ) || null
+  );
+  const user = useSelector((state: { user: User }) => state.user);
+
   let itemList = useSelector(
     (state: { ItemsDB: any; Items: tableItem[] }) => state?.ItemsDB.Items
   );
+  const [Customers, setCustomers] = useState<Customer[]>([]);
+  const [items, setitems] = useState<tableItem[]>([]);
+  const [ewaybill, setewaybill] = useState<string>(
+    location.state?.invoicedata.E_waybillno || ''
+  );
+  const [vehicleno, setvehicleno] = useState<string>(
+    location.state?.invoicedata.vehicleno || ''
+  );
+  const [customername, setcustomername] = useState<string>(
+    location.state?.invoicedata.cname || ''
+  );
   useEffect(() => {
     // Initialize tableData with one empty row
-    const initialItem: tableItem = {
-      id: String(rowIndx),
-      item: '',
-      hsnCode: '',
-      quantity: '',
-      unit: '',
-      price: '',
-      amount: '',
-    };
-    setTableData([initialItem]);
+    if (tableData.length === 0) {
+      const initialItem: tableItem = {
+        id: String(rowIndx),
+        item: '',
+        hsnCode: '',
+        quantity: '',
+        unit: '',
+        price: '',
+        amount: '',
+      };
+      setTableData([initialItem]);
+    }
+
     setCustomers(customer);
     const AddCustomer: Customer = {
       name: 'Add Customer',
@@ -70,33 +100,35 @@ const Invoice: React.FC<InvoiceProps> = () => {
 
   const ValidatingInteger = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: string
+    field: string,
+    setstate?: React.Dispatch<React.SetStateAction<string>>
   ) => {
     if (
       field === 'quantity' ||
       field === 'price' ||
       field === 'ContactNo' ||
       field === 'ewaybillno' ||
-      field === 'hsnCode'
+      field === 'hsnCode' ||
+      field === 'Iid'
     ) {
-      e.target.value = e.target.value
+      let inputs = e.target.value
         .replace(/[^0-9.]/g, '')
         .replace(/(\..*)\./g, '$1');
+      if (setstate) {
+        setstate(inputs);
+      }
     }
   };
 
-  const handleDialogClose = () => {
-    setIsOpen(false);
-    navigate('/setting');
-  };
   // Function to handle input changes
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     rowIndex: number,
-    field: string
+    field: string,
+    setstate?: React.Dispatch<React.SetStateAction<string>>
   ) => {
     // Validating the data type for quantity and price
-    ValidatingInteger(e, field);
+    ValidatingInteger(e, field, setstate);
 
     // Update the specific field in the row
     const newTableData = [...tableData];
@@ -149,8 +181,6 @@ const Invoice: React.FC<InvoiceProps> = () => {
   // Function to handle save action
   const getinvoicedata = () => {
     const Idate = (document.getElementById('Idata') as HTMLInputElement).value;
-    const Iid = (document.getElementById('invoiceId') as HTMLInputElement)
-      .value;
     if (!selectedCustomer) {
       setIsOpen(true);
       return null;
@@ -160,12 +190,6 @@ const Invoice: React.FC<InvoiceProps> = () => {
       const cno = selectedCustomer?.contactNo || '';
       const cadress = selectedCustomer?.address || '';
       const contact = selectedCustomer?.contactNo || null;
-      const E_waybillno = (
-        document.getElementById('E-waybillno') as HTMLInputElement
-      ).value;
-      const vehicleno = (
-        document.getElementById('vehicleno') as HTMLInputElement
-      ).value;
       const totalgstamt = gstamt || 0;
       const tamt =
         parseFloat(
@@ -175,10 +199,10 @@ const Invoice: React.FC<InvoiceProps> = () => {
         document.getElementById('subtotal') as HTMLInputElement
       ).value;
       const Idata: invoiceItem = {
-        Iid,
+        Iid: invoiceId,
         contact,
         vehicleno,
-        E_waybillno,
+        E_waybillno: ewaybill,
         Idate,
         cname,
         gstid,
@@ -236,7 +260,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
     const ValidatedData = await DataValidation(e);
     if (ValidatedData && ValidatedData !== null) {
       dispatch(addInvoice(ValidatedData));
-      // navigate('/Create');
+      navigate('/Invoices');
       console.log('this data should be saved', ValidatedData);
     }
   };
@@ -283,6 +307,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
                   setSelectedCustomer={setSelectedCustomer}
                   setgsttype={setgsttype}
                   ListCustomers={Customers}
+                  setdefault={selectedCustomer?.name}
                 />
                 <br />
                 <div className="flex flex-col gap-2 pt-2">
@@ -317,9 +342,11 @@ const Invoice: React.FC<InvoiceProps> = () => {
                       onInput={(e) => {
                         ValidatingInteger(
                           e as React.ChangeEvent<HTMLInputElement>,
-                          'ewaybillno'
+                          'ewaybillno',
+                          setewaybill
                         );
                       }}
+                      defaultValue={ewaybill}
                       required
                     />
                   ) : (
@@ -330,9 +357,11 @@ const Invoice: React.FC<InvoiceProps> = () => {
                       onInput={(e) => {
                         ValidatingInteger(
                           e as React.ChangeEvent<HTMLInputElement>,
-                          'ewaybillno'
+                          'ewaybillno',
+                          setewaybill
                         );
                       }}
+                      defaultValue={ewaybill}
                     />
                   )}
                 </div>
@@ -351,7 +380,9 @@ const Invoice: React.FC<InvoiceProps> = () => {
                     onInput={(e) => {
                       const target = e.target as HTMLInputElement;
                       target.value = target.value.toUpperCase();
+                      setvehicleno(target.value);
                     }}
+                    defaultValue={vehicleno}
                   />
                 </div>
                 <div>
@@ -363,6 +394,14 @@ const Invoice: React.FC<InvoiceProps> = () => {
                     name="invoiceId"
                     id="invoiceId"
                     className="p-2 border rounded w-full"
+                    onInput={(e) => {
+                      ValidatingInteger(
+                        e as React.ChangeEvent<HTMLInputElement>,
+                        'Iid',
+                        setinvoiceId
+                      );
+                    }}
+                    defaultValue={Number(invoiceId) || 0}
                   />
                 </div>
                 <div className="data mt-2">

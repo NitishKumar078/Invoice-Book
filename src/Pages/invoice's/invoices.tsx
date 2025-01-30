@@ -2,9 +2,12 @@ import { invoiceItem } from '@/DataModels/DataModels';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { deleteInvoice } from '@/Store/Reducers/InvoiceSlice';
+import { useDispatch } from 'react-redux';
 
 export default function Items() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [InvoiceList, setInvoiceList] = useState<invoiceItem[]>([]);
   let invoicelist = useSelector(
     (state: { invoiceDB: any; customer: invoiceItem[] }) =>
@@ -15,8 +18,13 @@ export default function Items() {
     setInvoiceList(invoicelist);
   }, []);
 
-  const handleInvoiceEdit = () => {
-    navigate('/crete', { state: { id: 42, name: 'Nitish' } });
+  const handleInvoiceEdit = (invoicedata: invoiceItem) => {
+    navigate('/Create', { state: { invoicedata, mode: 'Edit' } });
+  };
+  const handleInvoiceDeletion = async (key: string) => {
+    //delete from redux and the index Db
+    dispatch(deleteInvoice(key));
+    window.location.reload();
   };
 
   return (
@@ -46,11 +54,16 @@ export default function Items() {
               <td className="border-b p-2">
                 <button
                   className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200 mr-2"
-                  onClick={handleInvoiceEdit}
+                  onClick={() => handleInvoiceEdit(invoice)}
                 >
                   Edit
                 </button>
-                <button className="py-1 px-3 bg-red-500 text-white rounded-md hover:bg-red-700 transition duration-200">
+                <button
+                  className="py-1 px-3 bg-red-500 text-white rounded-md hover:bg-red-700 transition duration-200"
+                  onClick={() => {
+                    handleInvoiceDeletion(invoice.Iid);
+                  }}
+                >
                   Delete
                 </button>
               </td>

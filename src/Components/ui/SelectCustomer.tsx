@@ -2,6 +2,7 @@ import Select from 'react-select';
 import { Customer, User, option } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const customStyles = {
   option: (provided: any, state: any) => ({
@@ -39,19 +40,22 @@ interface CustomerListPops {
   setSelectedCustomer: React.Dispatch<React.SetStateAction<Customer | null>>;
   setgsttype: React.Dispatch<React.SetStateAction<boolean | true>>;
   ListCustomers: Customer[];
+  setdefault: string | undefined;
 }
+
 const SelectCustomer = ({
   setgsttype,
   setSelectedCustomer,
   ListCustomers,
+  setdefault,
 }: CustomerListPops) => {
   const navigate = useNavigate();
   const user = useSelector((state: { user: User }) => state.user);
-
   const customerOptions: option[] = ListCustomers.map((customer) => ({
     value: customer.name || '',
     label: customer.name || '',
   }));
+  const [customer, setCustomer] = useState<option | null>();
   const handleCustomerChange = (selectedOption: any) => {
     if (selectedOption.value === 'Add Customer') {
       navigate('/Customers/newCustomer');
@@ -61,6 +65,7 @@ const SelectCustomer = ({
     const customer = ListCustomers.find((c) => c.name === selectedOption.value);
     if (customer) {
       setSelectedCustomer(customer);
+      setCustomer(selectedOption);
       const gstType: boolean =
         customer.state?.toLowerCase() === user.state.toLowerCase()
           ? true
@@ -84,6 +89,7 @@ const SelectCustomer = ({
     ...option,
     customStyle: highlightOption(option), // Add custom styles to each option
   }));
+
   return (
     <div>
       <Select
@@ -95,7 +101,7 @@ const SelectCustomer = ({
         required
         styles={{
           ...customStyles,
-          option: (provided, state) => {
+          option: (provided: any, state: { data: option }) => {
             const customStyle = modifiedOptions.find(
               (option) => option.value === state.data.value
             )?.customStyle;
@@ -105,6 +111,7 @@ const SelectCustomer = ({
             };
           },
         }}
+        defaultValue={customer} // Set the defaultValue here
       />
     </div>
   );
