@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { tableItem, invoiceItem } from '../../DataModels/DataModels';
+import { tableItem, invoiceItem, option } from '../../DataModels/DataModels';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import DialogBox from '@/Components/Dialogbox/DialogBox';
 import { Customer, User } from '@/DataModels/DataModels';
@@ -41,11 +41,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
   );
   /** get the customer and set from here  */
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
-    customer.find(
-      (c: Customer) =>
-        c.name &&
-        c.name.toLowerCase() === location.state?.invoicedata.cname.toLowerCase()
-    ) || null
+    null
   );
   const user = useSelector((state: { user: User }) => state.user);
 
@@ -60,43 +56,61 @@ const Invoice: React.FC<InvoiceProps> = () => {
   const [vehicleno, setvehicleno] = useState<string>(
     location.state?.invoicedata.vehicleno || ''
   );
-  const [customername, setcustomername] = useState<string>(
-    location.state?.invoicedata.cname || ''
-  );
-  useEffect(() => {
-    // Initialize tableData with one empty row
-    if (tableData.length === 0) {
-      const initialItem: tableItem = {
-        id: String(rowIndx),
-        item: '',
-        hsnCode: '',
-        quantity: '',
-        unit: '',
-        price: '',
-        amount: '',
-      };
-      setTableData([initialItem]);
-    }
 
-    setCustomers(customer);
-    const AddCustomer: Customer = {
-      name: 'Add Customer',
-      label: 'Add Customer',
-      customer_id: '',
-      state: '',
-      phone: '',
+  const [isLoading, setIsLoading] = useState(true);
+  // Customer options for react-select
+  const customerOptions: option[] = [
+    { value: 'Add Customer', label: 'Add Customer' },
+    ...customer.map((c: Customer) => ({
+      value: c.name || '',
+      label: c.name || '',
+    })),
+  ];
+  // Default customer selection
+  const defaultCustomer: option | null =
+    customerOptions.find((option) => selectedCustomer?.name === option.value) ||
+    null;
+
+  useEffect(() => {
+    const initializeData = () => {
+      // Initialize customers
+      const AddCustomer: Customer = {
+        name: 'Add Customer',
+        label: 'Add Customer',
+        customer_id: '',
+        state: '',
+        phone: '',
+      };
+      const updatedCustomers = [AddCustomer, ...customer];
+      setCustomers(updatedCustomers);
+
+      // Initialize items
+      const AddItem: tableItem = {
+        item: 'Add Item',
+        id: '',
+        hsnCode: '',
+        unit: '',
+      };
+      const updatedItems = [AddItem, ...itemList];
+      setitems(updatedItems);
+
+      // Set initial customer if editing existing invoice
+      if (location.state?.invoicedata.cname) {
+        const foundCustomer = customer.find(
+          (c: Customer) =>
+            c.name?.toLowerCase() ===
+            location.state.invoicedata.cname.toLowerCase()
+        );
+        setSelectedCustomer(foundCustomer || null);
+      }
+
+      setIsLoading(false);
     };
-    const AddItem: tableItem = {
-      item: 'Add Item',
-      id: '',
-      hsnCode: '',
-      unit: '',
-    };
-    customer = [AddCustomer, ...customer];
-    itemList = [AddItem, ...itemList];
-    setCustomers(customer);
-    setitems(itemList);
-  }, []);
+
+    if (customer.length > 0 && itemList.length > 0) {
+      initializeData();
+    }
+  }, [customer, itemList, location.state]);
 
   const ValidatingInteger = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -278,7 +292,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
       totalamt.current.value = (total * 1.18).toFixed(2);
     }
   }, [tableData]); // Depend on tableData to update when it changes
-
+  if (isLoading) return <div>Loading customers and items...</div>;
   return (
     <>
       {user.company ? (
@@ -304,10 +318,12 @@ const Invoice: React.FC<InvoiceProps> = () => {
               <div className="bill-to ">
                 <h3 className="text-lg font-semibold">Bill To</h3>
                 <SelectCustomer
+                  key={customerOptions.length} // Force re-render on data changes
                   setSelectedCustomer={setSelectedCustomer}
                   setgsttype={setgsttype}
                   ListCustomers={Customers}
-                  setdefault={selectedCustomer?.name}
+                  customerOptions={customerOptions}
+                  defaultCustomer={defaultCustomer}
                 />
                 <br />
                 <div className="flex flex-col gap-2 pt-2">

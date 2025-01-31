@@ -38,38 +38,36 @@ const customStyles = {
 
 interface CustomerListPops {
   setSelectedCustomer: React.Dispatch<React.SetStateAction<Customer | null>>;
-  setgsttype: React.Dispatch<React.SetStateAction<boolean | true>>;
+  setgsttype: React.Dispatch<React.SetStateAction<boolean>>;
   ListCustomers: Customer[];
-  setdefault: string | undefined;
+  customerOptions: option[];
+  defaultCustomer: option | null;
 }
 
 const SelectCustomer = ({
   setgsttype,
   setSelectedCustomer,
   ListCustomers,
-  setdefault,
+  customerOptions,
+  defaultCustomer,
 }: CustomerListPops) => {
   const navigate = useNavigate();
   const user = useSelector((state: { user: User }) => state.user);
-  const customerOptions: option[] = ListCustomers.map((customer) => ({
-    value: customer.name || '',
-    label: customer.name || '',
-  }));
-  const [customer, setCustomer] = useState<option | null>();
+
   const handleCustomerChange = (selectedOption: any) => {
+    if (!selectedOption) return;
+
     if (selectedOption.value === 'Add Customer') {
       navigate('/Customers/newCustomer');
       setSelectedCustomer(null);
+      return;
     }
 
     const customer = ListCustomers.find((c) => c.name === selectedOption.value);
     if (customer) {
       setSelectedCustomer(customer);
-      setCustomer(selectedOption);
-      const gstType: boolean =
-        customer.state?.toLowerCase() === user.state.toLowerCase()
-          ? true
-          : false;
+      const gstType =
+        customer.state?.toLowerCase() === user.state.toLowerCase();
       setgsttype(gstType);
     }
   };
@@ -94,8 +92,8 @@ const SelectCustomer = ({
     <div>
       <Select
         id="customername"
-        className="p-2 w-60 h-10 "
-        options={modifiedOptions}
+        className="p-2 w-60 h-10"
+        options={customerOptions}
         onChange={handleCustomerChange}
         placeholder="Select customer"
         required
@@ -111,7 +109,7 @@ const SelectCustomer = ({
             };
           },
         }}
-        defaultValue={customer} // Set the defaultValue here
+        defaultValue={defaultCustomer} // Set the defaultValue here
       />
     </div>
   );
