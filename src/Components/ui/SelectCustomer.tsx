@@ -2,7 +2,6 @@ import Select from 'react-select';
 import { Customer, User, option } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 
 const customStyles = {
   option: (provided: any, state: any) => ({

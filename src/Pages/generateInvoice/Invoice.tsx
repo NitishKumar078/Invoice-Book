@@ -460,6 +460,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
                         ListItems={items}
                         index={index}
                         tableData={tableData}
+                        item={item.item}
                       />
                     </td>
                     <td className="p-2 border">
@@ -559,6 +560,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
                     type="text"
                     id="subtotal"
                     ref={subtotalamt}
+                    defaultValue={location.state.subtotalamt || ''}
                     readOnly
                     className="w-[10vw] text-right p-2 border rounded"
                   />
@@ -583,6 +585,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
                     type="text"
                     id="total"
                     ref={totalamt}
+                    defaultValue={location.state.tamt || ''}
                     readOnly
                     className="w-[12vw] text-right p-2 border rounded"
                   />

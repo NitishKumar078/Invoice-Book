@@ -1,6 +1,7 @@
 import Select from 'react-select';
-import { tableItem } from '@/DataModels/DataModels';
+import { option, tableItem } from '@/DataModels/DataModels';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const customStyles = {
   option: (provided: any, state: any) => ({
@@ -39,19 +40,24 @@ interface CustomerListPops {
   ListItems: tableItem[];
   index: number;
   tableData: tableItem[];
+  item: string;
 }
 const SelectItem = ({
   setTableData,
   ListItems,
   index,
   tableData,
+  item,
 }: CustomerListPops) => {
   const navigate = useNavigate();
-
   const itemOptions = ListItems.map((item) => ({
     value: item.item,
     label: item.item,
   }));
+  const foundItem = itemOptions.find((i) => i.value === item);
+  const [selectItem, setselectItem] = useState<option | null>(
+    foundItem || null
+  );
 
   const handleSelectChange = (selectedOption: any, rowIndex: number) => {
     if (selectedOption.value === 'Add Item') {
@@ -76,6 +82,7 @@ const SelectItem = ({
         ).toFixed(2),
       };
     }
+    setselectItem(selectedOption.value);
     setTableData(newTableData);
   };
 
@@ -115,6 +122,7 @@ const SelectItem = ({
             };
           },
         }}
+        value={selectItem}
       />
     </div>
   );
