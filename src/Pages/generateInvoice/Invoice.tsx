@@ -57,7 +57,6 @@ const Invoice: React.FC<InvoiceProps> = () => {
     location.state?.invoicedata.vehicleno || ''
   );
 
-  const [isLoading, setIsLoading] = useState(true);
   // Customer options for react-select
   const customerOptions: option[] = [
     { value: 'Add Customer', label: 'Add Customer' },
@@ -72,6 +71,18 @@ const Invoice: React.FC<InvoiceProps> = () => {
     null;
 
   useEffect(() => {
+    if (tableData.length === 0) {
+      const initialItem: tableItem = {
+        id: String(rowIndx),
+        item: '',
+        hsnCode: '',
+        quantity: '',
+        unit: '',
+        price: '',
+        amount: '',
+      };
+      setTableData([initialItem]);
+    }
     const initializeData = () => {
       // Initialize customers
       const AddCustomer: Customer = {
@@ -103,8 +114,6 @@ const Invoice: React.FC<InvoiceProps> = () => {
         );
         setSelectedCustomer(foundCustomer || null);
       }
-
-      setIsLoading(false);
     };
 
     if (customer.length > 0 && itemList.length > 0) {
@@ -292,7 +301,6 @@ const Invoice: React.FC<InvoiceProps> = () => {
       totalamt.current.value = (total * 1.18).toFixed(2);
     }
   }, [tableData]); // Depend on tableData to update when it changes
-  if (isLoading) return <div>Loading customers and items...</div>;
   return (
     <>
       {user.company ? (
@@ -560,7 +568,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
                     type="text"
                     id="subtotal"
                     ref={subtotalamt}
-                    defaultValue={location.state.subtotalamt || ''}
+                    defaultValue={location.state?.subtotalamt || ''}
                     readOnly
                     className="w-[10vw] text-right p-2 border rounded"
                   />
@@ -585,7 +593,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
                     type="text"
                     id="total"
                     ref={totalamt}
-                    defaultValue={location.state.tamt || ''}
+                    defaultValue={location.state?.tamt || ''}
                     readOnly
                     className="w-[12vw] text-right p-2 border rounded"
                   />
