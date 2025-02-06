@@ -57,6 +57,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
     location.state?.invoicedata.vehicleno || ''
   );
 
+  const [isLoading, setIsLoading] = useState(true);
   // Customer options for react-select
   const customerOptions: option[] = [
     { value: 'Add Customer', label: 'Add Customer' },
@@ -114,11 +115,13 @@ const Invoice: React.FC<InvoiceProps> = () => {
         );
         setSelectedCustomer(foundCustomer || null);
       }
+
+      setIsLoading(false);
     };
 
-    if (customer.length > 0 && itemList.length > 0) {
-      initializeData();
-    }
+    // if (customer.length > 0 && itemList.length > 0) {
+    initializeData();
+    // }
   }, [customer, itemList, location.state]);
 
   const ValidatingInteger = (
@@ -301,6 +304,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
       totalamt.current.value = (total * 1.18).toFixed(2);
     }
   }, [tableData]); // Depend on tableData to update when it changes
+  if (isLoading) return <div>Loading customers and items...</div>;
   return (
     <>
       {user.company ? (
@@ -516,7 +520,7 @@ const Invoice: React.FC<InvoiceProps> = () => {
                         id="rowtotal"
                         value={item.amount || ''}
                         readOnly
-                        className="w-full p-1 ml-3 border rounded"
+                        className="w-full p-1 m-2 border rounded"
                       />
                     </td>
                   </tr>
