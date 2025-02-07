@@ -10,7 +10,7 @@ import {
 } from '@react-pdf/renderer';
 import NotoSans from '@/assets/Fonts/NotoSans-CondensedBold.ttf'; // Adjust the path as necessary
 import { useLocation } from 'react-router-dom';
-import { Invoice, User } from '@/DataModels/DataModels';
+import { tableItem, User } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
 
 // Register the font
@@ -143,7 +143,7 @@ interface QuixoteProps {
   gstamt: number;
   tamt: number;
   invoiceNo: string;
-  data: Array<Invoice>;
+  data: Array<tableItem>;
   Subtotal: number;
   E_waybillno: string;
   vehicleno: string;
@@ -211,13 +211,13 @@ const Quixote: React.FC<QuixoteProps> = ({
             <Text style={styles.tableCellHeader}>HSN Code</Text>
           </View>
           <View style={styles.tableCol}>
+            <Text style={styles.tableCellHeader}>Quantity</Text>
+          </View>{' '}
+          <View style={styles.tableCol}>
             <Text style={styles.tableCellHeader}>Unit</Text>
           </View>
           <View style={styles.tableCol}>
             <Text style={styles.tableCellHeader}>Price</Text>
-          </View>
-          <View style={styles.tableCol}>
-            <Text style={styles.tableCellHeader}>Quantity</Text>
           </View>
           <View style={styles.tableCol}>
             <Text style={styles.tableCellHeader}>Amount</Text>
@@ -230,19 +230,19 @@ const Quixote: React.FC<QuixoteProps> = ({
               <Text style={styles.tableCell}>{item.id}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{item.itemName}</Text>
+              <Text style={styles.tableCell}>{item.item}</Text>
             </View>
             <View style={styles.tableCol}>
               <Text style={styles.tableCell}>{item.hsnCode}</Text>
             </View>
             <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{item.quantity}</Text>
+            </View>
+            <View style={styles.tableCol}>
               <Text style={styles.tableCell}>{item.unit}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{item.pricePerUnit}</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{item.quantity}</Text>
+              <Text style={styles.tableCell}>{item.price}</Text>
             </View>
             <View style={styles.tableCol}>
               <Text style={styles.tableCell}>{item.amount}</Text>

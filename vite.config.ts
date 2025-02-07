@@ -13,4 +13,12 @@ export default defineConfig({
   server: {
     port: 8000,
   },
+  build: {
+    target: 'esnext',
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext',
+    },
+  },
 });

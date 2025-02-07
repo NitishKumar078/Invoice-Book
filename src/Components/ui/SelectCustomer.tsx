@@ -58,7 +58,6 @@ const SelectCustomer = ({
 
     if (selectedOption.value === 'Add Customer') {
       navigate('/Customers/newCustomer');
-      setSelectedCustomer(null);
       return;
     }
 
