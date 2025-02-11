@@ -21,8 +21,11 @@ const Invoice: React.FC<InvoiceProps> = () => {
   const [tableData, setTableData] = useState<tableItem[]>(
     location.state?.invoicedata.tableData || []
   );
+  const invoices = useSelector(
+    (state: { invoiceDB: any }) => state?.invoiceDB.invoices
+  );
   const [invoiceId, setinvoiceId] = useState<string>(
-    location.state?.invoicedata.Iid || ''
+    location.state?.invoicedata.Iid || invoices.length.toString()
   );
   const [rowIndx, setRowIndx] = useState<number>(1);
   const [gsttype, setgsttype] = useState<boolean>(

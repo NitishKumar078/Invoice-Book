@@ -82,7 +82,7 @@ const SelectItem = ({
         ).toFixed(2),
       };
     }
-    setselectItem(selectedOption.value);
+    setselectItem(selectedOption);
     setTableData(newTableData);
   };
 
