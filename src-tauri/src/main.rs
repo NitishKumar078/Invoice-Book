@@ -1,21 +1,8 @@
-// This file is the entry point of the Rust application. It initializes the application and starts the server, calling functions from the library.
+// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use actix_web::{web, App, HttpServer};
-use rust_backend::db::init_db;
-
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    init_db().expect("Failed to initialize database");
-
-    HttpServer::new(|| {
-        App::new()
-            .route("/api/some_endpoint", web::get().to(some_handler))
-    })
-    .bind("127.0.0.1:8080")?
-    .run()
-    .await
-}
-
-async fn some_handler() -> &'static str {
-    "Hello, World!"
+fn main() {
+  tauri::Builder::default()
+    .run(tauri::generate_context!())
+    .expect("error while running tauri application");
 }
