@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { User } from '../../DataModels/DataModels';
 import { updateUser } from '../../Store/Reducers/userSlice';
@@ -103,163 +103,169 @@ export default function Settings() {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
-      <h2 className="text-3xl font-bold mb-5 text-center text-blue-600">
+    <div className="w-full max-w-3xl mx-auto p-10 bg-white shadow-lg rounded-lg mt-10">
+      <h1 className="text-3xl font-bold mb-5 text-center text-blue-600">
         User Information
-      </h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-5">
+      </h1>
+      <form id="userForm" className="space-y-6" onSubmit={handleSubmit}>
+        <div>
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Name
+            Name <span className="text-red-500">*</span>
           </label>
           <input
+            type="text"
             id="name"
+            name="name"
+            placeholder="Enter your full name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className={`w-full p-3 border ${
-              error.name ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            required
+            className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
           {error.name && (
             <p className="text-red-500 text-xs mt-1">{error.name}</p>
           )}
         </div>
 
-        <div className="mb-5">
+        <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Email
+            Email <span className="text-red-500">*</span>
           </label>
           <input
-            id="email"
             type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={`w-full p-3 border ${
-              error.email ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            required
+            className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
           {error.email && (
             <p className="text-red-500 text-xs mt-1">{error.email}</p>
           )}
         </div>
 
-        <div className="mb-5">
+        <div>
           <label
             htmlFor="phone"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 mb-1"
           >
             Phone
           </label>
           <input
-            id="phone"
             type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Enter your phone number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className={`w-full p-3 border ${
-              error.phone ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
           {error.phone && (
             <p className="text-red-500 text-xs mt-1">{error.phone}</p>
           )}
         </div>
 
-        <div className="mb-5">
+        <div>
           <label
             htmlFor="company"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 mb-1"
           >
             Company
           </label>
           <input
+            type="text"
             id="company"
+            name="company"
+            placeholder="Enter your company name"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
-            className={`w-full p-3 border ${
-              error.company ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
           {error.company && (
             <p className="text-red-500 text-xs mt-1">{error.company}</p>
           )}
         </div>
 
-        <div className="mb-5">
+        <div>
           <label
             htmlFor="gstno"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 mb-1"
           >
             GST Number
           </label>
           <input
+            type="text"
             id="gstno"
+            name="gstno"
+            placeholder="Enter your GST number"
             value={gstno}
             onChange={(e) => setGstno(e.target.value)}
-            className={`w-full p-3 border ${
-              error.gstno ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
           {error.gstno && (
             <p className="text-red-500 text-xs mt-1">{error.gstno}</p>
           )}
         </div>
 
-        <div className="mb-5">
+        <div>
           <label
             htmlFor="address"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 mb-1"
           >
             Address
           </label>
           <input
+            type="text"
             id="address"
+            name="address"
+            placeholder="Enter your address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className={`w-full p-3 border ${
-              error.address ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
           {error.address && (
             <p className="text-red-500 text-xs mt-1">{error.address}</p>
           )}
         </div>
 
-        <div className="mb-5">
+        <div>
           <label
             htmlFor="state"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 mb-1"
           >
             State
           </label>
           <select
             id="state"
+            name="state"
             value={state}
             onChange={(e) => setState(e.target.value)}
-            className={`w-full p-2 border ${
-              error.state ? 'border-red-500' : 'border-gray-300'
-            } rounded-md`}
+            className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           >
-            <option value="">Select State</option>
+            <option value="" selected disabled>
+              Select State
+            </option>
             {states.map((state, index) => (
               <option key={index} value={state}>
                 {state}
               </option>
             ))}
           </select>
-          {error.state && <p className="text-red-500 text-xs">{error.state}</p>}
+          {error.state && (
+            <p className="text-red-500 text-xs mt-1">{error.state}</p>
+          )}
         </div>
 
-        <div className="mb-5">
-          <label
-            htmlFor="logo"
-            className="block text-sm font-medium text-gray-700"
-          >
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Logo (Optional)
           </label>
           {logo && (
@@ -271,20 +277,33 @@ export default function Settings() {
               />
             </div>
           )}
-          <input
-            id="logo"
-            type="file"
-            accept="image/*"
-            onChange={(e) => setLogo(e.target.files ? e.target.files[0] : null)}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div>
+            <div className="mt-1 flex items-center">
+              <label
+                htmlFor="logo"
+                className="inline-block px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium bg-white hover:bg-gray-50 cursor-pointer"
+              >
+                Choose file
+              </label>
+              <span id="file-name" className="ml-3 text-sm text-gray-500">
+                No file chosen
+              </span>
+              <input
+                type="file"
+                id="logo"
+                name="logo"
+                accept="image/*"
+                className="sr-only"
+              />
+            </div>
+          </div>
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+          className="w-full px-4 py-3 bg-primary hover:bg-primary-hover text-white font-medium rounded-md transition-colors duration-200 mt-8"
         >
-          Save
+          Save Information
         </button>
       </form>
     </div>
