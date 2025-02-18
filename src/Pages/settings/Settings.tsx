@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { User } from '../../DataModels/DataModels';
 import { updateUser } from '../../Store/Reducers/userSlice';
@@ -37,69 +38,49 @@ const states = [
   'West Bengal',
 ];
 
-interface ErrorState {
-  name?: string;
-  email?: string;
-  phone?: string;
-  company?: string;
-  gstno?: string;
-  address?: string;
-  state?: string;
+interface FormValues {
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  gstno: string;
+  address: string;
+  state: string;
+  logo: FileList;
 }
 
 export default function Settings() {
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [company, setCompany] = useState<string>('');
-  const [gstno, setGstno] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
-  const [state, setState] = useState<string>('');
-  const [logo, setLogo] = useState<File | null>(null);
-  const [error, setError] = useState<ErrorState>({});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const validate = () => {
-    const error: ErrorState = {};
-    if (!name) error.name = 'Name is required';
-    if (!email) error.email = 'Email is required';
-    if (!phone) error.phone = 'Phone is required';
-    if (!company) error.company = 'Company is required';
-    if (!gstno) error.gstno = 'GST number is required';
-    if (!address) error.address = 'Address is required';
-    if (!state) error.state = 'State is required';
-    return error;
-  };
 
   const storeDataInLocalStorage = (data: User) => {
     localStorage.setItem('userInfo', JSON.stringify(data));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const error = validate();
-    setError(error);
-    if (Object.keys(error).length === 0) {
-      const userInfo: User = {
-        name,
-        email,
-        phone,
-        company,
-        gstno,
-        address,
-        state,
-      };
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    const userInfo: User = {
+      name: data.name,
+      email: data?.email,
+      phone: data?.phone,
+      company: data.company,
+      gstno: data.gstno,
+      address: data.address,
+      state: data.state,
+    };
 
-      // Store data in localStorage
-      storeDataInLocalStorage(userInfo);
+    // Store data in localStorage
+    storeDataInLocalStorage(userInfo);
 
-      // Dispatch action to store data in Redux
-      dispatch(updateUser(userInfo));
-      navigate('/');
+    // Dispatch action to store data in Redux
+    dispatch(updateUser(userInfo));
+    navigate('/');
 
-      console.log('Form submitted successfully');
-    }
+    console.log('Form submitted successfully');
   };
 
   return (
@@ -107,7 +88,11 @@ export default function Settings() {
       <h1 className="text-3xl font-bold mb-5 text-center text-blue-600">
         User Information
       </h1>
-      <form id="userForm" className="space-y-6" onSubmit={handleSubmit}>
+      <form
+        id="userForm"
+        className="space-y-6"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div>
           <label
             htmlFor="name"
@@ -118,15 +103,12 @@ export default function Settings() {
           <input
             type="text"
             id="name"
-            name="name"
+            {...register('name', { required: 'Name is required' })}
             placeholder="Enter your full name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
             className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
-          {error.name && (
-            <p className="text-red-500 text-xs mt-1">{error.name}</p>
+          {errors.name && (
+            <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
           )}
         </div>
 
@@ -135,20 +117,17 @@ export default function Settings() {
             htmlFor="email"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Email <span className="text-red-500">*</span>
+            Email
           </label>
           <input
             type="email"
             id="email"
-            name="email"
+            {...register('email', { required: 'Email is required' })}
             placeholder="Enter your email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
             className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
-          {error.email && (
-            <p className="text-red-500 text-xs mt-1">{error.email}</p>
+          {errors.email && (
+            <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
           )}
         </div>
 
@@ -162,14 +141,12 @@ export default function Settings() {
           <input
             type="tel"
             id="phone"
-            name="phone"
+            {...register('phone', { required: 'Phone is required' })}
             placeholder="Enter your phone number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
             className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
-          {error.phone && (
-            <p className="text-red-500 text-xs mt-1">{error.phone}</p>
+          {errors.phone && (
+            <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>
           )}
         </div>
 
@@ -178,19 +155,19 @@ export default function Settings() {
             htmlFor="company"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Company
+            Company <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             id="company"
-            name="company"
+            {...register('company', { required: 'Company is required' })}
             placeholder="Enter your company name"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
             className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
-          {error.company && (
-            <p className="text-red-500 text-xs mt-1">{error.company}</p>
+          {errors.company && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.company.message}
+            </p>
           )}
         </div>
 
@@ -199,19 +176,17 @@ export default function Settings() {
             htmlFor="gstno"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            GST Number
+            GST Number <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             id="gstno"
-            name="gstno"
+            {...register('gstno', { required: 'GST number is required' })}
             placeholder="Enter your GST number"
-            value={gstno}
-            onChange={(e) => setGstno(e.target.value)}
             className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
-          {error.gstno && (
-            <p className="text-red-500 text-xs mt-1">{error.gstno}</p>
+          {errors.gstno && (
+            <p className="text-red-500 text-xs mt-1">{errors.gstno.message}</p>
           )}
         </div>
 
@@ -220,19 +195,19 @@ export default function Settings() {
             htmlFor="address"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Address
+            Address <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             id="address"
-            name="address"
+            {...register('address', { required: 'Address is required' })}
             placeholder="Enter your address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
             className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
-          {error.address && (
-            <p className="text-red-500 text-xs mt-1">{error.address}</p>
+          {errors.address && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.address.message}
+            </p>
           )}
         </div>
 
@@ -241,13 +216,11 @@ export default function Settings() {
             htmlFor="state"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            State
+            State <span className="text-red-500">*</span>
           </label>
           <select
             id="state"
-            name="state"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            {...register('state', { required: 'State is required' })}
             className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           >
             <option value="" selected disabled>
@@ -259,8 +232,8 @@ export default function Settings() {
               </option>
             ))}
           </select>
-          {error.state && (
-            <p className="text-red-500 text-xs mt-1">{error.state}</p>
+          {errors.state && (
+            <p className="text-red-500 text-xs mt-1">{errors.state.message}</p>
           )}
         </div>
 
@@ -268,34 +241,23 @@ export default function Settings() {
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Logo (Optional)
           </label>
-          {logo && (
-            <div className="mb-2">
-              <img
-                src={URL.createObjectURL(logo)}
-                alt="Logo Preview"
-                className="h-20 w-20 rounded-full object-cover"
-              />
-            </div>
-          )}
-          <div>
-            <div className="mt-1 flex items-center">
-              <label
-                htmlFor="logo"
-                className="inline-block px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium bg-white hover:bg-gray-50 cursor-pointer"
-              >
-                Choose file
-              </label>
-              <span id="file-name" className="ml-3 text-sm text-gray-500">
-                No file chosen
-              </span>
-              <input
-                type="file"
-                id="logo"
-                name="logo"
-                accept="image/*"
-                className="sr-only"
-              />
-            </div>
+          <div className="mt-1 flex items-center">
+            <label
+              htmlFor="logo"
+              className="inline-block px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium bg-white hover:bg-gray-50 cursor-pointer"
+            >
+              Choose file
+            </label>
+            <span id="file-name" className="ml-3 text-sm text-gray-500">
+              No file chosen
+            </span>
+            <input
+              type="file"
+              id="logo"
+              {...register('logo')}
+              accept="image/*"
+              className="sr-only"
+            />
           </div>
         </div>
 
