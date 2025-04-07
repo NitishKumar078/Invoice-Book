@@ -1,18 +1,18 @@
-/* ************************************************************************************************
- *
- * THIS FILE CONSIST DATA FORMATION FOR DATA_STORING FOR ALL NEW INVOICE'S
- *  ------------------------------------------------------------------------
- *
- * 1. tableItem
- *    - This contains all the information for each row of ablout item while creation.
- *
- * 2. invoiceItem
- *    - This raps the all necessary information of the invoice including the tableInfo(tableItem)
- *
- ************************************************************************************************** */
+/* ################################################################################################
 
-export interface tableItem {
-  id: string;
+# THIS FILE CONSIST DATA FORMATION FOR DATA_STORING FOR ALL NEW INVOICE'S
+  ------------------------------------------------------------------------
+
+1. tableItem
+  - This contains all the information for each row of ablout item while creation.
+
+2. invoiceItem
+  - This raps the all necessary information of the invoice including the tableInfo(tableItem)  
+
+################################################################################################## */
+
+export interface TableItem {
+  id: number;
   item: string;
   hsnCode: string;
   quantity?: string;
@@ -22,39 +22,37 @@ export interface tableItem {
 }
 
 export interface invoiceItem {
-  Iid: string;
+  invoiceId: string;
   contact: string | null;
   vehicleno: string;
   E_waybillno: string;
   Idate: string;
-  cname: string;
+  company: string;
   gstid: string;
   cno: string;
   cadress: string;
-  tableData?: tableItem[];
+  tableData: TableItem[];
   gsttype: boolean;
-  totalgstamt: number;
+  taxAmount: number;
   subtotalamt: string;
-  tamt: number;
+  totalAmount: number;
 }
 
 export type Customer = {
-  customer_id: string;
   name?: string;
-  label?: string;
+  company?: string;
+  email?: string;
   address?: string;
-  state: string;
+  state?: string;
   contactNo?: string;
   gstinNo?: string;
-  phone: string;
-  company?: string;
+  label?: string;
+  link?: string;
 };
 
 export interface User {
-  name: string;
+  user: string;
   company: string;
-  phone?: string;
-  email?: string;
   gstno: string;
   address: string;
   state: string;
