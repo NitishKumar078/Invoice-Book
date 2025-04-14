@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import { useId, useMemo, useState } from "react";
-import { useSelector } from "react-redux"; // Import useSelector
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ArrowRight, Pencil, Trash2 } from "lucide-react";
-import { ChevronDown, ChevronUp, Search } from "lucide-react";
-import { AddCustomerDialogBox } from "@/components/DialogBox";
+import { cn } from '@/lib/utils';
+import { useId, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux'; // Import useSelector
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ArrowRight, Pencil, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Search } from 'lucide-react';
+import { AddCustomerDialogBox } from '@/components/DialogBox';
 import {
   Table,
   TableBody,
@@ -15,7 +15,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   Column,
   ColumnDef,
@@ -30,62 +30,63 @@ import {
   RowData,
   SortingState,
   useReactTable,
-} from "@tanstack/react-table";
-import { Customer } from "@/DataModels/DataModels"; // Import Customer type
+} from '@tanstack/react-table';
+import { Customer } from '@/DataModels/DataModels'; // Import Customer type
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@radix-ui/react-select";
+} from '@radix-ui/react-select';
+import ListLoader from '@/components/ui/ListLoader';
 
-declare module "@tanstack/react-table" {
+declare module '@tanstack/react-table' {
   // Allows us to define custom properties for our columns
   interface ColumnMeta<TData extends RowData, TValue> {
-    filterVariant?: "text" | "range" | "select";
+    filterVariant?: 'text' | 'range' | 'select';
   }
 }
 
 const columns: ColumnDef<Customer>[] = [
   {
-    header: "Name",
-    accessorKey: "name",
+    header: 'Name',
+    accessorKey: 'name',
     cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("name")}</div>
+      <div className="font-medium">{row.getValue('name')}</div>
     ),
   },
   {
-    header: "Company",
-    accessorKey: "company",
+    header: 'Company',
+    accessorKey: 'company',
     cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("company")}</div>
+      <div className="font-medium">{row.getValue('company')}</div>
     ),
   },
   {
-    header: "GST Number",
-    accessorKey: "gstinNo",
+    header: 'GST Number',
+    accessorKey: 'gstinNo',
     cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("gstinNo")}</div>
+      <div className="font-medium">{row.getValue('gstinNo')}</div>
     ),
   },
   {
-    header: "Address",
-    accessorKey: "address",
+    header: 'Address',
+    accessorKey: 'address',
     cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("address")}</div>
+      <div className="font-medium">{row.getValue('address')}</div>
     ),
   },
   {
-    header: "State",
-    accessorKey: "state",
+    header: 'State',
+    accessorKey: 'state',
     cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("state")}</div>
+      <div className="font-medium">{row.getValue('state')}</div>
     ),
   },
   {
-    header: "Option",
-    accessorKey: "link",
+    header: 'Option',
+    accessorKey: 'link',
     cell: ({ row }) => (
       <div className="flex gap-4">
         <button className="hover:text-blue-500 transition-colors duration-200">
@@ -102,13 +103,16 @@ const columns: ColumnDef<Customer>[] = [
 
 function Listcustomers() {
   const customers = useSelector(
-    (state: { customer: Customer[] }) => state.customer
+    (state: { customer: Customer[] }) => state.customer || []
   ); // Fetch customers from Redux store
+  const loading = useSelector(
+    (state: { customer: { loading: boolean } }) => state.customer?.loading
+  );
   const [dialogOpen, setDialogOpen] = useState(false);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([
     {
-      id: "name",
+      id: 'name',
       desc: false,
     },
   ]);
@@ -131,21 +135,25 @@ function Listcustomers() {
     enableSortingRemoval: false,
   });
 
+  if (loading) {
+    return <ListLoader />;
+  }
+
   return (
     <div className="space-y-6 bg-background">
       {/* Filters */}
       <div className="flex flex-wrap gap-3">
         {/* Search input */}
         <div className="w-44">
-          <Filter column={table.getColumn("name")!} />
+          <Filter column={table.getColumn('name')!} />
         </div>
         {/* Company select */}
         <div className="w-36">
-          <Filter column={table.getColumn("company")!} />
+          <Filter column={table.getColumn('company')!} />
         </div>
         {/* Address inputs */}
         <div className="w-36">
-          <Filter column={table.getColumn("address")!} />
+          <Filter column={table.getColumn('address')!} />
         </div>
 
         <div className="absolute right-10 top-10 ">
@@ -170,25 +178,25 @@ function Listcustomers() {
                     key={header.id}
                     className="relative h-10 select-none border-t"
                     aria-sort={
-                      header.column.getIsSorted() === "asc"
-                        ? "ascending"
-                        : header.column.getIsSorted() === "desc"
-                        ? "descending"
-                        : "none"
+                      header.column.getIsSorted() === 'asc'
+                        ? 'ascending'
+                        : header.column.getIsSorted() === 'desc'
+                        ? 'descending'
+                        : 'none'
                     }
                   >
                     {header.isPlaceholder ? null : header.column.getCanSort() ? (
                       <div
                         className={cn(
                           header.column.getCanSort() &&
-                            "flex h-full cursor-pointer select-none items-center justify-between gap-2"
+                            'flex h-full cursor-pointer select-none items-center justify-between gap-2'
                         )}
                         onClick={header.column.getToggleSortingHandler()}
                         onKeyDown={(e) => {
                           // Enhanced keyboard handling for sorting
                           if (
                             header.column.getCanSort() &&
-                            (e.key === "Enter" || e.key === " ")
+                            (e.key === 'Enter' || e.key === ' ')
                           ) {
                             e.preventDefault();
                             header.column.getToggleSortingHandler()?.(e);
@@ -200,14 +208,14 @@ function Listcustomers() {
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                        {header.column.getIsSorted() === "asc" ? (
+                        {header.column.getIsSorted() === 'asc' ? (
                           <ChevronUp
                             className="shrink-0 opacity-60"
                             size={16}
                             strokeWidth={2}
                             aria-hidden="true"
                           />
-                        ) : header.column.getIsSorted() === "desc" ? (
+                        ) : header.column.getIsSorted() === 'desc' ? (
                           <ChevronDown
                             className="shrink-0 opacity-60"
                             size={16}
@@ -235,7 +243,7 @@ function Listcustomers() {
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -269,9 +277,9 @@ function Filter({ column }: { column: Column<any, unknown> }) {
   const columnFilterValue = column.getFilterValue();
   const { filterVariant } = column.columnDef.meta ?? {};
   const columnHeader =
-    typeof column.columnDef.header === "string" ? column.columnDef.header : "";
+    typeof column.columnDef.header === 'string' ? column.columnDef.header : '';
   const sortedUniqueValues = useMemo(() => {
-    if (filterVariant === "range") return [];
+    if (filterVariant === 'range') return [];
 
     // Get all unique values from the column
     const values = Array.from(column.getFacetedUniqueValues().keys());
@@ -288,7 +296,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     return Array.from(new Set(flattenedValues)).sort();
   }, [column.getFacetedUniqueValues(), filterVariant]);
 
-  if (filterVariant === "range") {
+  if (filterVariant === 'range') {
     return (
       <div className="space-y-2">
         <Label>{columnHeader}</Label>
@@ -296,7 +304,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
           <Input
             id={`${id}-range-1`}
             className="flex-1 rounded-e-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-            value={(columnFilterValue as [number, number])?.[0] ?? ""}
+            value={(columnFilterValue as [number, number])?.[0] ?? ''}
             onChange={(e) =>
               column.setFilterValue((old: [number, number]) => [
                 e.target.value ? Number(e.target.value) : undefined,
@@ -310,7 +318,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
           <Input
             id={`${id}-range-2`}
             className="-ms-px flex-1 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-            value={(columnFilterValue as [number, number])?.[1] ?? ""}
+            value={(columnFilterValue as [number, number])?.[1] ?? ''}
             onChange={(e) =>
               column.setFilterValue((old: [number, number]) => [
                 old?.[0],
@@ -326,14 +334,14 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     );
   }
 
-  if (filterVariant === "select") {
+  if (filterVariant === 'select') {
     return (
       <div className="space-y-2">
         <Label htmlFor={`${id}-select`}>{columnHeader}</Label>
         <Select
-          value={columnFilterValue?.toString() ?? "all"}
+          value={columnFilterValue?.toString() ?? 'all'}
           onValueChange={(value) => {
-            column.setFilterValue(value === "all" ? undefined : value);
+            column.setFilterValue(value === 'all' ? undefined : value);
           }}
         >
           <SelectTrigger id={`${id}-select`}>
@@ -359,7 +367,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         <Input
           id={`${id}-input`}
           className="peer ps-9"
-          value={(columnFilterValue ?? "") as string}
+          value={(columnFilterValue ?? '') as string}
           onChange={(e) => column.setFilterValue(e.target.value)}
           placeholder={`Search ${columnHeader.toLowerCase()}`}
           type="text"

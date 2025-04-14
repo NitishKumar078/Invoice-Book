@@ -1,37 +1,36 @@
-import { useEffect } from "react";
-import Select from "react-select";
-import { TableItem } from "@/DataModels/DataModels";
-import { useSelector } from "react-redux";
+import Select from 'react-select';
+import { TableItem } from '@/DataModels/DataModels';
+import { useSelector } from 'react-redux';
 
 const customStyles = {
   option: (provided: any, state: any) => ({
     ...provided,
-    padding: "7px",
+    padding: '7px',
     backgroundColor: state.isSelected
-      ? "#007BFF"
+      ? '#007BFF'
       : state.isFocused
-      ? "#e7f0ff"
-      : "white",
-    color: state.isSelected ? "black" : "#543",
-    cursor: "pointer",
-    "&:hover": {
-      backgroundColor: "#d6e4f7", // Background color on hover
+      ? '#e7f0ff'
+      : 'white',
+    color: state.isSelected ? 'black' : '#543',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#d6e4f7', // Background color on hover
     },
   }),
   singleValue: (provided: any) => ({
     ...provided,
-    color: "#333", // Color of selected value
+    color: '#333', // Color of selected value
   }),
   menu: (provided: any) => ({
     ...provided,
-    borderRadius: "8px",
-    marginTop: "5px",
+    borderRadius: '8px',
+    marginTop: '5px',
   }),
   menuList: (provided: any) => ({
     ...provided,
     padding: 0,
-    maxHeight: "200px",
-    overflowY: "auto",
+    maxHeight: '200px',
+    overflowY: 'auto',
   }),
 };
 
@@ -48,14 +47,19 @@ const SelectItem = ({
   tableData,
   setIteamDialogBox,
 }: CustomerListPops) => {
-  const ListItems = useSelector((state: { item: TableItem[] }) => state.item);
-  const itemOptions = ListItems.map((item) => ({
-    value: item.item,
-    label: item.item,
-  }));
+  const ListItems = useSelector(
+    (state: { item: TableItem[] }) => state.item || []
+  );
+  const itemOptions = [
+    ...ListItems.map((item) => ({
+      value: item.item || '',
+      label: item.item || '',
+    })),
+    { value: 'Add Item', label: 'Add Item' },
+  ];
 
   const handleSelectChange = (selectedOption: any, rowIndex: number) => {
-    if (selectedOption.value === "Add Item") {
+    if (selectedOption.value === 'Add Item') {
       setIteamDialogBox(true);
     }
 
@@ -68,12 +72,12 @@ const SelectItem = ({
         id: rowIndex + 1,
         item: selectedItem.item,
         hsnCode: selectedItem.hsnCode.toString(),
-        price: selectedItem.price?.toString() || "0",
+        price: selectedItem.price?.toString() || '0',
         unit: selectedItem.unit,
-        quantity: selectedItem.quantity?.toString() || "0",
+        quantity: selectedItem.quantity?.toString() || '0',
         amount: (
-          parseFloat(selectedItem.price || "0") *
-          parseFloat(selectedItem.quantity || "0")
+          parseFloat(selectedItem.price || '0') *
+          parseFloat(selectedItem.quantity || '0')
         ).toFixed(2),
       };
     }
@@ -81,11 +85,11 @@ const SelectItem = ({
   };
 
   const highlightOption = (option: any) => {
-    return option.value === "Add Item"
+    return option.value === 'Add Item'
       ? {
-          backgroundColor: "white",
-          color: "blue",
-          fontWeight: "bold",
+          backgroundColor: 'white',
+          color: 'blue',
+          fontWeight: 'bold',
         }
       : {};
   };

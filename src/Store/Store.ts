@@ -1,15 +1,15 @@
-import { configureStore } from "@reduxjs/toolkit";
-import itemReducer from "./Slice/ItemSlice";
-import userReducer from "./Slice/UserSlice";
-import invoiceReducer from "./Slice/InvoiceSlice";
-import customerReducer from "./Slice/CustomerSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import CustomersReducer from './Reducers/customersSlice';
+import InvoiceReducer from './Reducers/InvoiceSlice';
+import UserReducer from './Reducers/userSlice';
+import ItemReducer from './Reducers/ItemsSlice';
 
 const Store = configureStore({
   reducer: {
-    user: userReducer,
-    invoice: invoiceReducer,
-    customer: customerReducer,
-    item: itemReducer,
+    customersDB: CustomersReducer,
+    invoiceDB: InvoiceReducer,
+    ItemsDB: ItemReducer,
+    user: UserReducer,
   },
 });
 

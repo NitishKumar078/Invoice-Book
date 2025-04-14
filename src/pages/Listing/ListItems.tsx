@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import { TableItem } from "@/DataModels/DataModels";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useId, useMemo, useState } from "react";
-import { AddIteamDialogBox } from "@/components/DialogBox";
+import { cn } from '@/lib/utils';
+import { TableItem } from '@/DataModels/DataModels';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useId, useMemo, useState } from 'react';
+import { AddIteamDialogBox } from '@/components/DialogBox';
 import {
   Table,
   TableBody,
@@ -13,14 +13,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   Column,
   ColumnDef,
@@ -35,7 +35,7 @@ import {
   RowData,
   SortingState,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 import {
   ArrowRight,
   ChevronDown,
@@ -43,50 +43,55 @@ import {
   Pencil,
   Search,
   Trash2,
-} from "lucide-react";
-import { useSelector } from "react-redux";
+} from 'lucide-react';
+import ListLoader from '@/components/ui/ListLoader';
+import { useSelector } from 'react-redux';
 
-declare module "@tanstack/react-table" {
+declare module '@tanstack/react-table' {
   //allows us to define custom properties for our columns
   interface ColumnMeta<TData extends RowData, TValue> {
-    filterVariant?: "text" | "range" | "select";
+    filterVariant?: 'text' | 'range' | 'select';
   }
 }
 
 function ListItems() {
-  const items = useSelector((state: { item: TableItem[] }) => state.item);
+  const items = useSelector((state: { item: TableItem[] }) => state.item || []);
+  const loading = useSelector(
+    (state: { item: { loading: boolean } }) => state.item?.loading
+  );
+
   const columns: ColumnDef<TableItem>[] = [
     {
-      header: "Item",
-      accessorKey: "item",
+      header: 'Item',
+      accessorKey: 'item',
       cell: ({ row }) => (
-        <div className="font-medium">{row.getValue("item")}</div>
+        <div className="font-medium">{row.getValue('item')}</div>
       ),
     },
     {
-      header: "HSN Code",
-      accessorKey: "hsnCode",
+      header: 'HSN Code',
+      accessorKey: 'hsnCode',
       cell: ({ row }) => (
-        <div className="font-medium">{row.getValue("hsnCode")}</div>
+        <div className="font-medium">{row.getValue('hsnCode')}</div>
       ),
     },
     {
-      header: "Quantity",
-      accessorKey: "quantity",
+      header: 'Quantity',
+      accessorKey: 'quantity',
       cell: ({ row }) => (
-        <div className="font-medium">{row.getValue("quantity")}</div>
+        <div className="font-medium">{row.getValue('quantity')}</div>
       ),
     },
     {
-      header: "Unit",
-      accessorKey: "unit",
+      header: 'Unit',
+      accessorKey: 'unit',
       cell: ({ row }) => (
-        <div className="font-medium">{row.getValue("unit")}</div>
+        <div className="font-medium">{row.getValue('unit')}</div>
       ),
     },
     {
-      header: "Option",
-      accessorKey: "link",
+      header: 'Option',
+      accessorKey: 'link',
       cell: ({ row }) => (
         <div className="flex gap-4">
           <button
@@ -103,12 +108,13 @@ function ListItems() {
       enableSorting: false,
     },
   ];
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [EditItem, setEditItem] = useState<TableItem | null>(null);
   const [sorting, setSorting] = useState<SortingState>([
     {
-      id: "traffic",
+      id: 'traffic',
       desc: false,
     },
   ]);
@@ -133,10 +139,14 @@ function ListItems() {
 
   const handleItemEdit = (tableitem: TableItem) => {
     // Handle item edit logic here
-    console.log("Editing item:", tableitem);
+    console.log('Editing item:', tableitem);
     setEditItem(tableitem);
     setDialogOpen(true);
   };
+
+  if (loading) {
+    return <ListLoader />;
+  }
 
   return (
     <div className="space-y-6 bg-background">
@@ -144,11 +154,11 @@ function ListItems() {
       <div className="flex flex-wrap gap-3">
         {/* Search input */}
         <div className="w-44">
-          <Filter column={table.getColumn("item")!} />
+          <Filter column={table.getColumn('item')!} />
         </div>
         {/* Intents select */}
         <div className="w-36">
-          <Filter column={table.getColumn("hsnCode")!} />
+          <Filter column={table.getColumn('hsnCode')!} />
         </div>
 
         <div className="absolute right-10 top-10 ">
@@ -173,25 +183,25 @@ function ListItems() {
                     key={header.id}
                     className="relative h-10 select-none border-t"
                     aria-sort={
-                      header.column.getIsSorted() === "asc"
-                        ? "ascending"
-                        : header.column.getIsSorted() === "desc"
-                        ? "descending"
-                        : "none"
+                      header.column.getIsSorted() === 'asc'
+                        ? 'ascending'
+                        : header.column.getIsSorted() === 'desc'
+                        ? 'descending'
+                        : 'none'
                     }
                   >
                     {header.isPlaceholder ? null : header.column.getCanSort() ? (
                       <div
                         className={cn(
                           header.column.getCanSort() &&
-                            "flex h-full cursor-pointer select-none items-center justify-between gap-2"
+                            'flex h-full cursor-pointer select-none items-center justify-between gap-2'
                         )}
                         onClick={header.column.getToggleSortingHandler()}
                         onKeyDown={(e) => {
                           // Enhanced keyboard handling for sorting
                           if (
                             header.column.getCanSort() &&
-                            (e.key === "Enter" || e.key === " ")
+                            (e.key === 'Enter' || e.key === ' ')
                           ) {
                             e.preventDefault();
                             header.column.getToggleSortingHandler()?.(e);
@@ -203,24 +213,21 @@ function ListItems() {
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                        {{
-                          asc: (
-                            <ChevronUp
-                              className="shrink-0 opacity-60"
-                              size={16}
-                              strokeWidth={2}
-                              aria-hidden="true"
-                            />
-                          ),
-                          desc: (
-                            <ChevronDown
-                              className="shrink-0 opacity-60"
-                              size={16}
-                              strokeWidth={2}
-                              aria-hidden="true"
-                            />
-                          ),
-                        }[header.column.getIsSorted() as string] ?? (
+                        {header.column.getIsSorted() === 'asc' ? (
+                          <ChevronUp
+                            className="shrink-0 opacity-60"
+                            size={16}
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          />
+                        ) : header.column.getIsSorted() === 'desc' ? (
+                          <ChevronDown
+                            className="shrink-0 opacity-60"
+                            size={16}
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          />
+                        ) : (
                           <span className="size-4" aria-hidden="true" />
                         )}
                       </div>
@@ -241,7 +248,7 @@ function ListItems() {
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                data-state={row.getIsSelected() && 'selected'}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -276,9 +283,9 @@ function Filter({ column }: { column: Column<any, unknown> }) {
   const columnFilterValue = column.getFilterValue();
   const { filterVariant } = column.columnDef.meta ?? {};
   const columnHeader =
-    typeof column.columnDef.header === "string" ? column.columnDef.header : "";
+    typeof column.columnDef.header === 'string' ? column.columnDef.header : '';
   const sortedUniqueValues = useMemo(() => {
-    if (filterVariant === "range") return [];
+    if (filterVariant === 'range') return [];
 
     // Get all unique values from the column
     const values = Array.from(column.getFacetedUniqueValues().keys());
@@ -295,7 +302,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     return Array.from(new Set(flattenedValues)).sort();
   }, [column.getFacetedUniqueValues(), filterVariant]);
 
-  if (filterVariant === "range") {
+  if (filterVariant === 'range') {
     return (
       <div className="space-y-2">
         <Label>{columnHeader}</Label>
@@ -303,7 +310,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
           <Input
             id={`${id}-range-1`}
             className="flex-1 rounded-e-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-            value={(columnFilterValue as [number, number])?.[0] ?? ""}
+            value={(columnFilterValue as [number, number])?.[0] ?? ''}
             onChange={(e) =>
               column.setFilterValue((old: [number, number]) => [
                 e.target.value ? Number(e.target.value) : undefined,
@@ -317,7 +324,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
           <Input
             id={`${id}-range-2`}
             className="-ms-px flex-1 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-            value={(columnFilterValue as [number, number])?.[1] ?? ""}
+            value={(columnFilterValue as [number, number])?.[1] ?? ''}
             onChange={(e) =>
               column.setFilterValue((old: [number, number]) => [
                 old?.[0],
@@ -333,14 +340,14 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     );
   }
 
-  if (filterVariant === "select") {
+  if (filterVariant === 'select') {
     return (
       <div className="space-y-2">
         <Label htmlFor={`${id}-select`}>{columnHeader}</Label>
         <Select
-          value={columnFilterValue?.toString() ?? "all"}
+          value={columnFilterValue?.toString() ?? 'all'}
           onValueChange={(value) => {
-            column.setFilterValue(value === "all" ? undefined : value);
+            column.setFilterValue(value === 'all' ? undefined : value);
           }}
         >
           <SelectTrigger id={`${id}-select`}>
@@ -366,7 +373,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         <Input
           id={`${id}-input`}
           className="peer ps-9"
-          value={(columnFilterValue ?? "") as string}
+          value={(columnFilterValue ?? '') as string}
           onChange={(e) => column.setFilterValue(e.target.value)}
           placeholder={`Search ${columnHeader.toLowerCase()}`}
           type="text"

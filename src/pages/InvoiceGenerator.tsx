@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
-import { TableItem, invoiceItem, option } from "@/DataModels/DataModels";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Customer, User } from "@/DataModels/DataModels";
-import { useSelector } from "react-redux";
-import SelectCustomer from "@/components/ui/SelectCustomer";
-import SelectItem from "../components/ui/SelectItem";
+import React, { useState, useEffect, useRef } from 'react';
+import { TableItem, invoiceItem } from '@/DataModels/DataModels';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Customer, User } from '@/DataModels/DataModels';
+import { useSelector } from 'react-redux';
+import SelectCustomer from '@/components/ui/SelectCustomer';
+import SelectItem from '../components/ui/SelectItem';
 import {
   AddCustomerDialogBox,
   AddIteamDialogBox,
   DialogBox,
-} from "../components/DialogBox";
-import { Info } from "lucide-react";
+} from '../components/DialogBox';
+import { Info } from 'lucide-react';
 
 interface InvoiceProps {}
 
@@ -20,8 +20,8 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   const [addIteamDialogBox, setIteamDialogBox] = useState(false);
   const [addCustomerDialogBox, setCustomerDialogBox] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [warning, setWarning] = useState("");
-  const [description, setDescription] = useState("");
+  const [warning, setWarning] = useState('');
+  const [description, setDescription] = useState('');
   const [tableData, setTableData] = useState<TableItem[]>(
     location.state?.invoicedata.tableData || []
   );
@@ -39,21 +39,21 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
     null
   );
-  const user = useSelector((state: { user: User }) => state.user);
+  const user = useSelector((state: { user: User }) => state.user || []);
   const customerList = useSelector(
-    (state: { customer: Customer[] }) => state.customer
+    (state: { customer: Customer[] }) => state.customer || []
   );
 
   useEffect(() => {
     // Initialize tableData with one empty row
     const initialItem: TableItem = {
       id: rowIndx,
-      item: "",
-      hsnCode: "",
-      quantity: "",
-      unit: "",
-      price: "",
-      amount: "",
+      item: '',
+      hsnCode: '',
+      quantity: '',
+      unit: '',
+      price: '',
+      amount: '',
     };
     if (tableData.length === 0) {
       setTableData([initialItem]);
@@ -70,15 +70,15 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
     field: string
   ) => {
     if (
-      field === "quantity" ||
-      field === "price" ||
-      field === "ContactNo" ||
-      field === "ewaybillno" ||
-      field === "hsnCode"
+      field === 'quantity' ||
+      field === 'price' ||
+      field === 'ContactNo' ||
+      field === 'ewaybillno' ||
+      field === 'hsnCode'
     ) {
       e.target.value = e.target.value
-        .replace(/[^0-9.]/g, "")
-        .replace(/(\..*)\./g, "$1");
+        .replace(/[^0-9.]/g, '')
+        .replace(/(\..*)\./g, '$1');
     }
   };
 
@@ -93,14 +93,14 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
 
     // Update the specific field in the row
     const newTableData = [...tableData];
-    if (field === "quantity" || field === "price" || field === "hsnCode") {
+    if (field === 'quantity' || field === 'price' || field === 'hsnCode') {
       newTableData[rowIndex][field] = e.target.value;
 
       // Update the amount field if quantity and price are present
-      const quantity = parseFloat(newTableData[rowIndex].quantity || "0");
-      const price = parseFloat(newTableData[rowIndex].price || "0");
+      const quantity = parseFloat(newTableData[rowIndex].quantity || '0');
+      const price = parseFloat(newTableData[rowIndex].price || '0');
       newTableData[rowIndex].amount = (quantity * price).toFixed(2);
-    } else if (field === "item" || field === "unit") {
+    } else if (field === 'item' || field === 'unit') {
       newTableData[rowIndex][field] = e.target.value;
     }
 
@@ -112,19 +112,19 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   const handleAddRow = () => {
     const newRow: TableItem = {
       id: rowIndx + 1,
-      item: "",
-      hsnCode: "",
-      quantity: "",
-      unit: "",
-      price: "",
-      amount: "",
+      item: '',
+      hsnCode: '',
+      quantity: '',
+      unit: '',
+      price: '',
+      amount: '',
     };
     setTableData([...tableData, newRow]);
     setRowIndx(rowIndx + 1); // Increment row index for next row
 
     if (rowIndx === 1) {
       const delerowEle = document.getElementById(`deleteRow`);
-      if (delerowEle) delerowEle.style.display = "block";
+      if (delerowEle) delerowEle.style.display = 'block';
     }
   };
 
@@ -135,37 +135,37 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
     setRowIndx(rowIndx - 1);
     if (rowIndx === 2) {
       const delerowEle = document.getElementById(`deleteRow`);
-      if (delerowEle) delerowEle.style.display = "none";
+      if (delerowEle) delerowEle.style.display = 'none';
     }
   };
 
   // Function to handle save action
   const getinvoicedata = () => {
-    const Idate = (document.getElementById("Idata") as HTMLInputElement).value;
-    const invoiceId = (document.getElementById("invoiceId") as HTMLInputElement)
+    const Idate = (document.getElementById('Idata') as HTMLInputElement).value;
+    const invoiceId = (document.getElementById('invoiceId') as HTMLInputElement)
       .value;
     if (!selectedCustomer) {
       setIsOpen(true);
       return null;
     } else {
-      const company = selectedCustomer?.name || "";
-      const gstid = selectedCustomer?.gstinNo || "";
-      const cno = selectedCustomer?.contactNo || "";
-      const cadress = selectedCustomer?.address || "";
+      const company = selectedCustomer?.name || '';
+      const gstid = selectedCustomer?.gstinNo || '';
+      const cno = selectedCustomer?.contactNo || '';
+      const cadress = selectedCustomer?.address || '';
       const contact = selectedCustomer?.contactNo || null;
       const E_waybillno = (
-        document.getElementById("E-waybillno") as HTMLInputElement
+        document.getElementById('E-waybillno') as HTMLInputElement
       ).value;
       const vehicleno = (
-        document.getElementById("vehicleno") as HTMLInputElement
+        document.getElementById('vehicleno') as HTMLInputElement
       ).value;
       const taxAmount = gstamt || 0;
       const totalAmount =
         parseFloat(
-          (document.getElementById("total") as HTMLInputElement).value
+          (document.getElementById('total') as HTMLInputElement).value
         ) || 0;
       const subtotalamt: string = (
-        document.getElementById("subtotal") as HTMLInputElement
+        document.getElementById('subtotal') as HTMLInputElement
       ).value;
       const Idata: invoiceItem = {
         invoiceId,
@@ -190,9 +190,9 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   const handleView = async (e: React.FormEvent) => {
     e.preventDefault();
     const ValidatedData = await DataValidation(e);
-    console.log("passing data to view", ValidatedData);
+    console.log('passing data to view', ValidatedData);
     if (ValidatedData !== null) {
-      navigate("/invoice/viewInvoice", { state: { ValidatedData } });
+      navigate('/invoice/viewInvoice', { state: { ValidatedData } });
     }
   };
 
@@ -201,21 +201,21 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
     const invoicedata = getinvoicedata();
     if (invoicedata === null) {
       setIsOpen(true);
-      setWarning("Warning");
-      setDescription("Please Select the customer");
+      setWarning('Warning');
+      setDescription('Please Select the customer');
       return null;
     } else if (
-      invoicedata.E_waybillno === "" &&
+      invoicedata.E_waybillno === '' &&
       invoicedata.totalAmount >= 50000
     ) {
       setIsOpen(true);
-      setWarning("Warning");
-      setDescription("Please Enter the E-waybill number");
+      setWarning('Warning');
+      setDescription('Please Enter the E-waybill number');
       return null;
-    } else if (invoicedata.vehicleno === "") {
+    } else if (invoicedata.vehicleno === '') {
       setIsOpen(true);
-      setWarning("Warning");
-      setDescription("Please Enter the vehicle number");
+      setWarning('Warning');
+      setDescription('Please Enter the vehicle number');
       return null;
     } else if (tableData.length >= 1) {
       // Validate required fields in table rows
@@ -230,8 +230,8 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
           !row.hsnCode
         ) {
           setIsOpen(true);
-          setWarning("Warning");
-          setDescription("Please fill all required fields in the table");
+          setWarning('Warning');
+          setDescription('Please fill all required fields in the table');
           return null;
         }
       }
@@ -242,8 +242,8 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   const handleSave = async (e: React.FormEvent) => {
     const ValidatedData = await DataValidation(e);
     if (ValidatedData !== null) {
-      navigate("/");
-      console.log("this data should be saved", ValidatedData);
+      navigate('/');
+      console.log('this data should be saved', ValidatedData);
     }
   };
 
@@ -251,7 +251,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
     let total = 0;
     // Calculation of the total amount
     tableData.forEach((item) => {
-      total += parseFloat(item?.amount ?? "0");
+      total += parseFloat(item?.amount ?? '0');
     });
 
     if (subtotalamt.current && totalamt.current) {
@@ -316,10 +316,10 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                   onInput={(e) => {
                     ValidatingInteger(
                       e as React.ChangeEvent<HTMLInputElement>,
-                      "ewaybillno"
+                      'ewaybillno'
                     );
                   }}
-                  defaultValue={location.state?.invoicedata.E_waybillno || ""}
+                  defaultValue={location.state?.invoicedata.E_waybillno || ''}
                   placeholder="E-waybill no"
                   required
                 />
@@ -331,10 +331,10 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                   onInput={(e) => {
                     ValidatingInteger(
                       e as React.ChangeEvent<HTMLInputElement>,
-                      "ewaybillno"
+                      'ewaybillno'
                     );
                   }}
-                  defaultValue={location.state?.invoicedata.E_waybillno || ""}
+                  defaultValue={location.state?.invoicedata.E_waybillno || ''}
                   placeholder="E-waybill no"
                 />
               )}
@@ -351,7 +351,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                 pattern="[A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{4}"
                 title="Please enter a valid vehicle number (e.g., KA01AB1234)"
                 placeholder="KA01AB1234"
-                defaultValue={location.state?.invoicedata.vehicleno || ""}
+                defaultValue={location.state?.invoicedata.vehicleno || ''}
                 onInput={(e) => {
                   const target = e.target as HTMLInputElement;
                   target.value = target.value.toUpperCase();
@@ -367,7 +367,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                 name="invoiceId"
                 id="invoiceId"
                 className="p-2 border rounded w-full"
-                defaultValue={location.state?.invoicedata.invoiceId || ""}
+                defaultValue={location.state?.invoicedata.invoiceId || ''}
               />
             </div>
             <div className="data mt-2">
@@ -379,7 +379,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                 name="data"
                 id="Idata"
                 className="p-2 border rounded w-full"
-                defaultValue={new Date().toISOString().split("T")[0]}
+                defaultValue={new Date().toISOString().split('T')[0]}
               />
             </div>
           </div>
@@ -417,7 +417,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                     key={`hsnCode-${index}`}
                     type="text"
                     value={item.hsnCode}
-                    onChange={(e) => handleInputChange(e, index, "hsnCode")}
+                    onChange={(e) => handleInputChange(e, index, 'hsnCode')}
                     className="w-full p-1 border rounded"
                   />
                 </td>
@@ -426,7 +426,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                     key={`unit-${index}`}
                     type="text"
                     value={item.unit}
-                    onChange={(e) => handleInputChange(e, index, "unit")}
+                    onChange={(e) => handleInputChange(e, index, 'unit')}
                     className="w-full p-1 border rounded"
                   />
                 </td>
@@ -435,7 +435,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                     key={`quantity-${index}`}
                     type="text"
                     value={item.quantity}
-                    onChange={(e) => handleInputChange(e, index, "quantity")}
+                    onChange={(e) => handleInputChange(e, index, 'quantity')}
                     className=" p-1 border rounded"
                   />
                 </td>
@@ -445,8 +445,8 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                     <input
                       key={`price-${index}`}
                       type="text"
-                      value={item.price || ""}
-                      onChange={(e) => handleInputChange(e, index, "price")}
+                      value={item.price || ''}
+                      onChange={(e) => handleInputChange(e, index, 'price')}
                       className="p-1 m-1 border rounded"
                     />
                   </div>
@@ -457,7 +457,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                     <input
                       type="text"
                       id="rowtotal"
-                      value={item.amount || ""}
+                      value={item.amount || ''}
                       readOnly
                       className="w-full p-1 m-1 border rounded"
                     />
@@ -493,11 +493,11 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
             {gsttype ? (
               <div className="normalgst">
                 <span>
-                  SGST @9%: ₹ {gstamt ? (gstamt / 2).toFixed(2) : "0"}{" "}
+                  SGST @9%: ₹ {gstamt ? (gstamt / 2).toFixed(2) : '0'}{' '}
                 </span>
                 <br />
                 <span>
-                  CGST @9%: ₹ {gstamt ? (gstamt / 2).toFixed(2) : "0"}{" "}
+                  CGST @9%: ₹ {gstamt ? (gstamt / 2).toFixed(2) : '0'}{' '}
                 </span>
               </div>
             ) : (
@@ -512,7 +512,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                 type="text"
                 id="subtotal"
                 ref={subtotalamt}
-                defaultValue={location.state?.invoicedata.subtotalamt || ""}
+                defaultValue={location.state?.invoicedata.subtotalamt || ''}
                 readOnly
                 className="w-[10vw] text-right p-2 border rounded"
               />
@@ -522,8 +522,8 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
               <input
                 type="text"
                 id="taxtotal"
-                value={gstamt || "0"}
-                defaultValue={location.state?.invoicedata.taxAmount || ""}
+                value={gstamt || '0'}
+                defaultValue={location.state?.invoicedata.taxAmount || ''}
                 readOnly
                 className="w-[10.5vw] text-right p-2 border rounded"
               />
@@ -538,7 +538,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                 type="text"
                 id="total"
                 ref={totalamt}
-                defaultValue={location.state?.invoicedata.totalAmount || ""}
+                defaultValue={location.state?.invoicedata.totalAmount || ''}
                 readOnly
                 className="w-[12vw] text-right p-2 border rounded"
               />

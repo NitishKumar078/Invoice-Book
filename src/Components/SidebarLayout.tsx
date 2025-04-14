@@ -1,6 +1,6 @@
-"use client";
-import { useState, ReactNode } from "react";
-import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
+'use client';
+import { useState, ReactNode } from 'react';
+import { Sidebar, SidebarBody, SidebarLink } from './ui/sidebar';
 import {
   LayoutDashboard,
   FilePlus2,
@@ -8,64 +8,64 @@ import {
   Cuboid,
   UserRoundPlus,
   UserRoundCog,
-} from "lucide-react";
-import { NavLink } from "react-router";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { useSelector } from "react-redux";
-import { User } from "@/DataModels/DataModels";
-import { AddUserDialogBox } from "./DialogBox";
+} from 'lucide-react';
+import { NavLink } from 'react-router';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { useSelector } from 'react-redux';
+import { User } from '@/DataModels/DataModels';
+import { AddUserDialogBox } from './DialogBox';
 
 interface SidebarDemoProps {
   children: ReactNode;
 }
 
-const SidebarDemo = ({ children }: SidebarDemoProps) => {
+const SidebarLayout = ({ children }: SidebarDemoProps) => {
   const links = [
     {
-      label: "Dashboard",
-      href: "/",
+      label: 'Dashboard',
+      href: '/',
       icon: (
         <LayoutDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Create Invoice",
-      href: "/invoice",
+      label: 'Create Invoice',
+      href: '/invoice',
       icon: (
         <FilePlus2 className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Invoice List",
-      href: "/listInvoices",
+      label: 'Invoice List',
+      href: '/listInvoices',
       icon: (
         <List className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Item List",
-      href: "/listItems",
+      label: 'Item List',
+      href: '/listItems',
       icon: (
         <Cuboid className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Customer List",
-      href: "/listcustomers",
+      label: 'Customer List',
+      href: '/listcustomers',
       icon: (
         <UserRoundPlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
   ];
   const [open, setOpen] = useState(false);
-  // const [addUserDialogBox, setUserDialogBox] = useState(false);
+  const [addUserDialogBox, setUserDialogBox] = useState(false);
 
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 fixed border-neutral-200 dark:border-neutral-700 overflow-hidden",
-        "h-screen"
+        'rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 fixed border-neutral-200 dark:border-neutral-700 overflow-hidden',
+        'h-screen'
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -84,7 +84,7 @@ const SidebarDemo = ({ children }: SidebarDemoProps) => {
           ) : (
             <div
               className="inline-flex items-center gap-3 "
-              // onClick={() => setUserDialogBox(true)}
+              onClick={() => setUserDialogBox(true)}
             >
               <UserRoundCog className="text-neutral-700  cursor-pointer dark:text-neutral-200 h-7 w-7 flex-shrink-0" />
               <motion.span
@@ -100,12 +100,12 @@ const SidebarDemo = ({ children }: SidebarDemoProps) => {
       </Sidebar>
       <Dashboard children={children} />
 
-      {/* {addUserDialogBox && (
+      {addUserDialogBox && (
         <AddUserDialogBox
           dialogOpen={addUserDialogBox}
           setDialogOpen={setUserDialogBox}
         />
-      )} */}
+      )}
     </div>
   );
 };
@@ -151,4 +151,4 @@ const Dashboard = ({ children }: SidebarDemoProps) => {
   );
 };
 
-export default SidebarDemo;
+export default SidebarLayout;
