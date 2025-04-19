@@ -8,6 +8,7 @@ import SelectItem from '../components/ui/SelectItem';
 import {
   AddCustomerDialogBox,
   AddIteamDialogBox,
+  AddUserDialogBox,
   DialogBox,
 } from '../components/DialogBox';
 import { Info } from 'lucide-react';
@@ -18,6 +19,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [addIteamDialogBox, setIteamDialogBox] = useState(false);
+  const [addUserDialogBox, setaddUserDialogBox] = useState(false);
   const [addCustomerDialogBox, setCustomerDialogBox] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [warning, setWarning] = useState('');
@@ -45,6 +47,13 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   );
 
   useEffect(() => {
+    // check the user info
+    if (user.name === '' && user.company === '') {
+      setIsOpen(true);
+      setWarning('Warning');
+      setDescription('Please fill the user info first');
+      setaddUserDialogBox(true);
+    }
     // Initialize tableData with one empty row
     const initialItem: TableItem = {
       id: rowIndx,
@@ -572,6 +581,12 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
         warningTitle={warning}
         dialogDescription={description}
       />
+      <DialogBox
+        dialogOpen={isOpen}
+        setDialogOpen={setIsOpen}
+        warningTitle={warning}
+        dialogDescription={description}
+      />
       {addCustomerDialogBox && (
         <AddCustomerDialogBox
           dialogOpen={addCustomerDialogBox}
@@ -582,6 +597,12 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
         <AddIteamDialogBox
           dialogOpen={addIteamDialogBox}
           setDialogOpen={setIteamDialogBox}
+        />
+      )}
+      {addUserDialogBox && (
+        <AddUserDialogBox
+          dialogOpen={addUserDialogBox}
+          setDialogOpen={setaddUserDialogBox}
         />
       )}
     </div>

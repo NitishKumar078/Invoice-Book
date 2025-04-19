@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -7,17 +7,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+} from './ui/dialog';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { Customer, TableItem } from "@/DataModels/DataModels";
+} from './ui/select';
+import { Customer, TableItem } from '@/DataModels/DataModels';
 
 interface DialogBoxProps {
   dialogOpen: boolean;
@@ -61,16 +61,16 @@ const AddIteamDialogBox = ({
   setDialogOpen,
   Editdata,
 }: DialogBoxProps) => {
-  const units = ["Piece", "Kg", "Ton", "Ltr", "inch", "cm", "Other"]; // Dummy data
+  const units = ['Piece', 'Kg', 'Ton', 'Ltr', 'inch', 'cm', 'Other']; // Dummy data
 
   // Initialize the selected unit state with Editdata.unit if available
   const [selectedUnit, setSelectedUnit] = useState<string>(
-    Editdata && "unit" in Editdata ? Editdata.unit : "" // Use Editdata.unit if it exists and is valid
+    Editdata && 'unit' in Editdata ? Editdata.unit : '' // Use Editdata.unit if it exists and is valid
   );
 
   // Update the selected unit state when Editdata changes
   useEffect(() => {
-    if (Editdata && "unit" in Editdata) {
+    if (Editdata && 'unit' in Editdata) {
       setSelectedUnit(Editdata.unit);
     }
   }, [Editdata]);
@@ -90,7 +90,7 @@ const AddIteamDialogBox = ({
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
             placeholder="Enter Item Name"
             type="text"
-            defaultValue={Editdata && "item" in Editdata ? Editdata.item : ""} // Use Editdata.item if available and valid
+            defaultValue={Editdata && 'item' in Editdata ? Editdata.item : ''} // Use Editdata.item if available and valid
           />
           <Label htmlFor="unit-select">Unit</Label>
           <Select
@@ -118,7 +118,7 @@ const AddIteamDialogBox = ({
             placeholder="Enter HSN Code"
             type="text"
             defaultValue={
-              Editdata && "hsnCode" in Editdata ? Editdata.hsnCode : ""
+              Editdata && 'hsnCode' in Editdata ? Editdata.hsnCode : ''
             } // Use Editdata.hsnCode if available and valid
           />
         </DialogDescription>
@@ -147,39 +147,39 @@ const AddCustomerDialogBox = ({
   setDialogOpen,
 }: DialogBoxProps) => {
   const states = [
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chhattisgarh",
-    "Goa",
-    "Gujarat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jammu and Kashmir",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Odisha",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttarakhand",
-    "Uttar Pradesh",
-    "West Bengal",
-    "Other",
+    'Andhra Pradesh',
+    'Arunachal Pradesh',
+    'Assam',
+    'Bihar',
+    'Chhattisgarh',
+    'Goa',
+    'Gujarat',
+    'Haryana',
+    'Himachal Pradesh',
+    'Jammu and Kashmir',
+    'Jharkhand',
+    'Karnataka',
+    'Kerala',
+    'Madhya Pradesh',
+    'Maharashtra',
+    'Manipur',
+    'Meghalaya',
+    'Mizoram',
+    'Nagaland',
+    'Odisha',
+    'Punjab',
+    'Rajasthan',
+    'Sikkim',
+    'Tamil Nadu',
+    'Telangana',
+    'Tripura',
+    'Uttarakhand',
+    'Uttar Pradesh',
+    'West Bengal',
+    'Other',
   ];
-  const [selectedState, setSelectedState] = useState<string>("");
-  const [customState, setCustomState] = useState<string>(""); // State for manual input
+  const [selectedState, setSelectedState] = useState<string>('');
+  const [customState, setCustomState] = useState<string>(''); // State for manual input
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -190,7 +190,7 @@ const AddCustomerDialogBox = ({
         <DialogDescription className="text-zinc-800 mb-2 p-2 gap-2 flex flex-col">
           <Label htmlFor="iteam-name">
             Customer Name <span className="text-red-500">*</span>
-          </Label>{" "}
+          </Label>{' '}
           <Input
             id={`customer-name`}
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
@@ -198,15 +198,15 @@ const AddCustomerDialogBox = ({
             type="text"
           />
           <Label htmlFor="iteam-name">
-            Company Name <span className="text-red-500">*</span>{" "}
-          </Label>{" "}
+            Company Name <span className="text-red-500">*</span>{' '}
+          </Label>{' '}
           <Input
             id={`customer-company_name`}
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
             placeholder="Enter Company Name"
             type="text"
           />
-          <Label htmlFor="iteam-name">Phone No.</Label>{" "}
+          <Label htmlFor="iteam-name">Phone No.</Label>{' '}
           <Input
             id={`customer-phno`}
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
@@ -215,7 +215,7 @@ const AddCustomerDialogBox = ({
           />
           <Label htmlFor="iteam-name">
             GST Number <span className="text-red-500">*</span>
-          </Label>{" "}
+          </Label>{' '}
           <Input
             id={`customer-gstno`}
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
@@ -223,9 +223,9 @@ const AddCustomerDialogBox = ({
             type="text"
           />
           <Label htmlFor="iteam-name">
-            {" "}
+            {' '}
             Address <span className="text-red-500">*</span>
-          </Label>{" "}
+          </Label>{' '}
           <Input
             id={`customer-address`}
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
@@ -239,7 +239,7 @@ const AddCustomerDialogBox = ({
             value={selectedState}
             onValueChange={(value) => {
               setSelectedState(value);
-              if (value !== "Other") setCustomState(""); // Clear custom input if not "Other"
+              if (value !== 'Other') setCustomState(''); // Clear custom input if not "Other"
             }}
           >
             <SelectTrigger id="state-select">
@@ -253,7 +253,7 @@ const AddCustomerDialogBox = ({
               ))}
             </SelectContent>
           </Select>
-          {selectedState === "Other" && (
+          {selectedState === 'Other' && (
             <Input
               id="custom-state"
               value={customState}
@@ -284,40 +284,50 @@ const AddCustomerDialogBox = ({
 };
 
 const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
+  const navigate = useNavigate();
   const states = [
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chhattisgarh",
-    "Goa",
-    "Gujarat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jammu and Kashmir",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Odisha",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttarakhand",
-    "Uttar Pradesh",
-    "West Bengal",
-    "Other",
+    'Andhra Pradesh',
+    'Arunachal Pradesh',
+    'Assam',
+    'Bihar',
+    'Chhattisgarh',
+    'Goa',
+    'Gujarat',
+    'Haryana',
+    'Himachal Pradesh',
+    'Jammu and Kashmir',
+    'Jharkhand',
+    'Karnataka',
+    'Kerala',
+    'Madhya Pradesh',
+    'Maharashtra',
+    'Manipur',
+    'Meghalaya',
+    'Mizoram',
+    'Nagaland',
+    'Odisha',
+    'Punjab',
+    'Rajasthan',
+    'Sikkim',
+    'Tamil Nadu',
+    'Telangana',
+    'Tripura',
+    'Uttarakhand',
+    'Uttar Pradesh',
+    'West Bengal',
+    'Other',
   ];
-  const [selectedState, setSelectedState] = useState<string>("");
-  const [customState, setCustomState] = useState<string>(""); // State for manual input
+  const [selectedState, setSelectedState] = useState<string>('');
+  const [customState, setCustomState] = useState<string>(''); // State for manual input
+  const createuser = () => {
+    setDialogOpen(false);
+    navigate('/dashboard');
+  };
+
+  const handleclose = () => {
+    setDialogOpen(false);
+    navigate('/dashboard');
+  };
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -328,7 +338,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
         <DialogDescription className="text-zinc-800 mb-2 p-2 gap-2 flex flex-col">
           <Label htmlFor="iteam-name">
             Name <span className="text-red-500">*</span>
-          </Label>{" "}
+          </Label>{' '}
           <Input
             id={`customer-name`}
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
@@ -336,15 +346,15 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
             type="text"
           />
           <Label htmlFor="iteam-name">
-            Company Name <span className="text-red-500">*</span>{" "}
-          </Label>{" "}
+            Company Name <span className="text-red-500">*</span>{' '}
+          </Label>{' '}
           <Input
             id={`customer-company_name`}
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
             placeholder="Enter Company Name"
             type="text"
           />
-          <Label htmlFor="iteam-name">Phone No.</Label>{" "}
+          <Label htmlFor="iteam-name">Phone No.</Label>{' '}
           <Input
             id={`customer-phno`}
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
@@ -353,7 +363,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
           />
           <Label htmlFor="iteam-name">
             GST Number <span className="text-red-500">*</span>
-          </Label>{" "}
+          </Label>{' '}
           <Input
             id={`customer-gstno`}
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
@@ -361,9 +371,9 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
             type="text"
           />
           <Label htmlFor="iteam-name">
-            {" "}
+            {' '}
             Address <span className="text-red-500">*</span>
-          </Label>{" "}
+          </Label>{' '}
           <Input
             id={`customer-address`}
             className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
@@ -377,7 +387,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
             value={selectedState}
             onValueChange={(value) => {
               setSelectedState(value);
-              if (value !== "Other") setCustomState(""); // Clear custom input if not "Other"
+              if (value !== 'Other') setCustomState(''); // Clear custom input if not "Other"
             }}
           >
             <SelectTrigger id="state-select">
@@ -391,7 +401,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               ))}
             </SelectContent>
           </Select>
-          {selectedState === "Other" && (
+          {selectedState === 'Other' && (
             <Input
               id="custom-state"
               value={customState}
@@ -427,13 +437,13 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
         <DialogFooter>
           <button
             className="text-black font-bold border-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-800 border-gray-800 hover:text-white focus:shadow-outline"
-            onClick={() => setDialogOpen(false)}
+            onClick={createuser}
           >
             Create
           </button>
           <button
             className="text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-800 hover:text-white focus:shadow-outline"
-            onClick={() => setDialogOpen(false)}
+            onClick={handleclose}
           >
             Close
           </button>

@@ -13,6 +13,7 @@ function App() {
       <SidebarLayout>
         <Routes>
           <Route path="/" element={<DashBoard />} />
+          <Route path="/dashboard" element={<DashBoard />} />
           <Route path="/invoice" element={<InvoiceGenerator />} />
           <Route path="/invoice/viewInvoice" element={<ViewInvoice />} />
           <Route path="/listInvoices" element={<ListInvoices />} />

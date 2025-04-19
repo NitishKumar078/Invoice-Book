@@ -51,11 +51,13 @@ export type Customer = {
 };
 
 export interface User {
-  user: string;
+  name: string;
   company: string;
   gstno: string;
   address: string;
   state: string;
+  phone?: string;
+  email?: string;
 }
 
 export interface option {
