@@ -46,6 +46,7 @@ import {
 } from 'lucide-react';
 import ListLoader from '@/components/ui/ListLoader';
 import { useSelector } from 'react-redux';
+import { selectItems } from '@/Store/Selectors/Selectors';
 
 declare module '@tanstack/react-table' {
   //allows us to define custom properties for our columns
@@ -55,10 +56,14 @@ declare module '@tanstack/react-table' {
 }
 
 function ListItems() {
-  const items = useSelector((state: { item: TableItem[] }) => state.item || []);
+  const items = useSelector(selectItems);
   const loading = useSelector(
     (state: { item: { loading: boolean } }) => state.item?.loading
   );
+
+  if (loading) {
+    return <ListLoader />;
+  }
 
   const columns: ColumnDef<TableItem>[] = [
     {

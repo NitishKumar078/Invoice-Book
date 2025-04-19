@@ -40,6 +40,7 @@ import {
   SelectValue,
 } from '@radix-ui/react-select';
 import ListLoader from '@/components/ui/ListLoader';
+import { selectCustomer } from '@/Store/Selectors/Selectors';
 
 declare module '@tanstack/react-table' {
   // Allows us to define custom properties for our columns
@@ -102,9 +103,7 @@ const columns: ColumnDef<Customer>[] = [
 ];
 
 function Listcustomers() {
-  const customers = useSelector(
-    (state: { customer: Customer[] }) => state.customer || []
-  ); // Fetch customers from Redux store
+  const customers = useSelector(selectCustomer);
   const loading = useSelector(
     (state: { customer: { loading: boolean } }) => state.customer?.loading
   );
@@ -118,7 +117,7 @@ function Listcustomers() {
   ]);
 
   const table = useReactTable({
-    data: customers, // Use customers from Redux store
+    data: customers,
     columns,
     state: {
       sorting,

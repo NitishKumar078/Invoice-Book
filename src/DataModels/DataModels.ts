@@ -40,12 +40,12 @@ export interface invoiceItem {
 
 export type Customer = {
   name?: string;
-  company?: string;
+  company: string;
   email?: string;
-  address?: string;
-  state?: string;
+  address: string;
+  state: string;
   contactNo?: string;
-  gstinNo?: string;
+  gstinNo: string;
   label?: string;
   link?: string;
 };

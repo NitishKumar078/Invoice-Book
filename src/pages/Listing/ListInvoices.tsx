@@ -46,6 +46,7 @@ import {
 } from 'lucide-react';
 import { invoiceItem } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
+import { selectInvoice } from '@/Store/Selectors/Selectors';
 
 declare module '@tanstack/react-table' {
   // Allows us to define custom properties for our columns
@@ -55,10 +56,7 @@ declare module '@tanstack/react-table' {
 }
 
 function ListInvoices() {
-  const items = useSelector(
-    (state: { invoice: { invoices: invoiceItem[] } }) =>
-      state.invoice?.invoices || []
-  );
+  const items = useSelector(selectInvoice);
 
   const loading = useSelector(
     (state: { invoice: { loading: boolean } }) => state.invoice?.loading

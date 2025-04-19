@@ -13,4 +13,10 @@ const Store = configureStore({
   },
 });
 
+// Define RootState type for the entire Redux state
+export type RootState = ReturnType<typeof Store.getState>;
+
+// Define AppDispatch type for dispatching actions
+export type AppDispatch = typeof Store.dispatch;
+
 export default Store;
