@@ -66,9 +66,9 @@ const columns: ColumnDef<Customer>[] = [
   },
   {
     header: 'GST Number',
-    accessorKey: 'gstinNo',
+    accessorKey: 'gstNo',
     cell: ({ row }) => (
-      <div className="font-medium">{row.getValue('gstinNo')}</div>
+      <div className="font-medium">{row.getValue('gstNo')}</div>
     ),
   },
   {
@@ -88,7 +88,7 @@ const columns: ColumnDef<Customer>[] = [
   {
     header: 'Option',
     accessorKey: 'link',
-    cell: ({ row }) => (
+    cell: () => (
       <div className="flex gap-4">
         <button className="hover:text-blue-500 transition-colors duration-200">
           <Pencil className="size-4 " />

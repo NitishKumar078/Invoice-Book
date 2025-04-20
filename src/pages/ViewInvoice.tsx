@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom/client";
+import ReactDOM from 'react-dom/client';
 import {
   Page,
   Text,
@@ -7,15 +7,15 @@ import {
   StyleSheet,
   Font,
   PDFViewer,
-} from "@react-pdf/renderer";
-import NotoSans from "@/assets/Fonts/NotoSans-CondensedBold.ttf"; // Adjust the path as necessary
-import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
-import { TableItem, User } from "@/DataModels/DataModels";
-import { useSelector } from "react-redux";
+} from '@react-pdf/renderer';
+import NotoSans from '@/assets/Fonts/NotoSans-CondensedBold.ttf'; // Adjust the path as necessary
+import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { TableItem, User } from '@/DataModels/DataModels';
+import { useSelector } from 'react-redux';
 
 // Register the font
 Font.register({
-  family: "NotoSans",
+  family: 'NotoSans',
   src: NotoSans,
 });
 
@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 10,
     fontSize: 13,
-    fontFamily: "NotoSans", // Use the registered font
+    fontFamily: 'NotoSans', // Use the registered font
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   companyDetails: {
     lineHeight: 1,
@@ -37,52 +37,52 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    textAlign: "right",
+    textAlign: 'right',
   },
   horizontalLine: {
-    width: "100%", // Full width of the page
+    width: '100%', // Full width of the page
     height: 1, // Thickness of the line
-    backgroundColor: "#000", // Line color
+    backgroundColor: '#000', // Line color
     marginVertical: 5, // Space above and below the line
   },
   horizontalLine_total: {
-    width: "100%", // Full width of the page
+    width: '100%', // Full width of the page
     height: 1, // Thickness of the line
-    backgroundColor: "#000", // Line color
+    backgroundColor: '#000', // Line color
     marginVertical: 5, // Space above and below the line
   },
   billingInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 5,
   },
   billTo: {
-    width: "50%",
+    width: '50%',
     lineHeight: 1,
   },
   invoiceDetails: {
     margin: 5,
-    textAlign: "right",
+    textAlign: 'right',
   },
   table: {
-    display: "flex",
-    width: "auto",
-    borderStyle: "solid",
+    display: 'flex',
+    width: 'auto',
+    borderStyle: 'solid',
     borderWidth: 1,
-    borderColor: "#bfbfbf",
+    borderColor: '#bfbfbf',
     borderRightWidth: 0,
     borderBottomWidth: 0,
     marginTop: 10,
   },
   tableRow: {
-    margin: "auto",
-    flexDirection: "row",
+    margin: 'auto',
+    flexDirection: 'row',
   },
   tableCol: {
-    width: "14.3%",
-    borderStyle: "solid",
+    width: '14.3%',
+    borderStyle: 'solid',
     borderWidth: 1,
-    borderColor: "#bfbfbf",
+    borderColor: '#bfbfbf',
     borderLeftWidth: 0,
     borderTopWidth: 0,
     padding: 2,
@@ -90,18 +90,18 @@ const styles = StyleSheet.create({
   tableCellHeader: {
     margin: 5,
     fontSize: 12,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   tableCell: {
     margin: 5,
     fontSize: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   totalSection: {
     marginTop: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   taxSummary: {
     margin: 10,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   totalAmount: {
     margin: 5,
-    textAlign: "right",
+    textAlign: 'right',
     fontSize: 12,
   },
   termsAndConditions: {
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   signature: {
     margin: 5,
-    textAlign: "right",
+    textAlign: 'right',
     marginTop: 40,
     fontSize: 10,
   },
@@ -173,8 +173,8 @@ const Quixote: React.FC<QuixoteProps> = ({
         <View style={styles.companyDetails}>
           <Text>{user.company}</Text>
           <Text>
-            {user.address},{"\n"}
-            GSTIN: {user.gstno},{"\n"}
+            {user.address},{'\n'}
+            GSTIN: {user.gstNo},{'\n'}
             State: {user.state}
           </Text>
         </View>
@@ -212,7 +212,7 @@ const Quixote: React.FC<QuixoteProps> = ({
           </View>
           <View style={styles.tableCol}>
             <Text style={styles.tableCellHeader}>Quantity</Text>
-          </View>{" "}
+          </View>{' '}
           <View style={styles.tableCol}>
             <Text style={styles.tableCellHeader}>Unit</Text>
           </View>
@@ -273,10 +273,10 @@ const Quixote: React.FC<QuixoteProps> = ({
       <View style={styles.termsAndConditions}>
         <Text>Terms and Conditions:</Text>
         <Text>
-          Goods once sold cannot be taken back or exchanged. {"\n"}
-          Damage in transportation is Risk. {"\n"}
-          Amount of bill not paid within 15 days, 2.5% interest will be charged{" "}
-          {"\n"}
+          Goods once sold cannot be taken back or exchanged. {'\n'}
+          Damage in transportation is Risk. {'\n'}
+          Amount of bill not paid within 15 days, 2.5% interest will be charged{' '}
+          {'\n'}
           per month. All disputes subject to Bangalore Jurisdiction.
         </Text>
       </View>
@@ -284,9 +284,9 @@ const Quixote: React.FC<QuixoteProps> = ({
       <View style={styles.bankDetails}>
         <Text>Bank Details:</Text>
         <Text>
-          Name: Punjab National Bank, Bangalore, Bhel, Mysore Road {"\n"}
-          Account No.: 4247002100500917 {"\n"}
-          IFSC code: PUNB0424700 {"\n"}
+          Name: Punjab National Bank, Bangalore, Bhel, Mysore Road {'\n'}
+          Account No.: 4247002100500917 {'\n'}
+          IFSC code: PUNB0424700 {'\n'}
           Account name: JSR TRADERS
         </Text>
       </View>
@@ -306,7 +306,7 @@ const ViewInvoice = () => {
   const invoicedata = location.state?.ValidatedData || {};
   const user = useSelector((state: { user: User }) => state.user);
   console.log(invoicedata);
-  console.log("this is the user ", user);
+  console.log('this is the user ', user);
 
   return (
     <div className="flex items-start flex-row">
@@ -314,15 +314,15 @@ const ViewInvoice = () => {
       <button
         onClick={() => navigate(-1)} // Navigate back to the previous page
         style={{
-          position: "relative",
-          top: "10px",
-          left: "10px",
-          padding: "10px 20px",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
+          position: 'relative',
+          top: '10px',
+          left: '10px',
+          padding: '10px 20px',
+          backgroundColor: '#007bff',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
         }}
       >
         Go Back
@@ -331,12 +331,12 @@ const ViewInvoice = () => {
       <PDFViewer
         className="createcart"
         style={{
-          width: "calc(78vw)",
-          left: "calc(2vw)",
-          position: "relative",
-          top: "10px",
-          height: "90vh",
-          border: "none",
+          width: 'calc(78vw)',
+          left: 'calc(2vw)',
+          position: 'relative',
+          top: '10px',
+          height: '90vh',
+          border: 'none',
         }}
       >
         <Quixote
@@ -361,7 +361,7 @@ const ViewInvoice = () => {
   );
 };
 
-const rootElement = document.getElementById("main");
+const rootElement = document.getElementById('main');
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(<ViewInvoice />);

@@ -44,20 +44,22 @@ export type Customer = {
   email?: string;
   address: string;
   state: string;
-  contactNo?: string;
-  gstinNo: string;
+  phoneNo?: string;
+  gstNo: string;
   label?: string;
   link?: string;
+  customState: string;
 };
 
 export interface User {
   name: string;
   company: string;
-  gstno: string;
+  gstNo: string;
   address: string;
   state: string;
-  phone?: string;
+  phoneNo?: string;
   email?: string;
+  customState?: string;
 }
 
 export interface option {

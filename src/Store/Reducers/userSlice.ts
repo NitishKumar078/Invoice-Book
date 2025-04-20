@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '@/DataModels/DataModels';
+import { getDataBase } from '@/utils/indexedDB';
+const UserStore = import.meta.env.VITE_USERSTORE;
 
 // Function to fetch user info from localStorage
 const fetchUserInfoFromLocalStorage = (): User => {
@@ -10,11 +12,12 @@ const fetchUserInfoFromLocalStorage = (): User => {
   return {
     name: '',
     company: '',
-    gstno: '',
+    gstNo: '',
     address: '',
     state: '',
-    phone: '',
+    phoneNo: '',
     email: '',
+    customState: '',
   };
 };
 
@@ -30,19 +33,21 @@ const userSlice = createSlice({
       const {
         name,
         company,
-        gstno,
+        gstNo,
         address,
         state: userState,
-        phone,
+        phoneNo,
         email,
+        customState,
       } = action.payload;
       state.name = name;
       state.company = company;
-      state.gstno = gstno;
+      state.gstNo = gstNo;
       state.address = address;
       state.state = userState;
-      state.phone = phone;
+      state.phoneNo = phoneNo;
       state.email = email;
+      state.customState = customState;
     },
   },
 });

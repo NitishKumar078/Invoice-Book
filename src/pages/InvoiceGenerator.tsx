@@ -158,7 +158,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
       return null;
     } else {
       const company = selectedCustomer?.name || '';
-      const gstid = selectedCustomer?.gstinNo || '';
+      const gstid = selectedCustomer?.gstNo || '';
       const cno = selectedCustomer?.contactNo || '';
       const cadress = selectedCustomer?.address || '';
       const contact = selectedCustomer?.contactNo || null;
@@ -278,7 +278,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
           <p>
             {user.address}
             <br />
-            GSTIN: {user.gstno}
+            GSTIN: {user.gstNo}
             <br />
             State: {user.state}
           </p>
