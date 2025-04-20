@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '@/DataModels/DataModels';
-import { getDataBase } from '@/utils/indexedDB';
-const UserStore = import.meta.env.VITE_USERSTORE;
 
 // Function to fetch user info from localStorage
 const fetchUserInfoFromLocalStorage = (): User => {

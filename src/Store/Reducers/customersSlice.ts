@@ -53,7 +53,7 @@ const customersSlice = createSlice({
     },
     deleteCustomer: (state, action: PayloadAction<string>) => {
       state.customers = state.customers.filter(
-        (c) => c.name !== action.payload
+        (c) => c.company !== action.payload
       );
       getDataBase.delete(customerStore, action.payload).catch((error) => {
         console.error('Failed to delete customer from IndexedDB:', error);

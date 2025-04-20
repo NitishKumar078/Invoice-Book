@@ -39,7 +39,7 @@ export interface invoiceItem {
 }
 
 export type Customer = {
-  name?: string;
+  name: string;
   company: string;
   email?: string;
   address: string;

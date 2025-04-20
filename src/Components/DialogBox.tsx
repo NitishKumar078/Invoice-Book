@@ -148,9 +148,10 @@ const AddIteamDialogBox = ({
 const AddCustomerDialogBox = ({
   dialogOpen,
   setDialogOpen,
+  Editdata,
 }: DialogBoxProps) => {
   const [formData, setFormData] = useState({
-    customerName: '',
+    name: '',
     company: '',
     phoneNo: '',
     gstNo: '',
@@ -199,6 +200,36 @@ const AddCustomerDialogBox = ({
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
+  // Update formData when Editdata changes
+  useEffect(() => {
+    if (Editdata) {
+      setFormData({
+        name: 'name' in Editdata ? Editdata.name || '' : '',
+        company: 'company' in Editdata ? Editdata.company || '' : '',
+        phoneNo: 'phoneNo' in Editdata ? Editdata.phoneNo || '' : '',
+        gstNo: 'gstNo' in Editdata ? Editdata.gstNo || '' : '',
+        address: 'address' in Editdata ? Editdata.address || '' : '',
+        state: 'state' in Editdata ? Editdata.state || '' : '',
+        customState:
+          'customState' in Editdata ? Editdata.customState || '' : '',
+        email: 'email' in Editdata ? Editdata.email || '' : '',
+      });
+      setSelectedState('state' in Editdata ? Editdata.state || '' : '');
+    } else {
+      setFormData({
+        name: '',
+        company: '',
+        phoneNo: '',
+        gstNo: '',
+        address: '',
+        state: '',
+        customState: '',
+        email: '',
+      });
+      setSelectedState('');
+    }
+  }, [Editdata]);
+
   const handleSaveCustomer = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent page reload
     const customerData = {
@@ -208,6 +239,7 @@ const AddCustomerDialogBox = ({
     console.log('Customer Data:', customerData); // Log the collected data
     dispatch(addCustomer(customerData)); // Dispatch the action to add customer
     setDialogOpen(false); // Close the dialog
+    window.location.reload(); // Reload the page to reflect changes
   };
 
   return (
@@ -222,10 +254,10 @@ const AddCustomerDialogBox = ({
               Customer Name <span className="text-red-500">*</span>
             </Label>
             <Input
-              id="customerName"
+              id="name"
               placeholder="Enter Customer Name"
               type="text"
-              value={formData.customerName}
+              value={formData.name}
               onChange={handleChange}
               required
             />
@@ -327,7 +359,7 @@ const AddCustomerDialogBox = ({
               className="text-black font-bold border-2 py-2 px-4 rounded"
               type="submit"
             >
-              Create
+              {!Editdata ? 'Create' : 'Update'}
             </button>
             <button
               className="text-black font-bold py-2 px-4 rounded"
@@ -344,7 +376,6 @@ const AddCustomerDialogBox = ({
 };
 
 const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const states = [
@@ -406,12 +437,12 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
     console.log('User Data:', userData); // Log the collected data
     dispatch(updateUser(userData)); // Dispatch the action to add user
     setDialogOpen(false); // Close the dialog
-    navigate('/dashboard'); // Navigate to the dashboard
+    window.location.reload(); // Reload the page to reflect changes
   };
 
   const handleClose = () => {
     setDialogOpen(false);
-    navigate('/dashboard');
+    window.location.reload(); // Reload the page to reflect changes
   };
 
   return (

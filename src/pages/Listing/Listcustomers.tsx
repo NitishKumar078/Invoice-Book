@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { useId, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux'; // Import useSelector
+import { useDispatch, useSelector } from 'react-redux'; // Import useSelector
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ArrowRight, Pencil, Trash2 } from 'lucide-react';
@@ -41,6 +41,7 @@ import {
 } from '@radix-ui/react-select';
 import ListLoader from '@/components/ui/ListLoader';
 import { selectCustomer } from '@/Store/Selectors/Selectors';
+import { deleteCustomer } from '@/Store/Reducers/customersSlice';
 
 declare module '@tanstack/react-table' {
   // Allows us to define custom properties for our columns
@@ -49,65 +50,90 @@ declare module '@tanstack/react-table' {
   }
 }
 
-const columns: ColumnDef<Customer>[] = [
-  {
-    header: 'Name',
-    accessorKey: 'name',
-    cell: ({ row }) => (
-      <div className="font-medium">{row.getValue('name')}</div>
-    ),
-  },
-  {
-    header: 'Company',
-    accessorKey: 'company',
-    cell: ({ row }) => (
-      <div className="font-medium">{row.getValue('company')}</div>
-    ),
-  },
-  {
-    header: 'GST Number',
-    accessorKey: 'gstNo',
-    cell: ({ row }) => (
-      <div className="font-medium">{row.getValue('gstNo')}</div>
-    ),
-  },
-  {
-    header: 'Address',
-    accessorKey: 'address',
-    cell: ({ row }) => (
-      <div className="font-medium">{row.getValue('address')}</div>
-    ),
-  },
-  {
-    header: 'State',
-    accessorKey: 'state',
-    cell: ({ row }) => (
-      <div className="font-medium">{row.getValue('state')}</div>
-    ),
-  },
-  {
-    header: 'Option',
-    accessorKey: 'link',
-    cell: () => (
-      <div className="flex gap-4">
-        <button className="hover:text-blue-500 transition-colors duration-200">
-          <Pencil className="size-4 " />
-        </button>
-        <button className="hover:text-red-500 transition-colors duration-200">
-          <Trash2 className="size-4" />
-        </button>
-      </div>
-    ),
-    enableSorting: false,
-  },
-];
-
 function Listcustomers() {
+  const dispatch = useDispatch();
   const customers = useSelector(selectCustomer);
   const loading = useSelector(
     (state: { customer: { loading: boolean } }) => state.customer?.loading
   );
-  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [dialogOpen, setDialogOpen] = useState(false); // Declare dialogOpen state once
+  const [Editdata, setEditdata] = useState<Customer | null>(null); // State to hold the data for editing
+
+  const handleEdit = (data: Customer) => {
+    setEditdata(data);
+    setDialogOpen(true);
+  };
+
+  const handleDelete = (data: Customer) => {
+    // Handle delete action here. You can dispatch an action to delete the customer.
+    console.log('Delete customer:', data);
+    dispatch(deleteCustomer(data.company)); // Dispatch delete action
+  };
+
+  const columns: ColumnDef<Customer>[] = [
+    {
+      header: 'Name',
+      accessorKey: 'name',
+      cell: ({ row }) => (
+        <div className="font-medium">{row.getValue('name')}</div>
+      ),
+    },
+    {
+      header: 'Company',
+      accessorKey: 'company',
+      cell: ({ row }) => (
+        <div className="font-medium">{row.getValue('company')}</div>
+      ),
+    },
+    {
+      header: 'GST Number',
+      accessorKey: 'gstNo',
+      cell: ({ row }) => (
+        <div className="font-medium">{row.getValue('gstNo')}</div>
+      ),
+    },
+    {
+      header: 'Address',
+      accessorKey: 'address',
+      cell: ({ row }) => (
+        <div className="font-medium">{row.getValue('address')}</div>
+      ),
+    },
+    {
+      header: 'State',
+      accessorKey: 'state',
+      cell: ({ row }) => (
+        <div className="font-medium">{row.getValue('state')}</div>
+      ),
+    },
+    {
+      header: 'Option',
+      accessorKey: 'link',
+      cell: ({ row }) => (
+        <div className="flex gap-4">
+          <button
+            className="hover:text-blue-500 transition-colors duration-200"
+            onClick={() => {
+              handleEdit(row.original);
+            }}
+          >
+            <Pencil className="size-4 " />
+          </button>
+          <button
+            className="hover:text-red-500 transition-colors duration-200"
+            onClick={() => {
+              handleDelete(row.original);
+            }}
+          >
+            <Trash2 className="size-4" />
+          </button>
+        </div>
+      ),
+      enableSorting: false,
+    },
+  ];
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([
     {
@@ -159,6 +185,7 @@ function Listcustomers() {
           <button
             className="relative inline-flex items-center gap-1 rounded-md bg-zinc-950 px-2.5 py-1.5 text-sm text-zinc-50 outline-1 outline-[#fff2f21f] hover:border hover:border-zinc-300"
             onClick={() => {
+              setEditdata(null); // Reset Editdata for new customer
               setDialogOpen(true);
             }}
           >
@@ -265,6 +292,7 @@ function Listcustomers() {
         <AddCustomerDialogBox
           dialogOpen={dialogOpen}
           setDialogOpen={setDialogOpen}
+          Editdata={Editdata}
         />
       )}
     </div>
