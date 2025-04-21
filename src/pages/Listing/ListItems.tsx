@@ -45,9 +45,9 @@ import {
   Trash2,
 } from 'lucide-react';
 import ListLoader from '@/components/ui/ListLoader';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '@/Store/Selectors/Selectors';
-import { addItem, updateItem, deleteItem } from '@/Store/Reducers/ItemsSlice';
+import { deleteItem } from '@/Store/Reducers/ItemsSlice';
 
 declare module '@tanstack/react-table' {
   //allows us to define custom properties for our columns
@@ -110,7 +110,10 @@ function ListItems() {
           >
             <Pencil className="size-4 " />
           </button>
-          <button className="hover:text-red-500 transition-colors duration-200">
+          <button
+            className="hover:text-red-500 transition-colors duration-200"
+            onClick={() => handleDelete(row.original)}
+          >
             <Trash2 className="size-4" />
           </button>
         </div>
@@ -118,7 +121,7 @@ function ListItems() {
       enableSorting: false,
     },
   ];
-
+  const dispatch = useDispatch();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [EditItem, setEditItem] = useState<TableItem | null>(null);
@@ -146,6 +149,12 @@ function ListItems() {
     onSortingChange: setSorting,
     enableSortingRemoval: false,
   });
+
+  const handleDelete = (tableitem: TableItem) => {
+    // Handle item edit logic here
+    console.log('delete item:', tableitem);
+    dispatch(deleteItem(tableitem.hsnCode));
+  };
 
   const handleItemEdit = (tableitem: TableItem) => {
     // Handle item edit logic here

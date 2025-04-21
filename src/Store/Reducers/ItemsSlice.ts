@@ -41,7 +41,9 @@ const ItemsSlice = createSlice({
       });
     },
     updateItem: (state, action: PayloadAction<TableItem>) => {
-      const index = state.Items.findIndex((c) => c.id === action.payload.id);
+      const index = state.Items.findIndex(
+        (c) => c.hsnCode === action.payload.hsnCode
+      );
       if (index !== -1) {
         state.Items[index] = action.payload;
         getDataBase.update(ItemStore, action.payload).catch((error) => {
@@ -50,7 +52,7 @@ const ItemsSlice = createSlice({
       }
     },
     deleteItem: (state, action: PayloadAction<string>) => {
-      state.Items = state.Items.filter((c) => c.item !== action.payload);
+      state.Items = state.Items.filter((c) => c.hsnCode !== action.payload);
       getDataBase.delete(ItemStore, action.payload).catch((error) => {
         console.error('Failed to delete Items from DB:', error);
       });
