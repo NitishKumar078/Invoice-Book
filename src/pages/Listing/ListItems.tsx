@@ -47,6 +47,7 @@ import {
 import ListLoader from '@/components/ui/ListLoader';
 import { useSelector } from 'react-redux';
 import { selectItems } from '@/Store/Selectors/Selectors';
+import { addItem, updateItem, deleteItem } from '@/Store/Reducers/ItemsSlice';
 
 declare module '@tanstack/react-table' {
   //allows us to define custom properties for our columns
@@ -80,18 +81,22 @@ function ListItems() {
         <div className="font-medium">{row.getValue('hsnCode')}</div>
       ),
     },
-    {
-      header: 'Quantity',
-      accessorKey: 'quantity',
-      cell: ({ row }) => (
-        <div className="font-medium">{row.getValue('quantity')}</div>
-      ),
-    },
+    // {
+    //   header: 'Quantity',
+    //   accessorKey: 'quantity',
+    //   cell: ({ row }) => (
+    //     <div className="font-medium">{row.getValue('quantity')}</div>
+    //   ),
+    // },
     {
       header: 'Unit',
       accessorKey: 'unit',
       cell: ({ row }) => (
-        <div className="font-medium">{row.getValue('unit')}</div>
+        <div className="font-medium">
+          {row.getValue('unit') === 'Other'
+            ? row.original.customUnit
+            : row.getValue('unit')}
+        </div>
       ),
     },
     {

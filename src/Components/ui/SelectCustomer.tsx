@@ -83,11 +83,11 @@ const SelectCustomer = ({
       document.getElementById('customer-address')!.textContent =
         customer.address || 'N/A';
       document.getElementById('customer-contact')!.textContent =
-        customer.contactNo || 'N/A';
+        customer.phoneNo || 'N/A';
       document.getElementById('customer-state')!.textContent =
         customer.state || 'N/A';
       document.getElementById('customer-gstin')!.textContent =
-        customer.gstinNo || 'N/A';
+        customer.gstNo || 'N/A';
     }
   };
 
@@ -147,7 +147,7 @@ const SelectCustomer = ({
         <p>
           <strong>Contact No:</strong>{' '}
           <span id="customer-contact">
-            {selectedCustomer?.contactNo || 'N/A'}
+            {selectedCustomer?.phoneNo || 'N/A'}
           </span>
         </p>
         <p>
@@ -156,7 +156,7 @@ const SelectCustomer = ({
         </p>
         <p>
           <strong>GSTIN:</strong>{' '}
-          <span id="customer-gstin">{selectedCustomer?.gstinNo || 'N/A'}</span>
+          <span id="customer-gstin">{selectedCustomer?.gstNo || 'N/A'}</span>
         </p>
       </div>
     </div>

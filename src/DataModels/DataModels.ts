@@ -12,13 +12,13 @@
 ################################################################################################## */
 
 export interface TableItem {
-  id: number;
   item: string;
   hsnCode: string;
   quantity?: string;
   unit: string;
   price?: string;
   amount?: string;
+  customUnit?: string;
 }
 
 export interface invoiceItem {

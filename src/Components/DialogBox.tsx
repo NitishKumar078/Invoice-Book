@@ -21,6 +21,7 @@ import { Customer, TableItem } from '@/DataModels/DataModels';
 import { addCustomer, updateCustomer } from '@/Store/Reducers/customersSlice';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '@/Store/Reducers/userSlice';
+import { addItem, updateItem } from '@/Store/Reducers/ItemsSlice';
 
 interface DialogBoxProps {
   dialogOpen: boolean;
@@ -67,79 +68,127 @@ const AddIteamDialogBox = ({
   const units = ['Piece', 'Kg', 'Ton', 'Ltr', 'inch', 'cm', 'Other']; // Dummy data
 
   // Initialize the selected unit state with Editdata.unit if available
-  const [selectedUnit, setSelectedUnit] = useState<string>(
-    Editdata && 'unit' in Editdata ? Editdata.unit : '' // Use Editdata.unit if it exists and is valid
-  );
-
+  const [selectedUnit, setSelectedUnit] = useState<string>('');
+  const [formData, setFormData] = useState({
+    item: '',
+    hsnCode: '',
+    unit: '',
+    customUnit: '',
+  });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+  const dispatch = useDispatch(); // Initialize dispatch
   // Update the selected unit state when Editdata changes
   useEffect(() => {
-    if (Editdata && 'unit' in Editdata) {
-      setSelectedUnit(Editdata.unit);
+    if (Editdata) {
+      setFormData({
+        item: 'item' in Editdata ? Editdata.item || '' : '',
+        hsnCode: 'hsnCode' in Editdata ? Editdata.hsnCode || '' : '',
+        unit: 'unit' in Editdata ? Editdata.unit || '' : '',
+        customUnit: 'customUnit' in Editdata ? Editdata.customUnit || '' : '',
+      });
+      setSelectedUnit(Editdata && 'unit' in Editdata ? Editdata.unit : '');
     }
   }, [Editdata]);
+
+  const handleSaveCustomer = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent page reload
+    const formDataWithUnit = {
+      ...formData,
+      unit: selectedUnit, // Use the selected unit state
+    };
+    console.log('Customer Data:', formDataWithUnit); // Log the collected data
+    if (Editdata) {
+      dispatch(updateItem(formDataWithUnit));
+    } else {
+      dispatch(addItem(formDataWithUnit)); // Dispatch the action to add customer
+    }
+    setDialogOpen(false); // Close the dialog
+    window.location.reload(); // Reload the page to reflect changes
+  };
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create New Item</DialogTitle>
-        </DialogHeader>
-        <DialogDescription className="text-zinc-800 mb-2 p-2 gap-2 flex flex-col">
-          <Label htmlFor="item-name">
-            Item Name <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            id="item-name"
-            className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-            placeholder="Enter Item Name"
-            type="text"
-            defaultValue={Editdata && 'item' in Editdata ? Editdata.item : ''} // Use Editdata.item if available and valid
-          />
-          <Label htmlFor="unit-select">Unit</Label>
-          <Select
-            value={selectedUnit} // Bind the selected unit state
-            onValueChange={(value) => setSelectedUnit(value)}
-            defaultValue={selectedUnit} // Update the state on selection
-          >
-            <SelectTrigger id="unit-select">
-              <SelectValue placeholder="Select Unit" />
-            </SelectTrigger>
-            <SelectContent>
-              {units.map((unit) => (
-                <SelectItem key={unit} value={unit}>
-                  {unit}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Label htmlFor="HSN-Code">
-            HSN Code <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            id="hsn-code"
-            className="-ms-px mb-2 flex-1 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-            placeholder="Enter HSN Code"
-            type="text"
-            defaultValue={
-              Editdata && 'hsnCode' in Editdata ? Editdata.hsnCode : ''
-            } // Use Editdata.hsnCode if available and valid
-          />
-        </DialogDescription>
+        <form onSubmit={handleSaveCustomer}>
+          <DialogHeader>
+            <DialogTitle>Create New Item</DialogTitle>
+          </DialogHeader>
+          <DialogDescription className="text-zinc-800 mb-2 p-2 gap-2 flex flex-col">
+            <Label htmlFor="item">
+              Item Name <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="item"
+              className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+              placeholder="Enter Item Name"
+              type="text"
+              value={formData.item}
+              onChange={handleChange}
+            />
+            <Label htmlFor="unit">Unit</Label>
+            <Select
+              value={selectedUnit} // Bind the selected unit state
+              onValueChange={(value) => {
+                setSelectedUnit(value);
+                setFormData({
+                  ...formData,
+                  unit: value,
+                  customUnit: value === 'Other' ? '' : formData.customUnit,
+                });
+              }}
+              required
+            >
+              <SelectTrigger id="unit">
+                <SelectValue placeholder="Select Unit" />
+              </SelectTrigger>
+              <SelectContent>
+                {units.map((unit) => (
+                  <SelectItem key={unit} value={unit}>
+                    {unit}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+              {selectedUnit === 'Other' && (
+                <Input
+                  id="customUnit"
+                  placeholder="Enter Unit"
+                  value={formData.customUnit}
+                  onChange={handleChange}
+                  className="mt-2"
+                  required={selectedUnit === 'Other'}
+                />
+              )}
+            </Select>
+            <Label htmlFor="hsnCode">
+              HSN Code <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="hsnCode"
+              className="-ms-px mb-2 flex-1 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+              placeholder="Enter HSN Code"
+              type="text"
+              value={formData.hsnCode}
+              onChange={handleChange}
+            />
+          </DialogDescription>
 
-        <DialogFooter>
-          <button
-            className="text-black font-bold border-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-800 border-gray-800 hover:text-white focus:shadow-outline"
-            onClick={() => setDialogOpen(false)}
-          >
-            Create
-          </button>
-          <button
-            className="text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-800 hover:text-white focus:shadow-outline"
-            onClick={() => setDialogOpen(false)}
-          >
-            Close
-          </button>
-        </DialogFooter>
+          <DialogFooter>
+            <button
+              className="text-black font-bold border-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-800 border-gray-800 hover:text-white focus:shadow-outline"
+              type="submit"
+            >
+              {!Editdata ? 'Create' : 'Update'}
+            </button>
+            <button
+              className="text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-800 hover:text-white focus:shadow-outline"
+              onClick={() => setDialogOpen(false)}
+            >
+              Close
+            </button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
@@ -215,18 +264,6 @@ const AddCustomerDialogBox = ({
         email: 'email' in Editdata ? Editdata.email || '' : '',
       });
       setSelectedState('state' in Editdata ? Editdata.state || '' : '');
-    } else {
-      setFormData({
-        name: '',
-        company: '',
-        phoneNo: '',
-        gstNo: '',
-        address: '',
-        state: '',
-        customState: '',
-        email: '',
-      });
-      setSelectedState('');
     }
   }, [Editdata]);
 
@@ -237,7 +274,11 @@ const AddCustomerDialogBox = ({
       state: selectedState === 'Other' ? formData.customState : selectedState,
     };
     console.log('Customer Data:', customerData); // Log the collected data
-    dispatch(addCustomer(customerData)); // Dispatch the action to add customer
+    if (Editdata) {
+      dispatch(updateCustomer(customerData));
+    } else {
+      dispatch(addCustomer(customerData)); // Dispatch the action to add customer
+    }
     setDialogOpen(false); // Close the dialog
     window.location.reload(); // Reload the page to reflect changes
   };
