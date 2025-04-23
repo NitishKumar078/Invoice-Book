@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '@/DataModels/DataModels';
 
-// Function to fetch user info from localStorage
+// Function to fetch user info from localStorage or initialize it
 const fetchUserInfoFromLocalStorage = (): User => {
   const userInfo = localStorage.getItem('userInfo');
   if (userInfo) {
     return JSON.parse(userInfo);
   }
-  return {
+
+  // Default user object
+  const defaultUser: User = {
     name: '',
     company: '',
     gstNo: '',
@@ -17,6 +19,10 @@ const fetchUserInfoFromLocalStorage = (): User => {
     email: '',
     customState: '',
   };
+
+  // Save default user to localStorage
+  localStorage.setItem('userInfo', JSON.stringify(defaultUser));
+  return defaultUser;
 };
 
 // Initial state is fetched from localStorage if available
@@ -38,6 +44,8 @@ const userSlice = createSlice({
         email,
         customState,
       } = action.payload;
+
+      // Update state
       state.name = name;
       state.company = company;
       state.gstNo = gstNo;
@@ -46,6 +54,9 @@ const userSlice = createSlice({
       state.phoneNo = phoneNo;
       state.email = email;
       state.customState = customState;
+
+      // Persist updated user to localStorage
+      localStorage.setItem('userInfo', JSON.stringify(state));
     },
   },
 });

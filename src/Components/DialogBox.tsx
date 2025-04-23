@@ -478,7 +478,6 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
     console.log('User Data:', userData); // Log the collected data
     dispatch(updateUser(userData)); // Dispatch the action to add user
     setDialogOpen(false); // Close the dialog
-    window.location.reload(); // Reload the page to reflect changes
   };
 
   const handleClose = () => {
