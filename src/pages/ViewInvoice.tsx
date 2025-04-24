@@ -284,10 +284,10 @@ const Quixote: React.FC<QuixoteProps> = ({
       <View style={styles.bankDetails}>
         <Text>Bank Details:</Text>
         <Text>
-          Name: Punjab National Bank, Bangalore, Bhel, Mysore Road {'\n'}
-          Account No.: 4247002100500917 {'\n'}
-          IFSC code: PUNB0424700 {'\n'}
-          Account name: JSR TRADERS
+          Name: {user.BankName} {'\n'}
+          Account No.: {user.AccountNo} {'\n'}
+          IFSC code: {user.IFSC_code} {'\n'}
+          Account name: {user.AccountName} {'\n'}
         </Text>
       </View>
 

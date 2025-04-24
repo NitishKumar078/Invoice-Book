@@ -18,6 +18,10 @@ const fetchUserInfoFromLocalStorage = (): User => {
     phoneNo: '',
     email: '',
     customState: '',
+    BankName: '',
+    AccountNo: '',
+    IFSC_code: '',
+    AccountName: '',
   };
 
   // Save default user to localStorage

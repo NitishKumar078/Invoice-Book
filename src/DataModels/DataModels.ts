@@ -61,6 +61,10 @@ export interface User {
   phoneNo?: string;
   email?: string;
   customState?: string;
+  BankName: string;
+  AccountNo: string;
+  IFSC_code: string;
+  AccountName?: string;
 }
 
 export interface option {

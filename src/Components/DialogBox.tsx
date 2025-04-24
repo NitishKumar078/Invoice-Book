@@ -457,6 +457,10 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
     email: '',
     state: '',
     customState: '',
+    BankName: '',
+    AccountNo: '',
+    IFSC_code: '',
+    AccountName: '',
   });
 
   const [selectedState, setSelectedState] = useState<string>('');
@@ -483,7 +487,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSaveUser}>
           <DialogHeader>
             <DialogTitle>Please Enter Your Company and Your Info</DialogTitle>
@@ -591,7 +595,53 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
                 required
               />
             )}
+            <Label htmlFor="BankName">
+              Bank Name <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="BankName"
+              placeholder="Enter Bank Name"
+              type="text"
+              value={formData.BankName}
+              onChange={handleChange}
+              required
+            />
 
+            <Label htmlFor="AccountNo">
+              Account Number <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="AccountNo"
+              placeholder="Enter Account Number"
+              type="text"
+              value={formData.AccountNo}
+              onChange={handleChange}
+              required
+            />
+
+            <Label htmlFor="IFSC_code">
+              IFSC Code <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="IFSC_code"
+              placeholder="Enter IFSC Code"
+              type="text"
+              value={formData.IFSC_code}
+              onChange={handleChange}
+              required
+            />
+
+            <Label htmlFor="AccountName">
+              Account Holder Name <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="AccountName"
+              placeholder="Enter Account Holder Name"
+              type="text"
+              value={formData.AccountName}
+              onChange={handleChange}
+              required
+            />
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Logo (Optional)
