@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { TableItem, invoiceItem } from '@/DataModels/DataModels';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Customer, User } from '@/DataModels/DataModels';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SelectCustomer from '@/components/ui/SelectCustomer';
 import SelectItem from '../components/ui/SelectItem';
 import {
@@ -12,11 +12,14 @@ import {
   DialogBox,
 } from '../components/DialogBox';
 import { Info } from 'lucide-react';
+import { addInvoice, updateInvoice } from '@/Store/Reducers/InvoiceSlice';
+import { selectCustomer } from '@/Store/Selectors/Selectors';
 
 interface InvoiceProps {}
 
 const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const [addIteamDialogBox, setIteamDialogBox] = useState(false);
   const [addUserDialogBox, setaddUserDialogBox] = useState(false);
@@ -27,6 +30,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   const [tableData, setTableData] = useState<TableItem[]>(
     location.state?.invoicedata.tableData || []
   );
+  const isEditMode = location.state?.isEditMode || false;
   const [rowIndx, setRowIndx] = useState<number>(1);
   const [gsttype, setgsttype] = useState<boolean>(
     location.state?.invoicedata.gsttype || true
@@ -42,9 +46,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
     null
   );
   const user = useSelector((state: { user: User }) => state.user || []);
-  const customerList = useSelector(
-    (state: { customer: Customer[] }) => state.customer || []
-  );
+  const customerList = useSelector(selectCustomer);
 
   useEffect(() => {
     // check the user info
@@ -68,11 +70,13 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
     if (tableData.length === 0) {
       setTableData([initialItem]);
     }
-    customerList.forEach((customer) => {
-      if (customer.company === location.state?.invoicedata.company) {
-        setSelectedCustomer(customer);
-      }
-    });
+    if (isEditMode) {
+      customerList.forEach((customer) => {
+        if (customer.company === location.state?.invoicedata.company) {
+          setSelectedCustomer(customer);
+        }
+      });
+    }
   }, []);
 
   const ValidatingInteger = (
@@ -159,7 +163,8 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
       setIsOpen(true);
       return null;
     } else {
-      const company = selectedCustomer?.name || '';
+      const customerName = selectedCustomer?.name || '';
+      const company = selectedCustomer?.company || '';
       const gstid = selectedCustomer?.gstNo || '';
       const cadress = selectedCustomer?.address || '';
       const phoneNo = selectedCustomer?.phoneNo || null;
@@ -179,6 +184,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
       ).value;
       const Idata: invoiceItem = {
         invoiceId,
+        customerName,
         vehicleno,
         E_waybillno,
         Idate,
@@ -250,9 +256,15 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
 
   const handleSave = async (e: React.FormEvent) => {
     const ValidatedData = await DataValidation(e);
-    if (ValidatedData !== null) {
-      navigate('/');
-      console.log('this data should be saved', ValidatedData);
+
+    if (ValidatedData && ValidatedData !== null) {
+      navigate('/listInvoices');
+      if (isEditMode) {
+        dispatch(updateInvoice(ValidatedData));
+      } else {
+        dispatch(addInvoice(ValidatedData));
+      }
+      console.info('--> Invoice Data', ValidatedData);
     }
   };
 
@@ -560,7 +572,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
           }}
           className="text-white mr-5 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
         >
-          Save
+          {isEditMode ? 'Updata' : 'Save'}
         </button>
         <NavLink
           to="/viewInvoice"

@@ -24,6 +24,7 @@ export interface TableItem {
 
 export interface invoiceItem {
   invoiceId: string;
+  customerName: string;
   phoneNo: string | null;
   vehicleno: string;
   E_waybillno: string;

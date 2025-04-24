@@ -20,7 +20,7 @@ const fetchInvoicesFromStorage = async (): Promise<invoiceItem[]> => {
 };
 
 // Initialize state with empty invoices array
-const initialState: InvoiceState = {
+var initialState: InvoiceState = {
   invoices: [],
 };
 

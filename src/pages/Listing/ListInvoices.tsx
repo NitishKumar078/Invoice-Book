@@ -143,7 +143,7 @@ function ListInvoices() {
   });
 
   const handleInvoiceEdit = (invoicedata: invoiceItem) => {
-    navigate('/invoice', { state: { invoicedata, mode: 'Edit' } });
+    navigate('/invoice', { state: { invoicedata, isEditMode: true } });
   };
 
   return (
