@@ -47,6 +47,10 @@ const userSlice = createSlice({
         phoneNo,
         email,
         customState,
+        AccountNo,
+        IFSC_code,
+        BankName,
+        AccountName,
       } = action.payload;
 
       // Update state
@@ -58,6 +62,10 @@ const userSlice = createSlice({
       state.phoneNo = phoneNo;
       state.email = email;
       state.customState = customState;
+      state.BankName = BankName;
+      state.AccountNo = AccountNo;
+      state.IFSC_code = IFSC_code;
+      state.AccountName = AccountName;
 
       // Persist updated user to localStorage
       localStorage.setItem('userInfo', JSON.stringify(state));
