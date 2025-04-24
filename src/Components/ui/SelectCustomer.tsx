@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { Customer, User, option } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
+import { selectCustomer } from '@/Store/Selectors/Selectors';
 
 const customStyles = {
   option: (provided: any, state: any) => ({
@@ -49,10 +50,8 @@ const SelectCustomer = ({
   setCustomerDialogBox,
 }: CustomerListPops) => {
   const user = useSelector((state: { user: User }) => state.user);
-  const ListCustomers = useSelector(
-    (state: { customer: Customer[] }) => state.customer || []
-  );
 
+  const ListCustomers = useSelector(selectCustomer);
   const [defaultCustomer, setDefaultCustomer] = useState<option | null>(null);
 
   const customerOptions = [

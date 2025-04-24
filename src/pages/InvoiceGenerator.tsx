@@ -63,6 +63,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
       unit: '',
       price: '',
       amount: '',
+      customUnit: '',
     };
     if (tableData.length === 0) {
       setTableData([initialItem]);
@@ -124,6 +125,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
       item: '',
       hsnCode: '',
       quantity: '',
+      customUnit: '',
       unit: '',
       price: '',
       amount: '',
@@ -159,9 +161,8 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
     } else {
       const company = selectedCustomer?.name || '';
       const gstid = selectedCustomer?.gstNo || '';
-      const cno = selectedCustomer?.contactNo || '';
       const cadress = selectedCustomer?.address || '';
-      const contact = selectedCustomer?.contactNo || null;
+      const phoneNo = selectedCustomer?.phoneNo || null;
       const E_waybillno = (
         document.getElementById('E-waybillno') as HTMLInputElement
       ).value;
@@ -178,13 +179,12 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
       ).value;
       const Idata: invoiceItem = {
         invoiceId,
-        contact,
         vehicleno,
         E_waybillno,
         Idate,
         company,
         gstid,
-        cno,
+        phoneNo,
         cadress,
         tableData,
         gsttype,
@@ -434,7 +434,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                   <input
                     key={`unit-${index}`}
                     type="text"
-                    value={item.unit}
+                    value={item.unit === 'Other' ? item.customUnit : item.unit}
                     onChange={(e) => handleInputChange(e, index, 'unit')}
                     className="w-full p-1 border rounded"
                   />

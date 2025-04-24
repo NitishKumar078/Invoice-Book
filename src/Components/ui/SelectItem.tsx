@@ -1,6 +1,7 @@
 import Select from 'react-select';
 import { TableItem } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
+import { selectItems } from '@/Store/Selectors/Selectors';
 
 const customStyles = {
   option: (provided: any, state: any) => ({
@@ -47,9 +48,8 @@ const SelectItem = ({
   tableData,
   setIteamDialogBox,
 }: CustomerListPops) => {
-  const ListItems = useSelector(
-    (state: { item: TableItem[] }) => state.item || []
-  );
+  const ListItems = useSelector(selectItems);
+
   const itemOptions = [
     ...ListItems.map((item) => ({
       value: item.item || '',
@@ -79,6 +79,7 @@ const SelectItem = ({
           parseFloat(selectedItem.price || '0') *
           parseFloat(selectedItem.quantity || '0')
         ).toFixed(2),
+        customUnit: selectedItem.customUnit,
       };
     }
     setTableData(newTableData);

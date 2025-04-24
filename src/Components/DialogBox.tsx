@@ -1,5 +1,4 @@
 import { useState, useEffect, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -94,15 +93,12 @@ const AddIteamDialogBox = ({
 
   const handleSaveCustomer = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent page reload
-    const formDataWithUnit = {
-      ...formData,
-      unit: selectedUnit, // Use the selected unit state
-    };
-    console.log('Customer Data:', formDataWithUnit); // Log the collected data
+
+    console.log('Customer Data:', formData); // Log the collected data
     if (Editdata) {
-      dispatch(updateItem(formDataWithUnit));
+      dispatch(updateItem(formData));
     } else {
-      dispatch(addItem(formDataWithUnit)); // Dispatch the action to add customer
+      dispatch(addItem(formData)); // Dispatch the action to add customer
     }
     setDialogOpen(false); // Close the dialog
     window.location.reload(); // Reload the page to reflect changes

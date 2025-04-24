@@ -12,6 +12,7 @@
 ################################################################################################## */
 
 export interface TableItem {
+  id?: number;
   item: string;
   hsnCode: string;
   quantity?: string;
@@ -23,13 +24,12 @@ export interface TableItem {
 
 export interface invoiceItem {
   invoiceId: string;
-  contact: string | null;
+  phoneNo: string | null;
   vehicleno: string;
   E_waybillno: string;
   Idate: string;
   company: string;
   gstid: string;
-  cno: string;
   cadress: string;
   tableData: TableItem[];
   gsttype: boolean;
