@@ -25,10 +25,8 @@ var initialState: InvoiceState = {
 };
 
 // Fetch initial state from IndexedDB
-(async () => {
-  const invoices = await fetchInvoicesFromStorage();
-  initialState.invoices = invoices || [];
-})();
+const invoices = await fetchInvoicesFromStorage();
+initialState.invoices = invoices || [];
 
 const invoicesSlice = createSlice({
   name: invoiceStore,

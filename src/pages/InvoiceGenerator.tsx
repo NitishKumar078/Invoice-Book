@@ -13,7 +13,7 @@ import {
 } from '../components/DialogBox';
 import { Info } from 'lucide-react';
 import { addInvoice, updateInvoice } from '@/Store/Reducers/InvoiceSlice';
-import { selectCustomer } from '@/Store/Selectors/Selectors';
+import { selectCustomer, selectInvoice } from '@/Store/Selectors/Selectors';
 
 interface InvoiceProps {}
 
@@ -47,8 +47,26 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   );
   const user = useSelector((state: { user: User }) => state.user || []);
   const customerList = useSelector(selectCustomer);
+  const invoiceList = useSelector(selectInvoice);
+
+  const generateInvoiceId = () => {
+    // Load the latest invoice and increment the invoiceId
+    const latestInvoice = invoiceList[invoiceList.length - 1];
+    const preInvoiceId =
+      parseInt(latestInvoice?.invoiceId.split('-')[1], 10) || 0;
+    const newInvoiceId = (preInvoiceId + 1).toString().padStart(3, '0'); // Ensure 3 digits
+    const invoiceId = `INV-${newInvoiceId}`;
+    const invoiceIdInput = document.getElementById(
+      'invoiceId'
+    ) as HTMLInputElement;
+    if (invoiceIdInput) {
+      invoiceIdInput.value = invoiceId;
+    }
+  };
 
   useEffect(() => {
+    // added the code here to generate the invoice number
+    generateInvoiceId();
     // check the user info
     if (user.name === '' && user.company === '') {
       setIsOpen(true);
