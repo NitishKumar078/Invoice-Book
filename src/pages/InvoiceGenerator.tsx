@@ -442,7 +442,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                     value={item.hsnCode}
                     onChange={(e) => handleInputChange(e, index, 'hsnCode')}
                     className="w-full p-1 border rounded"
-                    disabled
+                    readOnly
                   />
                 </td>
                 <td className="p-2 border">
@@ -452,7 +452,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                     value={item.unit === 'Other' ? item.customUnit : item.unit}
                     onChange={(e) => handleInputChange(e, index, 'unit')}
                     className="w-full p-1 border rounded"
-                    disabled
+                    readOnly
                   />
                 </td>
                 <td className="p-2 border">
@@ -489,9 +489,8 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                       type="text"
                       id="rowtotal"
                       value={item.amount || ''}
-                      readOnly
                       className="w-full p-1 m-1 border rounded"
-                      disabled
+                      readOnly
                     />
                   </div>
                 </td>
@@ -547,7 +546,6 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                 defaultValue={location.state?.invoicedata.subtotalamt || ''}
                 readOnly
                 className="w-[10vw] text-right p-2 border rounded"
-                disabled
               />
             </div>
             <div className="flex justify-self-end items-center gap-2 m-1">
@@ -558,7 +556,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                 value={gstamt || '0'}
                 defaultValue={location.state?.invoicedata.taxAmount || ''}
                 className="w-[10.5vw] text-right p-2 border rounded"
-                disabled
+                readOnly
               />
             </div>
             <hr />
@@ -572,7 +570,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                 id="total"
                 ref={totalamt}
                 defaultValue={location.state?.invoicedata.totalAmount || ''}
-                disabled
+                readOnly
                 className="w-[12vw] text-right p-2 border rounded"
               />
             </div>
