@@ -21,6 +21,7 @@ import { addCustomer, updateCustomer } from '@/Store/Reducers/customersSlice';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '@/Store/Reducers/userSlice';
 import { addItem, updateItem } from '@/Store/Reducers/ItemsSlice';
+import { ValidatingInteger } from '@/utils/common_Methods';
 
 interface DialogBoxProps {
   dialogOpen: boolean;
@@ -466,6 +467,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
   const [selectedState, setSelectedState] = useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    ValidatingInteger(e, e.target.id); // Call the validation function
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
@@ -521,7 +523,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
             <Input
               id="phoneNo"
               placeholder="Enter Phone No."
-              type="number"
+              type="text"
               value={formData.phoneNo}
               onChange={handleChange}
             />

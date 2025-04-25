@@ -85,14 +85,14 @@ function ListInvoices() {
       header: 'Tax Amount',
       accessorKey: 'taxAmount',
       cell: ({ row }) => (
-        <div>${(row.getValue('taxAmount') as number).toFixed(2)}</div>
+        <div>₹ {(row.getValue('taxAmount') as number).toFixed(2)}</div>
       ),
     },
     {
       header: 'Total Amount',
       accessorKey: 'totalAmount',
       cell: ({ row }) => (
-        <div>${(row.getValue('totalAmount') as number).toFixed(2)}</div>
+        <div>₹ {(row.getValue('totalAmount') as number).toFixed(2)}</div>
       ),
     },
     {

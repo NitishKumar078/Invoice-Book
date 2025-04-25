@@ -14,6 +14,7 @@ import {
 import { Info } from 'lucide-react';
 import { addInvoice, updateInvoice } from '@/Store/Reducers/InvoiceSlice';
 import { selectCustomer, selectInvoice } from '@/Store/Selectors/Selectors';
+import { ValidatingInteger } from '@/utils/common_Methods';
 
 interface InvoiceProps {}
 
@@ -96,23 +97,6 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
       });
     }
   }, []);
-
-  const ValidatingInteger = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: string
-  ) => {
-    if (
-      field === 'quantity' ||
-      field === 'price' ||
-      field === 'ContactNo' ||
-      field === 'ewaybillno' ||
-      field === 'hsnCode'
-    ) {
-      e.target.value = e.target.value
-        .replace(/[^0-9.]/g, '')
-        .replace(/(\..*)\./g, '$1');
-    }
-  };
 
   // Function to handle input changes
   const handleInputChange = (
