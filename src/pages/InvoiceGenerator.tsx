@@ -439,7 +439,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                   <input
                     key={`hsnCode-${index}`}
                     type="text"
-                    value={item.hsnCode}
+                    defaultValue={item.hsnCode}
                     onChange={(e) => handleInputChange(e, index, 'hsnCode')}
                     className="w-full p-1 border rounded"
                     readOnly
@@ -449,7 +449,9 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                   <input
                     key={`unit-${index}`}
                     type="text"
-                    value={item.unit === 'Other' ? item.customUnit : item.unit}
+                    defaultValue={
+                      item.unit === 'Other' ? item.customUnit : item.unit
+                    }
                     onChange={(e) => handleInputChange(e, index, 'unit')}
                     className="w-full p-1 border rounded"
                     readOnly
@@ -459,7 +461,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                   <input
                     key={`quantity-${index}`}
                     type="text"
-                    value={item.quantity}
+                    defaultValue={item.quantity}
                     onChange={(e) => handleInputChange(e, index, 'quantity')}
                     className=" p-1 border rounded"
                     onClick={(e) => {
@@ -473,7 +475,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                     <input
                       key={`price-${index}`}
                       type="text"
-                      value={item.price || ''}
+                      defaultValue={item.price || ''}
                       onChange={(e) => handleInputChange(e, index, 'price')}
                       className="p-1 m-1 border rounded"
                       onClick={(e) => {
@@ -488,7 +490,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                     <input
                       type="text"
                       id="rowtotal"
-                      value={item.amount || ''}
+                      defaultValue={item.amount || ''}
                       className="w-full p-1 m-1 border rounded"
                       readOnly
                     />
@@ -553,8 +555,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
               <input
                 type="text"
                 id="taxtotal"
-                value={gstamt || '0'}
-                defaultValue={location.state?.invoicedata.taxAmount || ''}
+                defaultValue={location.state?.invoicedata.taxAmount || '0'}
                 className="w-[10.5vw] text-right p-2 border rounded"
                 readOnly
               />
@@ -597,12 +598,6 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
           </button>
         </NavLink>
       </form>
-      <DialogBox
-        dialogOpen={isOpen}
-        setDialogOpen={setIsOpen}
-        warningTitle={warning}
-        dialogDescription={description}
-      />
       <DialogBox
         dialogOpen={isOpen}
         setDialogOpen={setIsOpen}
