@@ -47,6 +47,7 @@ import {
 import { invoiceItem } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
 import { selectInvoice } from '@/Store/Selectors/Selectors';
+import DragAndDrop from '@/components/ui/DragAndDrop';
 
 declare module '@tanstack/react-table' {
   // Allows us to define custom properties for our columns
@@ -116,6 +117,7 @@ function ListInvoices() {
   ];
 
   const navigate = useNavigate();
+  const [showdataLabel, setshowdataLabel] = useState(false);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([
     {
@@ -146,6 +148,23 @@ function ListInvoices() {
     navigate('/invoice', { state: { invoicedata, isEditMode: true } });
   };
 
+  const handleExportData = () => {
+    // const csvContent = items
+    //   .map((item) => {
+    //     return Object.values(item).join(',');
+    //   })
+    //   .join('\n');
+    // const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    // const url = URL.createObjectURL(blob);
+    // const a = document.createElement('a');
+    // a.href = url;
+    // a.download = 'invoices.csv';
+    // a.click();
+    // URL.revokeObjectURL(url);
+
+    setshowdataLabel(true);
+  };
+
   return (
     <div className="space-y-6 bg-background">
       {/* Filters */}
@@ -168,7 +187,10 @@ function ListInvoices() {
         </div>
 
         <div className="absolute right-10 top-10 ">
-          <button className="relative inline-flex items-center gap-1 rounded-md bg-zinc-950 px-2.5 py-1.5 text-sm text-zinc-50 outline-1 outline-[#fff2f21f] hover:border hover:border-zinc-300">
+          <button
+            className="relative inline-flex items-center gap-1 rounded-md bg-zinc-950 px-2.5 py-1.5 text-sm text-zinc-50 outline-1 outline-[#fff2f21f] hover:border hover:border-zinc-300"
+            onClick={handleExportData}
+          >
             Export <ArrowRight className="h4 w-4" />
           </button>
         </div>
@@ -270,6 +292,9 @@ function ListInvoices() {
           )}
         </TableBody>
       </Table>
+      {showdataLabel && (
+        <DragAndDrop setshowdataLabel={setshowdataLabel} invoiceList={items} />
+      )}
     </div>
   );
 }
