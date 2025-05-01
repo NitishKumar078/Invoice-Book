@@ -10,7 +10,6 @@ export const ValidatingInteger = (
     'ContactNo',
     'ewaybillno',
     'hsnCode',
-    'gstNo',
     'pincode',
     'phoneNo',
   ];

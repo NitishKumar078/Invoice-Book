@@ -20,13 +20,21 @@ const fetchInvoicesFromStorage = async (): Promise<invoiceItem[]> => {
 };
 
 // Initialize state with empty invoices array
-var initialState: InvoiceState = {
+let initialState: InvoiceState = {
   invoices: [],
 };
 
-// Fetch initial state from IndexedDB
-const invoices = await fetchInvoicesFromStorage();
-initialState.invoices = invoices || [];
+async function initializeState() {
+  await fetchInvoicesFromStorage()
+    .then((invoices) => {
+      initialState.invoices = invoices || [];
+    })
+    .catch((error) => {
+      console.error('Failed to initialize invoices:', error);
+    });
+}
+
+await initializeState();
 
 const invoicesSlice = createSlice({
   name: invoiceStore,

@@ -69,6 +69,7 @@ const AddIteamDialogBox = ({
 
   // Initialize the selected unit state with Editdata.unit if available
   const [selectedUnit, setSelectedUnit] = useState<string>('');
+  const [isOpen, setisOpen] = useState(false); // State for warning dialog
   const [formData, setFormData] = useState({
     item: '',
     hsnCode: '',
@@ -94,7 +95,10 @@ const AddIteamDialogBox = ({
 
   const handleSaveCustomer = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent page reload
-
+    if (!selectedUnit) {
+      setisOpen(true); // Open the dialog if unit is not selected
+      return;
+    }
     console.log('Customer Data:', formData); // Log the collected data
     if (Editdata) {
       dispatch(updateItem(formData));
@@ -121,7 +125,7 @@ const AddIteamDialogBox = ({
               className="-ms-px flex-1 mb-2 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
               placeholder="Enter Item Name"
               type="text"
-              value={formData.item}
+              defaultValue={formData.item}
               onChange={handleChange}
             />
             <Label htmlFor="unit">Unit</Label>
@@ -151,7 +155,7 @@ const AddIteamDialogBox = ({
                 <Input
                   id="customUnit"
                   placeholder="Enter Unit"
-                  value={formData.customUnit}
+                  defaultValue={formData.customUnit}
                   onChange={handleChange}
                   className="mt-2"
                   required={selectedUnit === 'Other'}
@@ -166,7 +170,7 @@ const AddIteamDialogBox = ({
               className="-ms-px mb-2 flex-1 rounded-s-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
               placeholder="Enter HSN Code"
               type="text"
-              value={formData.hsnCode}
+              defaultValue={formData.hsnCode}
               onChange={handleChange}
             />
           </DialogDescription>
@@ -187,6 +191,12 @@ const AddIteamDialogBox = ({
           </DialogFooter>
         </form>
       </DialogContent>
+      <DialogBox
+        dialogOpen={isOpen}
+        setDialogOpen={setisOpen}
+        warningTitle={'Warning'}
+        dialogDescription={'Please select the Unit.'}
+      />
     </Dialog>
   );
 };
@@ -241,8 +251,10 @@ const AddCustomerDialogBox = ({
   ];
 
   const [selectedState, setSelectedState] = useState('');
+  const [isOpen, setisOpen] = useState(false);
   const dispatch = useDispatch(); // Initialize dispatch
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    ValidatingInteger(e, e.target.id); // Call the validation function
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
@@ -266,6 +278,11 @@ const AddCustomerDialogBox = ({
 
   const handleSaveCustomer = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent page reload
+    if (!selectedState) {
+      setisOpen(true); // Open the dialog if state is not selected
+
+      return;
+    }
     const customerData = {
       ...formData,
       state: selectedState === 'Other' ? formData.customState : selectedState,
@@ -295,7 +312,7 @@ const AddCustomerDialogBox = ({
               id="name"
               placeholder="Enter Customer Name"
               type="text"
-              value={formData.name}
+              defaultValue={formData.name}
               onChange={handleChange}
               required
             />
@@ -307,7 +324,7 @@ const AddCustomerDialogBox = ({
               id="company"
               placeholder="Enter Company Name"
               type="text"
-              value={formData.company}
+              defaultValue={formData.company}
               onChange={handleChange}
               required
             />
@@ -316,8 +333,8 @@ const AddCustomerDialogBox = ({
             <Input
               id="phoneNo"
               placeholder="Enter Phone no..."
-              type="number"
-              value={formData.phoneNo}
+              type="text"
+              defaultValue={formData.phoneNo}
               onChange={handleChange}
             />
 
@@ -326,7 +343,7 @@ const AddCustomerDialogBox = ({
               id="email"
               placeholder="Enter Email Address"
               type="email"
-              value={formData.email}
+              defaultValue={formData.email}
               onChange={handleChange}
             />
 
@@ -337,7 +354,7 @@ const AddCustomerDialogBox = ({
               id="gstNo"
               placeholder="Enter GST no..."
               type="text"
-              value={formData.gstNo}
+              defaultValue={formData.gstNo}
               onChange={handleChange}
               required
             />
@@ -349,7 +366,7 @@ const AddCustomerDialogBox = ({
               id="address"
               placeholder="Enter Address"
               type="text"
-              value={formData.address}
+              defaultValue={formData.address}
               onChange={handleChange}
               required
             />
@@ -384,7 +401,7 @@ const AddCustomerDialogBox = ({
               <Input
                 id="customState"
                 placeholder="Enter your State Name"
-                value={formData.customState}
+                defaultValue={formData.customState}
                 onChange={handleChange}
                 className="mt-2"
                 required={selectedState === 'Other'}
@@ -409,6 +426,12 @@ const AddCustomerDialogBox = ({
           </DialogFooter>
         </form>
       </DialogContent>
+      <DialogBox
+        dialogOpen={isOpen}
+        setDialogOpen={setisOpen}
+        warningTitle={'Warning'}
+        dialogDescription={'Please select the state.'}
+      />
     </Dialog>
   );
 };
@@ -465,6 +488,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
   });
 
   const [selectedState, setSelectedState] = useState<string>('');
+  const [isOpen, setisOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     ValidatingInteger(e, e.target.id); // Call the validation function
@@ -473,6 +497,12 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
 
   const handleSaveUser = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent page reload
+
+    if (!selectedState) {
+      setisOpen(true); // Open the dialog if state is not selected
+      return;
+    }
+
     const userData = {
       ...formData,
       state: selectedState === 'Other' ? formData.customState : selectedState,
@@ -502,7 +532,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               id="name"
               placeholder="Enter Your Name"
               type="text"
-              value={formData.name}
+              defaultValue={formData.name}
               onChange={handleChange}
               required
             />
@@ -514,7 +544,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               id="company"
               placeholder="Enter Company Name"
               type="text"
-              value={formData.company}
+              defaultValue={formData.company}
               onChange={handleChange}
               required
             />
@@ -524,7 +554,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               id="phoneNo"
               placeholder="Enter Phone No."
               type="text"
-              value={formData.phoneNo}
+              defaultValue={formData.phoneNo}
               onChange={handleChange}
             />
 
@@ -533,7 +563,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               id="email"
               placeholder="Enter Email Address"
               type="email"
-              value={formData.email}
+              defaultValue={formData.email}
               onChange={handleChange}
             />
 
@@ -544,7 +574,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               id="gstNo"
               placeholder="Enter GST Number"
               type="text"
-              value={formData.gstNo}
+              defaultValue={formData.gstNo}
               onChange={handleChange}
               required
             />
@@ -556,7 +586,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               id="address"
               placeholder="Enter Address"
               type="text"
-              value={formData.address}
+              defaultValue={formData.address}
               onChange={handleChange}
               required
             />
@@ -591,7 +621,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               <Input
                 id="customState"
                 placeholder="Enter Your State Name"
-                value={formData.customState}
+                defaultValue={formData.customState}
                 onChange={handleChange}
                 className="mt-2"
                 required
@@ -604,7 +634,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               id="BankName"
               placeholder="Enter Bank Name"
               type="text"
-              value={formData.BankName}
+              defaultValue={formData.BankName}
               onChange={handleChange}
               required
             />
@@ -616,7 +646,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               id="AccountNo"
               placeholder="Enter Account Number"
               type="text"
-              value={formData.AccountNo}
+              defaultValue={formData.AccountNo}
               onChange={handleChange}
               required
             />
@@ -628,7 +658,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               id="IFSC_code"
               placeholder="Enter IFSC Code"
               type="text"
-              value={formData.IFSC_code}
+              defaultValue={formData.IFSC_code}
               onChange={handleChange}
               required
             />
@@ -640,7 +670,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
               id="AccountName"
               placeholder="Enter Account Holder Name"
               type="text"
-              value={formData.AccountName}
+              defaultValue={formData.AccountName}
               onChange={handleChange}
               required
             />
@@ -685,6 +715,12 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
           </DialogFooter>
         </form>
       </DialogContent>
+      <DialogBox
+        dialogOpen={isOpen}
+        setDialogOpen={setisOpen}
+        warningTitle={'Warning'}
+        dialogDescription={'Please select the state.'}
+      />
     </Dialog>
   );
 };
