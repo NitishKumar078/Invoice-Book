@@ -18,10 +18,11 @@ import {
 } from './ui/select';
 import { Customer, TableItem } from '@/DataModels/DataModels';
 import { addCustomer, updateCustomer } from '@/Store/Reducers/customersSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '@/Store/Reducers/userSlice';
 import { addItem, updateItem } from '@/Store/Reducers/ItemsSlice';
 import { ValidatingInteger } from '@/utils/common_Methods';
+import { selectCustomer } from '@/Store/Selectors/Selectors';
 
 interface DialogBoxProps {
   dialogOpen: boolean;
@@ -217,6 +218,7 @@ const AddCustomerDialogBox = ({
     email: '',
   });
 
+  const customers = useSelector(selectCustomer);
   const states = [
     'Andhra Pradesh',
     'Arunachal Pradesh',
@@ -252,6 +254,7 @@ const AddCustomerDialogBox = ({
 
   const [selectedState, setSelectedState] = useState('');
   const [isOpen, setisOpen] = useState(false);
+  const [warning_msg, setwarning_msg] = useState('');
   const dispatch = useDispatch(); // Initialize dispatch
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     ValidatingInteger(e, e.target.id); // Call the validation function
@@ -280,7 +283,7 @@ const AddCustomerDialogBox = ({
     event.preventDefault(); // Prevent page reload
     if (!selectedState) {
       setisOpen(true); // Open the dialog if state is not selected
-
+      setwarning_msg('Please select the state.');
       return;
     }
     const customerData = {
@@ -291,10 +294,21 @@ const AddCustomerDialogBox = ({
     if (Editdata) {
       dispatch(updateCustomer(customerData));
     } else {
-      dispatch(addCustomer(customerData)); // Dispatch the action to add customer
+      // check if the same company name already exists
+      const isAlreadyExist = customers.some(
+        (c) => c.company === customerData.company
+      );
+      if (isAlreadyExist) {
+        setwarning_msg(
+          `${customerData.company} already Exist. Please make sure you provide the unique company name`
+        );
+        setisOpen(true);
+      } else {
+        dispatch(addCustomer(customerData)); // Dispatch the action to add customer
+        setDialogOpen(false);
+        window.location.reload(); // Reload the page to reflect changes
+      }
     }
-    setDialogOpen(false); // Close the dialog
-    window.location.reload(); // Reload the page to reflect changes
   };
 
   return (
@@ -430,7 +444,7 @@ const AddCustomerDialogBox = ({
         dialogOpen={isOpen}
         setDialogOpen={setisOpen}
         warningTitle={'Warning'}
-        dialogDescription={'Please select the state.'}
+        dialogDescription={warning_msg}
       />
     </Dialog>
   );

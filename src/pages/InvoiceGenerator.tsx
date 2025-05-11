@@ -260,12 +260,12 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
     const ValidatedData = await DataValidation(e);
 
     if (ValidatedData && ValidatedData !== null) {
-      navigate('/listInvoices');
       if (isEditMode) {
         dispatch(updateInvoice(ValidatedData));
       } else {
         dispatch(addInvoice(ValidatedData));
       }
+      navigate('/listInvoices');
       console.info('--> Invoice Data', ValidatedData);
     }
   };
