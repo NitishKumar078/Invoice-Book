@@ -9,6 +9,7 @@ import {
   PDFViewer,
 } from '@react-pdf/renderer';
 import NotoSans from '@/assets/Fonts/NotoSans-CondensedBold.ttf'; // Adjust the path as necessary
+import times from '@/assets/Fonts/times.ttf';
 import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { TableItem, User } from '@/DataModels/DataModels';
 import { useSelector } from 'react-redux';
@@ -19,14 +20,20 @@ Font.register({
   src: NotoSans,
 });
 
+Font.register({
+  family: 'times',
+  src: times,
+});
+
 // Define the styles
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
     padding: 10,
     fontSize: 13,
-    fontFamily: 'NotoSans', // Use the registered font
+    fontFamily: 'times', // Use the registered font
   },
+  rupee: { fontSize: 12, fontFamily: 'NotoSans', fontWeight: 200 },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -39,6 +46,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'right',
   },
+
   horizontalLine: {
     width: '100%', // Full width of the page
     height: 1, // Thickness of the line
@@ -62,7 +70,9 @@ const styles = StyleSheet.create({
   },
   invoiceDetails: {
     margin: 5,
-    textAlign: 'right',
+    textAlign: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   table: {
     display: 'flex',
@@ -109,7 +119,6 @@ const styles = StyleSheet.create({
   },
   totalAmount: {
     margin: 5,
-    textAlign: 'right',
     fontSize: 12,
   },
   termsAndConditions: {
@@ -185,7 +194,7 @@ const Quixote: React.FC<QuixoteProps> = ({
       <View style={styles.horizontalLine} />
       <View style={styles.billingInfo}>
         <View style={styles.billTo}>
-          <Text>Bill to</Text>
+          <Text style={{ fontWeight: 'bold' }}>Bill to</Text>
           <Text>{customer}</Text>
           <Text>{address}</Text>
           {contact && <Text>Contact No.: {contact}</Text>}
@@ -236,10 +245,10 @@ const Quixote: React.FC<QuixoteProps> = ({
               <Text style={styles.tableCell}>{item.hsnCode}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{item.quantity}</Text>
+              <Text style={styles.tableCell}>{item.unit}</Text>
             </View>
             <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{item.unit}</Text>
+              <Text style={styles.tableCell}>{item.quantity}</Text>
             </View>
             <View style={styles.tableCol}>
               <Text style={styles.tableCell}>{item.price}</Text>
@@ -254,19 +263,64 @@ const Quixote: React.FC<QuixoteProps> = ({
       <View style={styles.totalSection}>
         <View style={styles.taxSummary}>
           {!gsttype ? (
-            <Text>IGST @18%: ₹ {gstamt}</Text>
+            <Text>
+              IGST @18%: <Text style={styles.rupee}> ₹ </Text> {gstamt}
+            </Text>
           ) : (
             <>
-              <Text>SGST @9%: ₹ {gstamt / 2}</Text>
-              <Text>CGST @9%: ₹ {gstamt / 2}</Text>
+              <Text>
+                SGST @9%: <Text style={styles.rupee}> ₹ </Text> {gstamt / 2}
+              </Text>
+              <Text>
+                CGST @9%: <Text style={styles.rupee}> ₹ </Text> {gstamt / 2}
+              </Text>
             </>
           )}
         </View>
         <View style={styles.totalAmount}>
-          <Text>Sub Total: ₹ {subTotal}</Text>
-          <Text>Tax : ₹ {gstamt}</Text>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Text>
+              Sub Total: <Text style={styles.rupee}>₹ </Text>
+            </Text>
+
+            <Text>{subTotal}</Text>
+          </View>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Text>
+              Tax: <Text style={styles.rupee}>₹ </Text>
+            </Text>
+
+            <Text>{gstamt}</Text>
+          </View>
           <View style={styles.horizontalLine_total} />
-          <Text>Total: ₹ {tamt}</Text>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Text>
+              Total: <Text style={styles.rupee}>₹ </Text>
+            </Text>
+
+            <Text>{tamt}</Text>
+          </View>
         </View>
       </View>
 
@@ -292,7 +346,7 @@ const Quixote: React.FC<QuixoteProps> = ({
       </View>
 
       <View style={styles.signature}>
-        <Text>For: JSR TRADERS</Text>
+        <Text>For: {user.company}</Text>
         <Text>Authorized Signatory</Text>
       </View>
     </Page>
@@ -308,11 +362,21 @@ const ViewInvoice = () => {
   console.log(invoicedata);
   console.log('this is the user ', user);
 
+  const handlegoback = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (invoicedata !== null) {
+      navigate('/invoice', { state: { invoicedata } });
+    }
+  };
+
   return (
     <div className="flex items-start flex-row">
       {/* Go Back Button */}
       <button
-        onClick={() => navigate(-1)} // Navigate back to the previous page
+        onClick={(e) => {
+          handlegoback(e);
+        }} // Navigate back to the previous page
         style={{
           position: 'relative',
           top: '10px',
@@ -341,7 +405,7 @@ const ViewInvoice = () => {
       >
         <Quixote
           user={user}
-          customer={invoicedata.cname}
+          customer={invoicedata.company}
           contact={invoicedata.contact}
           E_waybillno={invoicedata.E_waybillno}
           vehicleno={invoicedata.vehicleno}
@@ -349,10 +413,10 @@ const ViewInvoice = () => {
           address={invoicedata.cadress}
           date={invoicedata.Idate}
           gstNo={invoicedata.gstid}
-          gstamt={invoicedata.totalgstamt}
+          gstamt={invoicedata.taxAmount}
           invoiceNo={invoicedata.Iid}
           data={invoicedata.tableData}
-          tamt={invoicedata.tamt}
+          tamt={invoicedata.totalAmount}
           subTotal={invoicedata.subtotalamt}
           gsttype={invoicedata.gsttype}
         />

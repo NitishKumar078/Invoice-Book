@@ -42,12 +42,21 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
   const subtotalamt = useRef<HTMLInputElement>(
     location.state?.invoicedata.subtotalamt || null
   );
+  const customerList = useSelector(selectCustomer);
+
   const totalamt = useRef<HTMLInputElement>(null);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
-    null
+    () => {
+      if (location.state?.invoicedata?.company) {
+        const found = customerList.find(
+          (customer) => customer.company === location.state.invoicedata.company
+        );
+        return found || null;
+      }
+      return null;
+    }
   );
   const user = useSelector((state: { user: User }) => state.user || []);
-  const customerList = useSelector(selectCustomer);
   const invoiceList = useSelector(selectInvoice);
 
   const generateInvoiceId = () => {
@@ -359,6 +368,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
                   }}
                   defaultValue={location.state?.invoicedata.E_waybillno || ''}
                   placeholder="E-waybill no"
+                  autoComplete="off"
                 />
               )}
             </div>

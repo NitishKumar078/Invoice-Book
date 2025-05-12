@@ -6,9 +6,17 @@ import ViewInvoice from './pages/ViewInvoice';
 import ListInvoices from './pages/Listing/ListInvoices';
 import ListItems from './pages/Listing/ListItems';
 import Listcustomers from './pages/Listing/Listcustomers';
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  RedirectToSignIn,
+} from '@clerk/clerk-react';
 
 function App() {
   return (
+    // <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
+    //   <SignedIn>
     <Router>
       <SidebarLayout>
         <Routes>
@@ -22,6 +30,11 @@ function App() {
         </Routes>
       </SidebarLayout>
     </Router>
+    //   </SignedIn>
+    //   <SignedOut>
+    //     <RedirectToSignIn />
+    //   </SignedOut>
+    // </ClerkProvider>
   );
 }
 

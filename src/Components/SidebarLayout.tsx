@@ -60,6 +60,20 @@ const SidebarLayout = ({ children }: SidebarDemoProps) => {
   ];
   const [open, setOpen] = useState(false);
   const [addUserDialogBox, setUserDialogBox] = useState(false);
+  const user = useSelector((state: { user: User }) => state.user);
+  const isUserInfoFilled =
+    !!user &&
+    user.company &&
+    user.name &&
+    user.state &&
+    user.address &&
+    user.gstNo &&
+    user.phoneNo &&
+    user.email &&
+    user.BankName &&
+    user.AccountNo &&
+    user.IFSC_code &&
+    user.AccountName;
 
   return (
     <div
@@ -98,11 +112,11 @@ const SidebarLayout = ({ children }: SidebarDemoProps) => {
           )}
         </SidebarBody>
       </Sidebar>
-      <Dashboard children={children} />
-
-      {addUserDialogBox && (
+      <Dashboard>{isUserInfoFilled ? children : null}</Dashboard>
+      {/* Show AddUserDialogBox until user info is filled */}
+      {(!isUserInfoFilled || addUserDialogBox) && (
         <AddUserDialogBox
-          dialogOpen={addUserDialogBox}
+          dialogOpen={!isUserInfoFilled || addUserDialogBox}
           setDialogOpen={setUserDialogBox}
         />
       )}

@@ -1,14 +1,32 @@
-const DATABASE = import.meta.env.VITE_DB_NAME;
+let DATABASE = '';
 const CUSTOMERSTORE = import.meta.env.VITE_CUSTOMERSTORE;
 const INVOICESTORE = import.meta.env.VITE_INVOICESTORE;
 const ITEMSTORE = import.meta.env.VITE_ITEMSTORE;
 const DB_VERSION = 1;
 
 export const initDB = (): Promise<IDBDatabase> => {
+  const user = JSON.parse(localStorage.getItem('userInfo') || '{}');
+  if (!user?.company) {
+    return Promise.reject(
+      new Error('User information is missing. Cannot initialize database.')
+    );
+  }
+  DATABASE = user.company + '_' + import.meta.env.VITE_DB_NAME;
+
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DATABASE, DB_VERSION);
 
-    request.onerror = () => reject(request.error);
+    request.onerror = () => {
+      if (request.error?.name === 'NotFoundError') {
+        reject(
+          new Error(
+            'Database not found. Please ensure the database exists before proceeding.'
+          )
+        );
+      } else {
+        reject(request.error);
+      }
+    };
     request.onsuccess = () => resolve(request.result);
 
     request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
