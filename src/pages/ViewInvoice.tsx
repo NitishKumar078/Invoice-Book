@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'times', // Use the registered font
   },
-  rupee: { fontSize: 12, fontFamily: 'NotoSans', fontWeight: 200 },
+  rupee: { fontSize: 12, fontFamily: 'NotoSans', fontWeight: 100 },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     lineHeight: 1,
   },
   invoiceDetails: {
+    fontSize: 12,
     margin: 5,
     textAlign: 'center',
     flexDirection: 'column',
@@ -180,8 +181,8 @@ const Quixote: React.FC<QuixoteProps> = ({
     <Page style={styles.container}>
       <View style={styles.header}>
         <View style={styles.companyDetails}>
-          <Text>{user.company}</Text>
-          <Text>
+          <Text style={{ fontSize: 15 }}>{user.company}</Text>
+          <Text style={{ fontSize: 12 }}>
             {user.address},{'\n'}
             GSTIN: {user.gstNo},{'\n'}
             State: {user.state}
@@ -194,11 +195,13 @@ const Quixote: React.FC<QuixoteProps> = ({
       <View style={styles.horizontalLine} />
       <View style={styles.billingInfo}>
         <View style={styles.billTo}>
-          <Text style={{ fontWeight: 'bold' }}>Bill to</Text>
-          <Text>{customer}</Text>
-          <Text>{address}</Text>
-          {contact && <Text>Contact No.: {contact}</Text>}
-          <Text>GSTIN: {gstNo}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Bill to,</Text>
+          <Text style={{ fontSize: 12 }}>{customer}</Text>
+          <Text style={{ fontSize: 12 }}>{address}</Text>
+          {contact && (
+            <Text style={{ fontSize: 12 }}>Contact No.: {contact}</Text>
+          )}
+          <Text style={{ fontSize: 12 }}>GSTIN: {gstNo}</Text>
         </View>
         <View style={styles.invoiceDetails}>
           <Text>Invoice No: {invoiceNo}</Text>
@@ -325,7 +328,9 @@ const Quixote: React.FC<QuixoteProps> = ({
       </View>
 
       <View style={styles.termsAndConditions}>
-        <Text>Terms and Conditions:</Text>
+        <Text style={{ textDecoration: 'underline' }}>
+          Terms and Conditions:
+        </Text>
         <Text>
           Goods once sold cannot be taken back or exchanged. {'\n'}
           Damage in transportation is Risk. {'\n'}
@@ -336,7 +341,7 @@ const Quixote: React.FC<QuixoteProps> = ({
       </View>
 
       <View style={styles.bankDetails}>
-        <Text>Bank Details:</Text>
+        <Text style={{ textDecoration: 'underline' }}>Bank Details:</Text>
         <Text>
           Name: {user.BankName} {'\n'}
           Account No.: {user.AccountNo} {'\n'}

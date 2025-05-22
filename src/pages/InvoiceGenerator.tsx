@@ -123,7 +123,9 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
 
       // Update the amount field if quantity and price are present
       const quantity = parseFloat(newTableData[rowIndex].quantity || '0');
-      const price = parseFloat(newTableData[rowIndex].price || '0');
+      const price = parseFloat(
+        parseFloat(newTableData[rowIndex].price || '0').toFixed(2)
+      );
       newTableData[rowIndex].amount = (quantity * price).toFixed(2);
     } else if (field === 'item' || field === 'unit') {
       newTableData[rowIndex][field] = e.target.value;
@@ -185,14 +187,14 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
       const vehicleno = (
         document.getElementById('vehicleno') as HTMLInputElement
       ).value;
-      const taxAmount = gstamt || 0;
+      const taxAmount = gstamt !== null ? gstamt.toFixed(2) : '0.00';
       const totalAmount =
         parseFloat(
           (document.getElementById('total') as HTMLInputElement).value
-        ) || 0;
-      const subtotalamt: string = (
-        document.getElementById('subtotal') as HTMLInputElement
-      ).value;
+        ).toFixed(2) || '0.00';
+      const subtotalamt: string = parseFloat(
+        (document.getElementById('subtotal') as HTMLInputElement).value || '0'
+      ).toFixed(2);
       const Idata: invoiceItem = {
         invoiceId,
         customerName,
@@ -232,7 +234,7 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
       return null;
     } else if (
       invoicedata.E_waybillno === '' &&
-      invoicedata.totalAmount >= 50000
+      parseFloat(invoicedata.totalAmount) >= 50000
     ) {
       setIsOpen(true);
       setWarning('Warning');

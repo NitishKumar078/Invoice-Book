@@ -21,9 +21,9 @@ export interface invoiceItem {
   cadress: string;
   tableData: TableItem[];
   gsttype: boolean;
-  taxAmount: number;
+  taxAmount: string;
   subtotalamt: string;
-  totalAmount: number;
+  totalAmount: string;
 }
 
 export type Customer = {
