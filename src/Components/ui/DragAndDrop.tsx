@@ -14,6 +14,9 @@ import { SortableItem } from './SortableItem';
 import { useDroppable } from '@dnd-kit/core';
 import xlsx from 'json-as-xlsx';
 import { invoiceItem } from '@/DataModels/DataModels';
+import { useDispatch } from 'react-redux';
+import { updateSelectedHeaders } from '@/Store/Reducers/Settinginfo';
+import { useSelector } from 'react-redux';
 
 type Item = { value: string; label: string };
 
@@ -46,6 +49,7 @@ function DroppableColumn({
   children: React.ReactNode;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id });
+
   return (
     <div
       ref={setNodeRef}
@@ -67,8 +71,24 @@ interface DragAndDropProps {
 }
 
 const DragAndDrop = ({ setshowdataLabel, invoiceList }: DragAndDropProps) => {
-  const [columns, setColumns] = useState(initialColumns);
+  const selectedHeaders = useSelector(
+    (state: any) => state.settings.selectedHeaders
+  );
+  const [columns, setColumns] = useState<Record<string, Item[]>>(() => {
+    if (selectedHeaders && selectedHeaders.length > 0) {
+      // Remove selected headers from initial "Headers" and add to "Selected Headers"
+      const remainingHeaders = initialColumns.Headers.filter(
+        (item) => !selectedHeaders.some((sel: Item) => sel.value === item.value)
+      );
+      return {
+        Headers: remainingHeaders,
+        'Selected Headers': selectedHeaders,
+      };
+    }
+    return initialColumns;
+  });
   const [activeId, setActiveId] = useState<string | null>(null);
+  const dispatch = useDispatch();
 
   const handleDragStart = (event: any) => {
     setActiveId(event.active.id);
@@ -80,8 +100,12 @@ const DragAndDrop = ({ setshowdataLabel, invoiceList }: DragAndDropProps) => {
     // Get selected columns from "Selected Headers"
     const selectedColumns = columns['Selected Headers'];
 
+    // upadate selected headers in local storage
+    // use the dispacth method to update the selected headers in the redux store
+    dispatch(updateSelectedHeaders(selectedColumns)); // Dispatch the action to add user
+
     // Prepare columns for xlsx
-    const xlsxColumns = selectedColumns.map((col) => ({
+    const xlsxColumns = selectedColumns.map((col: Item) => ({
       label: col.label,
       value: col.value,
     }));
@@ -89,7 +113,7 @@ const DragAndDrop = ({ setshowdataLabel, invoiceList }: DragAndDropProps) => {
     // Prepare content for xlsx
     const xlsxContent = invoiceList.map((invoice) => {
       const row: Record<string, any> = {};
-      selectedColumns.forEach((col) => {
+      selectedColumns.forEach((col: Item) => {
         row[col.value] = (invoice as any)[col.value];
       });
       return row;
@@ -122,15 +146,15 @@ const DragAndDrop = ({ setshowdataLabel, invoiceList }: DragAndDropProps) => {
 
     const sourceCol = Object.keys(columns).find((col) =>
       columns[col as keyof typeof columns].some(
-        (item) => item.label === active.id
+        (item: Item) => item.label === active.id
       )
     );
     // If over.id is not a column, find the column containing the over.id item
     let destCol = over.id as string;
-    if (!columns[destCol]) {
+    if (!(columns as Record<string, Item[]>)[destCol]) {
       destCol =
         Object.keys(columns).find((col) =>
-          columns[col as keyof typeof columns].some(
+          (columns as Record<string, Item[]>)[col].some(
             (item) => item.label === over.id
           )
         ) || destCol;

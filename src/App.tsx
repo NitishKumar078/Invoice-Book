@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom';
 import SidebarLayout from './components/SidebarLayout';
 import DashBoard from './pages/DashBoard';
 import InvoiceGenerator from './pages/InvoiceGenerator';
@@ -11,9 +16,20 @@ import {
   SignedIn,
   SignedOut,
   RedirectToSignIn,
+  useUser,
 } from '@clerk/clerk-react';
+import { useEffect } from 'react';
+import Payment from './pages/Payment';
 
 function App() {
+  // const { user } = useUser();
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (user?.publicMetadata?.trialExpired) {
+  //     navigate('/upgrade-page'); // Redirect users whose trial has expired
+  //   }
+  // }, [user, navigate]);
   return (
     // <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
     //   <SignedIn>
@@ -21,12 +37,12 @@ function App() {
       <SidebarLayout>
         <Routes>
           <Route path="/" element={<DashBoard />} />
-          <Route path="/dashboard" element={<DashBoard />} />
           <Route path="/invoice" element={<InvoiceGenerator />} />
           <Route path="/invoice/viewInvoice" element={<ViewInvoice />} />
           <Route path="/listInvoices" element={<ListInvoices />} />
           <Route path="/listItems" element={<ListItems />} />
           <Route path="/listcustomers" element={<Listcustomers />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
       </SidebarLayout>
     </Router>

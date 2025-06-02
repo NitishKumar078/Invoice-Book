@@ -3,6 +3,7 @@ import CustomersReducer from './Reducers/customersSlice';
 import InvoiceReducer from './Reducers/InvoiceSlice';
 import UserReducer from './Reducers/userSlice';
 import ItemReducer from './Reducers/ItemsSlice';
+import settingReducer from './Reducers/Settinginfo';
 
 const Store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const Store = configureStore({
     invoiceDB: InvoiceReducer,
     ItemsDB: ItemReducer,
     user: UserReducer,
+    settings: settingReducer,
   },
 });
 
