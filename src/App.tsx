@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SidebarLayout from './components/SidebarLayout';
 import DashBoard from './pages/DashBoard';
@@ -6,7 +7,6 @@ import InvoiceGenerator from './pages/InvoiceGenerator';
 const ListInvoices = React.lazy(() => import('./pages/Listing/ListInvoices'));
 const ListItems = React.lazy(() => import('./pages/Listing/ListItems'));
 const Listcustomers = React.lazy(() => import('./pages/Listing/Listcustomers'));
-import React, { Suspense } from 'react';
 import ListLoader from './components/ui/ListLoader';
 
 function App() {
