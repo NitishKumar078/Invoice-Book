@@ -8,54 +8,50 @@ const ListInvoices = React.lazy(() => import('./pages/Listing/ListInvoices'));
 const ListItems = React.lazy(() => import('./pages/Listing/ListItems'));
 const Listcustomers = React.lazy(() => import('./pages/Listing/Listcustomers'));
 import ListLoader from './components/ui/ListLoader';
-import { Provider } from 'react-redux';
-import store from '@/Store/Store';
 
 function App() {
   return (
-    <Provider store={store}>
-      <Router>
-        <SidebarLayout>
-          <Routes>
-            <Route path="/" element={<DashBoard />} />
-            <Route path="/dashboard" element={<DashBoard />} />
-            <Route
-              path="/invoice/viewInvoice"
-              element={
-                <Suspense fallback={<ListLoader />}>
-                  <ViewInvoice />
-                </Suspense>
-              }
-            />
-            <Route path="/invoice/viewInvoice" element={<InvoiceGenerator />} />
-            <Route
-              path="/invoice"
-              element={
-                <Suspense fallback={<ListLoader />}>
-                  <ListInvoices />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/listItems"
-              element={
-                <Suspense fallback={<ListLoader />}>
-                  <ListItems />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/listcustomers"
-              element={
-                <Suspense fallback={<ListLoader />}>
-                  <Listcustomers />
-                </Suspense>
-              }
-            />
-          </Routes>
-        </SidebarLayout>
-      </Router>
-    </Provider>
+    <Router>
+      <SidebarLayout>
+        <Routes>
+          <Route path="/" element={<DashBoard />} />
+          <Route path="/dashboard" element={<DashBoard />} />
+          <Route
+            path="/invoice/viewInvoice"
+            element={
+              <Suspense fallback={<ListLoader />}>
+                <ViewInvoice />
+              </Suspense>
+            }
+          />
+          <Route path="/invoice/viewInvoice" element={<InvoiceGenerator />} />
+          <Route
+            path="/invoice"
+            element={
+              <Suspense fallback={<ListLoader />}>
+                <ListInvoices />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/listItems"
+            element={
+              <Suspense fallback={<ListLoader />}>
+                <ListItems />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/listcustomers"
+            element={
+              <Suspense fallback={<ListLoader />}>
+                <Listcustomers />
+              </Suspense>
+            }
+          />
+        </Routes>
+      </SidebarLayout>
+    </Router>
   );
 }
 
