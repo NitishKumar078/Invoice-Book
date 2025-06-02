@@ -30,6 +30,11 @@ const initialState: CustomerState = {
   },
 };
 
+// Fetch initial state from IndexedDB
+fetchCustomersFromStorage().then((data) => {
+  initialState.customers = data;
+});
+
 const customersSlice = createSlice({
   name: customerStore,
   initialState,
