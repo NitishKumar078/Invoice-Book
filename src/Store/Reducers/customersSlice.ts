@@ -19,13 +19,16 @@ const fetchCustomersFromStorage = async (): Promise<Customer[]> => {
 };
 
 // Initialize state with empty customers array
-const initialState: CustomerState = {
-  customers: [],
-};
+let _customers: Customer[] = [];
 
-// Fetch initial state from IndexedDB
-const customers = await fetchCustomersFromStorage();
-initialState.customers = customers;
+const initialState: CustomerState = {
+  get customers() {
+    return _customers;
+  },
+  set customers(value: Customer[]) {
+    _customers = value;
+  },
+};
 
 const customersSlice = createSlice({
   name: customerStore,

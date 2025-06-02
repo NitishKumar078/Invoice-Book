@@ -17,15 +17,20 @@ const fetchCustomersFromStorage = async (): Promise<TableItem[]> => {
     return [];
   }
 };
+let _items: TableItem[] = [];
 
-// Initialize state with empty Items array
 const initialState: ItemState = {
-  Items: [],
+  get Items() {
+    return _items;
+  },
+  set Items(value: TableItem[]) {
+    _items = value;
+  },
 };
 
-// Fetch initial state from IndexedDB
-const Items = await fetchCustomersFromStorage();
-initialState.Items = Items;
+fetchCustomersFromStorage().then((data) => {
+  initialState.Items = data;
+});
 
 const ItemsSlice = createSlice({
   name: ItemStore,

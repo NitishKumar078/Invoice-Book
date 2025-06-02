@@ -5,7 +5,6 @@ import { useId, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import ListLoader from '@/components/ui/ListLoader';
 import {
   Table,
   TableBody,
@@ -58,14 +57,6 @@ declare module '@tanstack/react-table' {
 
 function ListInvoices() {
   const items = useSelector(selectInvoice);
-
-  const loading = useSelector(
-    (state: { invoice: { loading: boolean } }) => state.invoice?.loading
-  );
-
-  if (loading) {
-    return <ListLoader />;
-  }
 
   const columns: ColumnDef<invoiceItem>[] = [
     {

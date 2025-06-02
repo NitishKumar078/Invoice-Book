@@ -44,7 +44,6 @@ import {
   Search,
   Trash2,
 } from 'lucide-react';
-import ListLoader from '@/components/ui/ListLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '@/Store/Selectors/Selectors';
 import { deleteItem } from '@/Store/Reducers/ItemsSlice';
@@ -58,13 +57,6 @@ declare module '@tanstack/react-table' {
 
 function ListItems() {
   const items = useSelector(selectItems);
-  const loading = useSelector(
-    (state: { item: { loading: boolean } }) => state.item?.loading
-  );
-
-  if (loading) {
-    return <ListLoader />;
-  }
 
   const columns: ColumnDef<TableItem>[] = [
     {
@@ -162,10 +154,6 @@ function ListItems() {
     setEditItem(tableitem);
     setDialogOpen(true);
   };
-
-  if (loading) {
-    return <ListLoader />;
-  }
 
   return (
     <div className="space-y-6 bg-background">

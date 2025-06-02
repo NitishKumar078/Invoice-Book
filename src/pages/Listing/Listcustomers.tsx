@@ -39,7 +39,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@radix-ui/react-select';
-import ListLoader from '@/components/ui/ListLoader';
 import { selectCustomer } from '@/Store/Selectors/Selectors';
 import { deleteCustomer } from '@/Store/Reducers/customersSlice';
 
@@ -53,9 +52,6 @@ declare module '@tanstack/react-table' {
 function Listcustomers() {
   const dispatch = useDispatch();
   const customers = useSelector(selectCustomer);
-  const loading = useSelector(
-    (state: { customer: { loading: boolean } }) => state.customer?.loading
-  );
 
   const [dialogOpen, setDialogOpen] = useState(false); // Declare dialogOpen state once
   const [Editdata, setEditdata] = useState<Customer | null>(null); // State to hold the data for editing
@@ -159,10 +155,6 @@ function Listcustomers() {
     onSortingChange: setSorting,
     enableSortingRemoval: false,
   });
-
-  if (loading) {
-    return <ListLoader />;
-  }
 
   return (
     <div className="space-y-6 bg-background">
