@@ -16,9 +16,9 @@ import { addInvoice, updateInvoice } from '@/Store/Reducers/InvoiceSlice';
 import { selectCustomer, selectInvoice } from '@/Store/Selectors/Selectors';
 import { ValidatingInteger } from '@/utils/common_Methods';
 
-interface InvoiceProps {}
+// interface InvoiceProps { }
 
-const InvoiceGenerator: React.FC<InvoiceProps> = () => {
+const InvoiceGenerator = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -595,10 +595,10 @@ const InvoiceGenerator: React.FC<InvoiceProps> = () => {
           }}
           className="text-white mr-5 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
         >
-          {isEditMode ? 'Updata' : 'Save'}
+          {isEditMode ? 'Update' : 'Save'}
         </button>
         <NavLink
-          to="/viewInvoice"
+          to="/invoice/viewInvoice"
           onClick={(e) => {
             handleView(e);
           }}

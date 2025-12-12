@@ -24,9 +24,9 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="/invoice/viewInvoice" element={<InvoiceGenerator />} />
+          <Route path="/invoice" element={<InvoiceGenerator />} />
           <Route
-            path="/invoice"
+            path="/listInvoices"
             element={
               <Suspense fallback={<ListLoader />}>
                 <ListInvoices />

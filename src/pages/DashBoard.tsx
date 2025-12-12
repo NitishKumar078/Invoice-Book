@@ -43,19 +43,19 @@ export default function Home() {
         </NavLink>
         <NavLink
           className="bg-white rounded-lg w-1/3 h-[30vh] shadow-lg p-5 transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:bg-blue-50"
-          to="/listInvoices"
+          to="/listcustomers"
         >
           <h2 className="text-2xl font-semibold">Total Customers</h2>
           <p className="text-2xl font-bold">{Listcustomer.length}</p>
-          <p className="text-1xl text-gray-500">Total Invoices</p>
+          <p className="text-1xl text-gray-500">Total Customers</p>
         </NavLink>
         <NavLink
           className="bg-white rounded-lg w-1/3 h-[30vh] shadow-lg p-5 transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:bg-blue-50"
-          to="/listInvoices"
+          to="/listItems"
         >
           <h2 className="text-2xl font-semibold">Total Number of Items</h2>
           <p className="text-2xl font-bold">{ListItems.length}</p>
-          <p className="text-1xl text-gray-500">Total Invoices</p>
+          <p className="text-1xl text-gray-500">Total Items</p>
         </NavLink>
       </div>
     </div>

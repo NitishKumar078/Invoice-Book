@@ -107,7 +107,6 @@ const AddIteamDialogBox = ({
       dispatch(addItem(formData)); // Dispatch the action to add customer
     }
     setDialogOpen(false); // Close the dialog
-    window.location.reload(); // Reload the page to reflect changes
   };
 
   return (
@@ -306,7 +305,6 @@ const AddCustomerDialogBox = ({
       } else {
         dispatch(addCustomer(customerData)); // Dispatch the action to add customer
         setDialogOpen(false);
-        window.location.reload(); // Reload the page to reflect changes
       }
     }
   };
