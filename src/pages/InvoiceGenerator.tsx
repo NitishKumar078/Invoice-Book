@@ -519,7 +519,7 @@ const InvoiceGenerator = () => {
             type="button"
             id="deleteRow"
             onClick={handleDeleteRow}
-            className="hidden text-white bg-gradient-to-r  from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            className="hidden text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all shadow-md hover:shadow-lg"
           >
             Delete Row
           </button>
@@ -527,7 +527,7 @@ const InvoiceGenerator = () => {
           <button
             type="button"
             onClick={handleAddRow}
-            className="py-2 px-4 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm text-center me-2 mb-2"
+            className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all shadow-md hover:shadow-lg"
           >
             Add Row
           </button>
@@ -589,26 +589,26 @@ const InvoiceGenerator = () => {
             </div>
           </div>
         </div>
-        <button
-          onClick={(e) => {
-            handleSave(e);
-          }}
-          className="text-white mr-5 bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        >
-          {isEditMode ? 'Update' : 'Save'}
-        </button>
-        <NavLink
-          to="/invoice/viewInvoice"
-          onClick={(e) => {
-            handleView(e);
-          }}
-        >
-          <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:font-bold dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-              View
-            </span>
+        <div className="flex justify-end mt-6 gap-4">
+          <button
+            onClick={(e) => {
+              handleSave(e);
+            }}
+            className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-6 py-2.5 text-center transition-all shadow-md hover:shadow-lg"
+          >
+            {isEditMode ? 'Update' : 'Save'}
           </button>
-        </NavLink>
+          <NavLink
+            to="/invoice/viewInvoice"
+            onClick={(e) => {
+              handleView(e);
+            }}
+          >
+            <button className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2.5 text-center transition-all shadow-md hover:shadow-lg">
+              View
+            </button>
+          </NavLink>
+        </div>
       </form>
       <DialogBox
         dialogOpen={isOpen}

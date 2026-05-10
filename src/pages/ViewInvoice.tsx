@@ -382,31 +382,13 @@ const ViewInvoice = () => {
         onClick={(e) => {
           handlegoback(e);
         }} // Navigate back to the previous page
-        style={{
-          position: 'relative',
-          top: '10px',
-          left: '10px',
-          padding: '10px 20px',
-          backgroundColor: '#007bff',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-        }}
+        className="relative mt-2 ml-2 h-fit text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all shadow-md hover:shadow-lg"
       >
         Go Back
       </button>
 
       <PDFViewer
-        className="createcart"
-        style={{
-          width: 'calc(78vw)',
-          left: 'calc(2vw)',
-          position: 'relative',
-          top: '10px',
-          height: '90vh',
-          border: 'none',
-        }}
+        className="flex-1 mx-4 mt-2 h-[90vh] border-0 rounded-lg shadow-sm"
       >
         <Quixote
           user={user}

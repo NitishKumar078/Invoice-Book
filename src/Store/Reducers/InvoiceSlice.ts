@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getDataBase } from '@/utils/indexedDB';
 import { invoiceItem } from '@/DataModels/DataModels';
 
-const invoiceStore = import.meta.env.VITE_INVOICESTORE;
+const invoiceStore = import.meta.env.VITE_INVOICESTORE || 'invoiceDB';
 
 interface InvoiceState {
   invoices: invoiceItem[];
@@ -13,8 +13,10 @@ const fetchInvoicesFromStorage = async (): Promise<invoiceItem[]> => {
   try {
     const invoices = await getDataBase.getAll(invoiceStore);
     return invoices || [];
-  } catch (error) {
-    console.error('Failed to load initial invoices:', error);
+  } catch (error: any) {
+    if (error?.message !== 'User information is missing. Cannot initialize database.') {
+      console.error('Failed to load initial invoices:', error);
+    }
     return [];
   }
 };
@@ -36,8 +38,10 @@ async function initializeState() {
     .then((invoices) => {
       initialState.invoices = invoices || [];
     })
-    .catch((error) => {
-      console.error('Failed to initialize invoices:', error);
+    .catch((error: any) => {
+      if (error?.message !== 'User information is missing. Cannot initialize database.') {
+        console.error('Failed to initialize invoices:', error);
+      }
     });
 }
 

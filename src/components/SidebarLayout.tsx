@@ -1,5 +1,5 @@
 'use client';
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode, useEffect } from 'react';
 import { Sidebar, SidebarBody, SidebarLink } from './ui/sidebar';
 import {
   LayoutDashboard,
@@ -75,6 +75,12 @@ const SidebarLayout = ({ children }: SidebarDemoProps) => {
     user.IFSC_code &&
     user.AccountName;
 
+  useEffect(() => {
+    if (!isUserInfoFilled) {
+      setUserDialogBox(true);
+    }
+  }, []);
+
   return (
     <div
       className={cn(
@@ -112,11 +118,11 @@ const SidebarLayout = ({ children }: SidebarDemoProps) => {
           )}
         </SidebarBody>
       </Sidebar>
-      <Dashboard>{isUserInfoFilled ? children : null}</Dashboard>
+      <Dashboard>{children}</Dashboard>
       {/* Show AddUserDialogBox until user info is filled */}
-      {(!isUserInfoFilled || addUserDialogBox) && (
+      {addUserDialogBox && (
         <AddUserDialogBox
-          dialogOpen={!isUserInfoFilled || addUserDialogBox}
+          dialogOpen={addUserDialogBox}
           setDialogOpen={setUserDialogBox}
         />
       )}

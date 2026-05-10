@@ -24,7 +24,7 @@ export default function Home() {
             className="transition-all duration-300 ease-in-out max-w-0 group-hover:max-w-xs group-hover:ml-2 overflow-hidden"
             style={{ display: 'inline-block' }}
           >
-            create New Invoice
+            Create New Invoice
           </span>
           <SquarePlus
             size={28}
@@ -39,7 +39,7 @@ export default function Home() {
         >
           <h2 className="text-2xl font-semibold">Total Invoices Created</h2>
           <p className="text-2xl font-bold">{ListInvoice.length}</p>
-          <p className="text-1xl text-gray-500">Total Invoices</p>
+          <p className="text-xl text-gray-500">Total Invoices</p>
         </NavLink>
         <NavLink
           className="bg-white rounded-lg w-1/3 h-[30vh] shadow-lg p-5 transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:bg-blue-50"
@@ -47,7 +47,7 @@ export default function Home() {
         >
           <h2 className="text-2xl font-semibold">Total Customers</h2>
           <p className="text-2xl font-bold">{Listcustomer.length}</p>
-          <p className="text-1xl text-gray-500">Total Customers</p>
+          <p className="text-xl text-gray-500">Total Customers</p>
         </NavLink>
         <NavLink
           className="bg-white rounded-lg w-1/3 h-[30vh] shadow-lg p-5 transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:bg-blue-50"
@@ -55,7 +55,7 @@ export default function Home() {
         >
           <h2 className="text-2xl font-semibold">Total Number of Items</h2>
           <p className="text-2xl font-bold">{ListItems.length}</p>
-          <p className="text-1xl text-gray-500">Total Items</p>
+          <p className="text-xl text-gray-500">Total Items</p>
         </NavLink>
       </div>
     </div>

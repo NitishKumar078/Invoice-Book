@@ -1,7 +1,7 @@
 let DATABASE = '';
-const CUSTOMERSTORE = import.meta.env.VITE_CUSTOMERSTORE;
-const INVOICESTORE = import.meta.env.VITE_INVOICESTORE;
-const ITEMSTORE = import.meta.env.VITE_ITEMSTORE;
+const CUSTOMERSTORE = import.meta.env.VITE_CUSTOMERSTORE || 'customersDB';
+const INVOICESTORE = import.meta.env.VITE_INVOICESTORE || 'invoiceDB';
+const ITEMSTORE = import.meta.env.VITE_ITEMSTORE || 'itemsDB';
 const DB_VERSION = 1;
 
 export const initDB = (): Promise<IDBDatabase> => {

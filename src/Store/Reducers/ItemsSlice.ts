@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getDataBase } from '@/utils/indexedDB';
 import { TableItem } from '@/DataModels/DataModels';
-const ItemStore = import.meta.env.VITE_ITEMSTORE;
+const ItemStore = import.meta.env.VITE_ITEMSTORE || 'itemsDB';
 
 interface ItemState {
   Items: TableItem[];
@@ -12,8 +12,10 @@ const fetchCustomersFromStorage = async (): Promise<TableItem[]> => {
   try {
     const Items = await getDataBase.getAll(ItemStore);
     return Items || [];
-  } catch (error) {
-    console.error('Failed to load initial Items:', error);
+  } catch (error: any) {
+    if (error?.message !== 'User information is missing. Cannot initialize database.') {
+      console.error('Failed to load initial Items:', error);
+    }
     return [];
   }
 };

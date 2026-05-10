@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getDataBase } from '@/utils/indexedDB';
 import { Customer } from '@/DataModels/DataModels';
-const customerStore = import.meta.env.VITE_CUSTOMERSTORE;
+const customerStore = import.meta.env.VITE_CUSTOMERSTORE || 'customersDB';
 
 interface CustomerState {
   customers: Customer[];
@@ -12,8 +12,10 @@ const fetchCustomersFromStorage = async (): Promise<Customer[]> => {
   try {
     const customers = await getDataBase.getAll(customerStore);
     return customers || [];
-  } catch (error) {
-    console.error('Failed to load initial customers:', error);
+  } catch (error: any) {
+    if (error?.message !== 'User information is missing. Cannot initialize database.') {
+      console.error('Failed to load initial customers:', error);
+    }
     return [];
   }
 };

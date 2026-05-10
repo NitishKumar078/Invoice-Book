@@ -158,7 +158,7 @@ function ListItems() {
   return (
     <div className="space-y-6 bg-background">
       {/* Filters */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 items-end">
         {/* Search input */}
         <div className="w-44">
           <Filter column={table.getColumn('item')!} />
@@ -168,7 +168,7 @@ function ListItems() {
           <Filter column={table.getColumn('hsnCode')!} />
         </div>
 
-        <div className="absolute right-10 top-10 ">
+        <div className="ml-auto mb-[2px]">
           <button
             className="relative inline-flex items-center gap-1 rounded-md bg-zinc-950 px-2.5 py-1.5 text-sm text-zinc-50 outline-1 outline-[#fff2f21f] hover:border hover:border-zinc-300"
             onClick={() => {

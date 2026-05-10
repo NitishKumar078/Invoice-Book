@@ -116,7 +116,7 @@ const AddIteamDialogBox = ({
           <DialogHeader>
             <DialogTitle>Create New Item</DialogTitle>
           </DialogHeader>
-          <DialogDescription className="text-zinc-800 mb-2 p-2 gap-2 flex flex-col">
+          <div className="text-zinc-800 mb-2 p-2 gap-2 flex flex-col">
             <Label htmlFor="item">
               Item Name <span className="text-red-500">*</span>
             </Label>
@@ -173,7 +173,7 @@ const AddIteamDialogBox = ({
               defaultValue={formData.hsnCode}
               onChange={handleChange}
             />
-          </DialogDescription>
+          </div>
 
           <DialogFooter>
             <button
@@ -316,7 +316,7 @@ const AddCustomerDialogBox = ({
           <DialogHeader>
             <DialogTitle>Create New Customer</DialogTitle>
           </DialogHeader>
-          <DialogDescription className="text-zinc-800 mb-2 p-2 gap-2 flex flex-col">
+          <div className="text-zinc-800 mb-2 p-2 gap-2 flex flex-col">
             <Label htmlFor="customerName">
               Customer Name <span className="text-red-500">*</span>
             </Label>
@@ -419,7 +419,7 @@ const AddCustomerDialogBox = ({
                 required={selectedState === 'Other'}
               />
             )}
-          </DialogDescription>
+          </div>
 
           <DialogFooter>
             <button
@@ -526,7 +526,6 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
 
   const handleClose = () => {
     setDialogOpen(false);
-    window.location.reload(); // Reload the page to reflect changes
   };
 
   return (
@@ -536,7 +535,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
           <DialogHeader>
             <DialogTitle>Please Enter Your Company and Your Info</DialogTitle>
           </DialogHeader>
-          <DialogDescription className="text-zinc-800 mb-2 p-2 gap-2 flex flex-col">
+          <div className="text-zinc-800 mb-2 p-2 gap-2 flex flex-col">
             <Label htmlFor="name">
               Name <span className="text-red-500">*</span>
             </Label>
@@ -708,7 +707,7 @@ const AddUserDialogBox = ({ dialogOpen, setDialogOpen }: DialogBoxProps) => {
                 />
               </div>
             </div>
-          </DialogDescription>
+          </div>
 
           <DialogFooter>
             <button

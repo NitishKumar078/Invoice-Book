@@ -159,7 +159,7 @@ function ListInvoices() {
   return (
     <div className="space-y-6 bg-background">
       {/* Filters */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 items-end">
         {/* invoiceId select */}
         <div className="w-36">
           <Filter column={table.getColumn('invoiceId')!} />
@@ -177,7 +177,7 @@ function ListInvoices() {
           <Filter column={table.getColumn('totalAmount')!} />
         </div>
 
-        <div className="absolute right-10 top-10 ">
+        <div className="ml-auto mb-[2px]">
           <button
             className="relative inline-flex items-center gap-1 rounded-md bg-zinc-950 px-2.5 py-1.5 text-sm text-zinc-50 outline-1 outline-[#fff2f21f] hover:border hover:border-zinc-300"
             onClick={handleExportData}
